@@ -1,0 +1,3105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/css/bootstrap.min.css"
+        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        select {
+            min-width: 110px;
+            margin-left: 5px;
+        }
+
+        body {
+            min-height: 100vh;
+        }
+
+        select~span.btn:not(.imprBtn) {
+            min-width: 230px;
+            display: block;
+        }
+
+        .cursor div {
+            cursor: pointer;
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        .swal-modal {
+            width: 80% !important;
+        }
+
+
+
+        @media screen and(min-width:767px) and (max-width:1000px) {
+
+            .inputs {
+                display: block !important;
+            }
+
+            .imprBtn {
+                max-width: 130px !important;
+            }
+        }
+
+        @media screen and (max-width:767px) {
+
+            .main #F>div,
+            .main #Groupe>div {
+                display: block !important;
+
+            }
+
+
+            select~span.btn,
+            .imprBtn {
+                display: block;
+                min-width: 230px !important;
+                margin: 10px;
+            }
+
+            .btns {
+                display: block !important;
+            }
+
+            select {
+                margin-left: 0;
+            }
+
+            .main input {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+
+</head>
+
+<body class="container">
+    <form class="d-flex mt-2">
+        <input type="file" id="excel-file" accept=".xlsx, .xls" class="form-control" />
+        <span id="read-button" class="btn btn-success ml-1" onclick="handleFile(false)">Upload</span>
+    </form>
+    <div class="main m-3">
+        <div class="d-flex cursor" id="btnController">
+            <div class="btn-success rounded w-100 text-center p-2 mr-1 border"><b>Formateur</b></div>
+            <div class="rounded w-100 text-center p-2 ml-1 btn-outline-success border"><b>Groupe</b></div>
+        </div>
+
+        <div id="Formateur">
+            <div class="d-flex justify-content-end py-3 align-items-center inputs">
+                <input type="search" class="rechercher form-control m-3 " placeholder="Rechercher un Formateur...">
+                <!-- <span class="btn btn-dark ml-1" onclick="Descendant('Formateur')">Descendant</span> -->
+                <div class="d-flex btns">
+                    <select id="select" onchange="descOrAsc('Formateur', this)" class="form-control">
+                        <option value="" disabled selected>Trier</option>
+                        <option value="descendant"><b>Descendant</b></option>
+                        <option value="ascendant"><b>Ascendant</b></option>
+                        <option value="nom"><b>Par Nom</b></option>
+                    </select>
+                    <span id="read-button" class="btn btn-info ml-1  ForModReg"
+                        onclick="afficheformateurEFM()">Formateurs ayant des EFMR</span>
+                    <span id="read-button" class="btn btn-success ml-1" onclick="afficheModule5h()">Modules presque
+                        achevés</span>
+                    <span class="btn btn-primary  imprBtn ml-1" id="downloadFor">Imprimer</span>
+                    <span class="btn btn-secondary  imprBtn ml-1 autreBtn"><i class="bi bi-list"></i></span>
+
+                </div>
+            </div>
+            <table class="table table-bordered table-hover text-center table-responsive-md">
+            </table>
+        </div>
+
+        <div id="Groupe" class="d-none">
+            <div class="d-flex justify-content-end py-3 align-items-center inputs">
+                <input type="text" class="rechercher form-control mx-auto m-3" placeholder="Rechercher un Groupe...">
+                <!-- <span class="btn btn-dark ml-1" onclick="Descendant('Groupe')">Descendant</span> -->
+                <div class="btns d-flex">
+                    <select id="select" onchange="descOrAsc('Groupe', this)" class="form-control">
+                        <option value="" disabled selected>Trier</option>
+                        <option value="descendant"><b>Descendant</b></option>
+                        <option value="ascendant"><b>Ascendant</b></option>
+                        <option value="nom"><b>Par Nom</b></option>
+                    </select>
+                    <span id="read-button" class="btn btn-info ml-1 ForModReg"
+                        onclick="afficheformateurEFM()">Formateurs ayant des EFMR</span>
+
+                    <span id="read-button" class="btn btn-success ml-1" onclick="afficheModule5h()">Modules presque
+                        achevés</span>
+                    <span class="btn btn-primary imprBtn ml-1" id="downloadGr">Imprimer</span>
+                    <span class="btn btn-secondary  imprBtn ml-1 autreBtn"><i class="bi bi-list"></i></span>
+                </div>
+            </div>
+            <table class="table table-bordered table-hover text-center table-responsive-md">
+
+            </table>
+        </div>
+
+
+    </div>
+
+    <div class="d-none justify-content-center align-items-center divSpiner" style="height: 100vh;width: 100%;">
+        <div class="spinner-border" role="status" aria-hidden="true"></div>
+        <strong class="ml-2">Loading...</strong>
+    </div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.7/xlsx.full.min.js"></script>
+    <script>
+        handleFile(true);
+        function handleFile(local = false) {
+            if (!localStorage.jsonData) {
+                localStorage.jsonData = '[]';
+            }
+
+            if (local == false) {
+
+                tret().then(function () {
+
+                    show(JSON.parse(localStorage.jsonData));
+                    location.reload();
+
+                })
+
+            } else {
+
+                show(JSON.parse(localStorage.jsonData));
+
+            }
+
+
+        }
+
+        function tret() {
+            return new Promise((resolve, reject) => {
+                const fileInput = document.getElementById('excel-file');
+                const file = fileInput.files[0];
+
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+
+                    const data = e.target.result;
+                    const workbook = XLSX.read(data, { type: 'binary' });
+                    const sheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[sheetName];
+                    const jsonData = XLSX.utils.sheet_to_json(worksheet);
+
+                    localStorage.jsonData = JSON.stringify(jsonData);
+
+                };
+
+                reader.readAsBinaryString(file);
+
+                resolve();
+
+            })
+        }
+
+        function show(jsonData) {
+            let formateurs = [];
+
+            jsonData.forEach((e) => {
+                if (!formateurs.includes(e['Formateur Affecté Présentiel Actif'])) {
+                    let nomForm = e['Formateur Affecté Présentiel Actif'];
+                    formateurs.push(nomForm);
+                }
+            });
+
+            formateurs.sort();
+
+
+            let table = document.querySelector('#Formateur table');
+            table.innerHTML = `
+        <tr class="bg-secondary text-light">
+            <th>Matricule</th>
+            <th>Nom Complet</th>
+            <th>MH Affectée Globale</th>
+            <th>MH Réalisée Globale</th>
+            <th>Avancement</th>
+        </tr>
+    `
+            let tableFormateur;
+            let listModulesRegional;
+            let listModulesLocauxValider;
+            let objModule;
+
+            formateurs.forEach(formateur => {
+
+                tableFormateur = jsonData.filter(e => e['Formateur Affecté Présentiel Actif'] == formateur)
+
+                let MHAfectGlobal = 0;
+                let MHRealisGlobal = 0;
+                let MHAfectGlobalS1 = 0;
+                let MHRealisGlobalS1 = 0;
+                let MHAfectGlobalS2 = 0;
+                let MHRealisGlobalS2 = 0;
+                let MHAfectGlobalS1P = 0;
+                let MHRealisGlobalS1P = 0;
+                let MHAfectGlobalS2P = 0;
+                let MHRealisGlobalS2P = 0;
+                let MHAfectGlobalS1SYN = 0;
+                let MHRealisGlobalS1SYN = 0;
+                let MHAfectGlobalS2SYN = 0;
+                let MHRealisGlobalS2SYN = 0;
+
+                let listS1 = []
+                let listS2 = [];
+
+                let annees = [];
+                listModulesRegional = [];
+                listModulesLocauxValider = [];
+
+
+                tableFormateur.forEach(objFormateur => {
+
+                    let p = ((objFormateur['MH Réalisée Globale'] || 0) * 100) / objFormateur['MH Affectée Globale (P & SYN)']
+
+                    objModule = {
+                        p: p.toFixed(2),
+                        nom: `${objFormateur['Code Module']}-${objFormateur['Module']}`,
+                        group: objFormateur['Groupe'],
+                        regional: objFormateur['Régional'],
+                        s1: objFormateur['MH Totale S1 DRIF'],
+                        s2: objFormateur['MH Totale S2 DRIF'],
+                        MHAG: objFormateur['MH Affectée Globale (P & SYN)'] || 0,
+                        MHAP: objFormateur['MH Affectée Présentiel'] || 0,
+                        MHAS: objFormateur['MH Affectée Sync'] || 0,
+                        MHRP: objFormateur['MH Réalisée Présentiel'] || 0,
+                        MHRS: objFormateur['MH Réalisée Sync'] || 0,
+                        MHRG: objFormateur['MH Réalisée Globale'] || 0,
+                        valider: objFormateur['Séance EFM']
+                    }
+                    if (objModule.regional == 'O') {
+                        listModulesRegional.push(objModule);
+                    } else if (objModule.valider) {
+                        listModulesLocauxValider.push(objModule)
+                    }
+
+                    if (!annees.includes(objFormateur["Année de formation"])) {
+
+                        annees.push(objFormateur["Année de formation"]);
+
+                    }
+
+                    MHRealisGlobal += Number(objFormateur['MH Réalisée Présentiel']) || 0;
+                    MHAfectGlobal += Number(objFormateur['MH Affectée Présentiel']) || 0;
+                    if (objFormateur['MH Totale S1 DRIF'] != 0 && objFormateur['MH Totale S1 DRIF'] >= objFormateur['MH Totale S2 DRIF']) {
+                        listS1.push(objFormateur)
+                        if (objFormateur["Groupe"].includes("TREMOA")) {
+
+                            MHRealisGlobalS1 += Number(objFormateur["MH Réalisée Présentiel"]) || 0;
+                            MHAfectGlobalS1 += Number(objFormateur["MH Affectée Présentiel"]) || 0;
+
+                            MHRealisGlobalS1P += Number(objFormateur["MH Réalisée Présentiel"]) || 0;
+                            MHAfectGlobalS1P += Number(objFormateur["MH Affectée Présentiel"]) || 0;
+                        } else {
+                            if (objFormateur['MH Totale S2 DRIF'] != 0) {
+                                MHAfectGlobalS2 += Number(objFormateur['MHP S2 DRIF'])
+                                MHAfectGlobalS2P += Number(objFormateur['MHP S2 DRIF'])
+                                listS2.push(objFormateur)
+
+
+                            }
+                            MHAfectGlobalS1 += Number(objFormateur['MHP S1 DRIF'])
+                            MHRealisGlobalS1 += Number(objFormateur['MH Réalisée Présentiel']) || 0;
+                            MHAfectGlobalS1P += Number(objFormateur['MHP S1 DRIF'])
+                            MHRealisGlobalS1P += Number(objFormateur['MH Réalisée Présentiel']) || 0;
+                        }
+                    }
+                    if (objFormateur['MH Totale S2 DRIF'] != 0 && objFormateur['MH Totale S1 DRIF'] < objFormateur['MH Totale S2 DRIF']) {
+                        listS2.push(objFormateur)
+                        if (objFormateur["Groupe"].includes("TREMOA")) {
+
+                            MHRealisGlobalS2 += Number(objFormateur["MH Réalisée Présentiel"]) || 0;
+                            MHAfectGlobalS2 += Number(objFormateur["MH Affectée Présentiel"]) || 0;
+
+                            MHRealisGlobalS2P += Number(objFormateur["MH Réalisée Présentiel"]) || 0;
+                            MHAfectGlobalS2P += Number(objFormateur["MH Affectée Présentiel"]) || 0;
+                        } else {
+                            MHAfectGlobalS2 += Number(objFormateur['MHP S2 DRIF'])
+                            MHRealisGlobalS2 += Number(objFormateur['MH Réalisée Présentiel']) || 0;
+                            MHAfectGlobalS2P += Number(objFormateur['MHP S2 DRIF'])
+                            MHRealisGlobalS2P += Number(objFormateur['MH Réalisée Présentiel']) || 0;
+                            if (objFormateur['MH Totale S1 DRIF'] != 0) {
+                                MHAfectGlobalS1 += Number(objFormateur['MHP S1 DRIF'])
+                                MHAfectGlobalS1P += Number(objFormateur['MHP S1 DRIF'])
+                                listS1.push(objFormateur)
+
+                            }
+
+                        }
+                    }
+
+                })
+
+                let modules;
+                let filieres;
+                let Groupes;
+
+                annees.forEach(annee => {
+
+                    filieres = [];
+
+                    tableFormateur.forEach(objFormateur => {
+
+                        if (!filieres.includes(objFormateur['Code Filière']) && objFormateur["Année de formation"] == annee) {
+
+                            filieres.push(objFormateur['Code Filière']);
+
+                        }
+
+                    })
+
+                    filieres.forEach(e => {
+
+                        modules = [];
+                        tableFormateur.forEach(m => {
+
+                            if (!modules.includes(m['Code Module']) && m["Année de formation"] == annee && m['Code Filière'] == e) {
+
+                                modules.push(m['Code Module']);
+
+                            }
+
+                        })
+
+                        Groupes = [];
+                        modules.forEach(eM => {
+                            tableFormateur.forEach(eD => {
+
+                                if (!Groupes.includes(eD['Groupe']) && eD["Année de formation"] == annee && eD['Code Filière'] == e && eD['Code Module'] == eM) {
+
+                                    Groupes.push(eD['Groupe'])
+
+                                }
+
+                            })
+                            Groupes.sort();
+                            // console.log(annee);
+                            // console.log(e);
+                            // console.log(eM);
+                            // console.log(Groupes);
+                            Groupes.forEach((gr, index) => {
+
+                                if (index % 2 == 0) {
+
+                                    // console.log(gr);
+
+                                    tableFormateur.forEach(dt => {
+                                        if (dt['Groupe'] == gr && dt["Année de formation"] == annee && dt['Code Filière'] == e && dt['Code Module'] == eM) {
+                                            MHAfectGlobal += Number(dt['MH Affectée Sync']) || 0;
+                                            MHRealisGlobal += Number(dt['MH Réalisée Sync']) || 0;
+                                            if (dt['MH Totale S1 DRIF'] != 0 && dt['MH Totale S1 DRIF'] >= dt['MH Totale S2 DRIF']) {
+                                                if (dt["Groupe"].includes("TREMOA")) {
+
+                                                    MHRealisGlobalS1 += Number(dt["MH Réalisée Sync"]) || 0;
+                                                    MHAfectGlobalS1 += Number(dt["MH Affectée Sync"]) || 0;
+                                                    MHRealisGlobalS1SYN += Number(dt["MH Réalisée Sync"]) || 0;
+                                                    MHAfectGlobalS1SYN += Number(dt["MH Affectée Sync"]) || 0;
+                                                } else {
+
+                                                    MHAfectGlobalS1 += Number(dt['MHSYN S1 DRIF'])
+                                                    MHRealisGlobalS1 += Number(dt['MH Réalisée Sync']) || 0
+                                                    MHAfectGlobalS1SYN += Number(dt['MHSYN S1 DRIF'])
+                                                    MHRealisGlobalS1SYN += Number(dt['MH Réalisée Sync']) || 0
+                                                    if (dt['MH Totale S2 DRIF'] != 0) {
+                                                        MHAfectGlobalS2 += Number(dt['MHSYN S2 DRIF'])
+                                                        MHAfectGlobalS2SYN += Number(dt['MHSYN S2 DRIF'])
+
+                                                    }
+                                                }
+                                            }
+                                            if (dt['MH Totale S2 DRIF'] != 0 && dt['MH Totale S1 DRIF'] < dt['MH Totale S2 DRIF']) {
+                                                if (dt["Groupe"].includes("TREMOA")) {
+
+                                                    MHRealisGlobalS2 += Number(dt["MH Réalisée Sync"]) || 0;
+                                                    MHAfectGlobalS2 += Number(dt["MH Affectée Sync"]) || 0;
+                                                    MHRealisGlobalS2SYN += Number(dt["MH Réalisée Sync"]) || 0;
+                                                    MHAfectGlobalS2SYN += Number(dt["MH Affectée Sync"]) || 0;
+                                                } else {
+                                                    if (dt['MH Totale S1 DRIF'] != 0) {
+                                                        MHAfectGlobalS1 += Number(dt['MHSYN S1 DRIF'])
+                                                        MHAfectGlobalS1SYN += Number(dt['MHSYN S1 DRIF'])
+
+                                                    }
+                                                    MHAfectGlobalS2 += Number(dt['MHSYN S2 DRIF'])
+                                                    MHRealisGlobalS2 += Number(dt['MH Réalisée Sync']) || 0
+                                                    MHAfectGlobalS2SYN += Number(dt['MHSYN S2 DRIF'])
+                                                    MHRealisGlobalS2SYN += Number(dt['MH Réalisée Sync']) || 0
+
+                                                }
+                                            }
+
+                                        }
+
+                                    })
+
+                                }
+
+                            })
+
+                        })
+
+                    })
+
+                })
+
+                let TauxMHRealisGlobal = MHRealisGlobal * 100 / MHAfectGlobal;
+
+                if (formateur) {
+
+                    let tr = document.createElement('tr');
+                    tr.setAttribute('name', formateur)
+                    tr.innerHTML = `
+                        <td>${tableFormateur[0]['Mle Affecté Présentiel Actif']}</td>
+                        <td>${formateur}</td>
+                        <td>${MHAfectGlobal}</td>
+                        <td>${MHRealisGlobal}</td>
+                        <td>${TauxMHRealisGlobal.toFixed(2)}%</td>
+                    `
+                    let divParent = document.createElement('div')
+
+                    let fieldset1 = document.createElement('fieldset');
+                    let legend1 = document.createElement('legend');
+                    legend1.innerHTML = '<h5>Modules Régionaux</h5>'
+                    fieldset1.style = 'border:solid;padding-bottom: 20px;'
+                    legend1.style = 'width:fit-content;padding: 0 10px;'
+                    fieldset1.appendChild(legend1);
+
+                    let listModulesRegionalS1 = listModulesRegional.filter(m => m.s1 != 0 && m.s1 >= m.s2);
+                    let listModulesRegionalS2 = listModulesRegional.filter(m => m.s2 != 0 && m.s1 < m.s2);
+
+                    let tableModule = document.createElement('table');
+                    tableModule.setAttribute('class', 'table table-bordered table-hover text-center table-responsive-md MHCol');
+                    tableModule.innerHTML = `
+                        
+                        <tr class="bg-secondary text-light">
+                            <td>Nom</td>
+                            <td>Groupe</td>
+                            <td>MH Affectée Présentiel</td>
+                            <td>MH Affectée Sync</td>
+                            <td>MH Affectée Globale (P & SYN)</td>
+                            <td>MH Réalisée Présentiel</td>
+                            <td>MH Réalisée Sync</td>
+                            <td>MH Réalisée Globale</td>
+                            <td>Avancement</td>
+                            <td>Réalisé</td>
+                        </tr>
+                        <tr class="bg-light">
+                            <td colspan='10'><b>S1</b></td>
+                        </tr>
+                    `;
+                    listModulesRegionalS1.forEach(m => {
+
+                        tableModule.innerHTML += `
+                        <tr>
+                            <td>${m.nom}</td>
+                            <td>${m.group}</td>
+                            <td>${m.MHAP}</td>
+                            <td>${m.MHAS}</td>
+                            <td>${m.MHAG}</td>
+                            <td>${m.MHRP}</td>
+                            <td>${m.MHRS}</td>
+                            <td>${m.MHRG}</td>
+                            <td>${m.p}%</td>
+                            <td>${m.valider}</td>
+                        </tr>
+                        `;
+                    })
+                    tableModule.innerHTML += `
+                        <tr class="bg-light">
+                            <td colspan='10'><b>S2</b></td>
+                        </tr>
+                       
+                    `;
+                    listModulesRegionalS2.forEach(m => {
+
+                        tableModule.innerHTML += `
+                        <tr>
+                            <td>${m.nom}</td>
+                            <td>${m.group}</td>
+                            <td>${m.MHAP}</td>
+                            <td>${m.MHAS}</td>
+                            <td>${m.MHAG}</td>
+                            <td>${m.MHRP}</td>
+                            <td>${m.MHRS}</td>
+                            <td>${m.MHRG}</td>
+                            <td>${m.p}%</td>
+                            <td>${m.valider}</td>
+                        </tr>
+                        `;
+                    })
+                    fieldset1.appendChild(tableModule);
+                    divParent.appendChild(fieldset1);
+
+                    let hr = document.createElement('hr')
+                    divParent.appendChild(hr)
+
+
+                    let fieldset2 = document.createElement('fieldset');
+                    let legend2 = document.createElement('legend');
+                    legend2.innerHTML = '<h5>Modules Locaux</h5>'
+                    fieldset2.style = 'border:solid;padding-bottom: 20px;'
+                    legend2.style = 'width:fit-content;padding: 0 10px;'
+                    fieldset2.appendChild(legend2);
+
+                    let listModulesLocauxValiderS1 = listModulesLocauxValider.filter(m => m.s1 != 0 && m.s1 >= m.s2);
+                    let listModulesLocauxValiderS2 = listModulesLocauxValider.filter(m => m.s2 != 0 && m.s1 < m.s2);
+
+                    let tableModule2 = document.createElement('table');
+                    tableModule2.setAttribute('class', 'table table-bordered table-hover text-center table-responsive-md MHCol');
+                    tableModule2.innerHTML = `
+                        
+                        <tr class="bg-secondary text-light">
+                            <td>Nom</td>
+                            <td>Groupe</td>
+                            <td>MH Affectée Présentiel</td>
+                            <td>MH Affectée Sync</td>
+                            <td >MH Affectée Globale (P & SYN)</td>
+                            <td>MH Réalisée Présentiel</td>
+                            <td>MH Réalisée Sync</td>
+                            <td>MH Réalisée Globale</td>
+                            <td>Avancement</td>
+                            <td>Réalisé</td>
+                        </tr>
+                        <tr class="bg-light">
+                            <td colspan='10'><b>S1</b></td>
+                        </tr>
+                    `;
+                    listModulesLocauxValiderS1.forEach(m => {
+
+                        tableModule2.innerHTML += `
+                        <tr>
+                            <td>${m.nom}</td>
+                            <td>${m.group}</td>
+                            <td>${m.MHAP}</td>
+                            <td>${m.MHAS}</td>
+                            <td>${m.MHAG}</td>
+                            <td>${m.MHRP}</td>
+                            <td>${m.MHRS}</td>
+                            <td>${m.MHRG}</td>
+                            <td>${m.p}%</td>
+                            <td>${m.valider}</td>
+                        </tr>
+                        `;
+                    })
+                    tableModule2.innerHTML += `
+                        <tr class="bg-light">
+                            <td colspan='10'><b>S2</b></td>
+                        </tr>
+                       
+                    `;
+                    listModulesLocauxValiderS2.forEach(m => {
+
+                        tableModule2.innerHTML += `
+                        <tr>
+                            <td>${m.nom}</td>
+                            <td>${m.group}</td>
+                            <td>${m.MHAP}</td>
+                            <td>${m.MHAS}</td>
+                            <td>${m.MHAG}</td>
+                            <td>${m.MHRP}</td>
+                            <td>${m.MHRS}</td>
+                            <td>${m.MHRG}</td>
+                            <td>${m.p}%</td>
+                            <td>${m.valider}</td>
+                        </tr>
+                        `;
+                    })
+
+                    fieldset2.appendChild(tableModule2);
+                    divParent.appendChild(fieldset2);
+                    let tableModule3 = document.createElement('table');
+                    tableModule3.setAttribute('class', 'table table-bordered table-hover text-center    MHCol');
+
+                    tableModule3.innerHTML = `
+                    <tr>
+                    <td colspan='3' class="bg-secondary text-light" 
+                    style="border-right:2.5px solid #dee1e6"><b>Affectée</b></td>
+                    <td colspan='3' class="bg-secondary text-light"><b>Réalisée</b></td>
+                    </tr>
+                        
+                        <tr class="bg-secondary text-light ">
+                           
+                            <td>MH Affectée Présentiel S1</td>
+                            <td>MH Affectée Sync S1</td>
+                            <td style="border-right:2.5px solid #dee2e6">MH Total Affectée S1</td>
+                            
+                            
+                            <td>MH Réalisée Présentiel S1</td>
+                            <td>MH Réalisée Sync S1</td>
+                            <td>MH Total Réalisée S1</td>
+             
+                            <td>vitesse (Heure/Semaine) </td>
+                        </tr>
+  
+                    `;
+                    let vitesse = ((MHAfectGlobalS1 - MHRealisGlobalS1) / tempsRestant(new Date()))
+                    let min = (vitesse - Math.floor(vitesse)) * 60
+                    vitesse = Number(vitesse.toFixed(0))
+                    if (min >= 40) {
+                        vitesse++
+                    }
+                    if (min < 40 && min >= 20) {
+                        vitesse += 0.5
+                    }
+                    tableModule3.innerHTML += `
+                        <tr>
+                            <td>${MHAfectGlobalS1P}</td>
+                            <td>${MHAfectGlobalS1SYN}</td>
+                            <td style="border-right:2.5px solid #dee2e6"><b>${MHAfectGlobalS1}</b></td>
+                            <td>${MHRealisGlobalS1P}</td>
+                            <td>${MHRealisGlobalS1SYN}</td>
+                            <td><b>${MHRealisGlobalS1}</b></td>
+                            <td>${(vitesse)}  </td>
+                         
+                        </tr>
+                        `;
+                    let fieldset3 = document.createElement('fieldset');
+                    let legend3 = document.createElement('legend');
+
+
+                    legend3.innerHTML = '<h5>Details S1</h5>'
+                    fieldset3.style = 'border:solid;padding-bottom: 20px;'
+                    legend3.style = 'width:fit-content;padding: 0 10px;'
+                    fieldset3.appendChild(legend3);
+                    fieldset3.appendChild(tableModule3);
+                    let divButtonDet = document.createElement("div");
+                    divButtonDet.className = "d-flex justify-content-end mr-2";
+                    let buttonDet = document.createElement("button");
+                    buttonDet.className = "btn btn-info";
+                    buttonDet.innerText = "details S1"
+                    buttonDet.addEventListener("click", () => detailsSFor(listS1, "S1"))
+                    divButtonDet.append(buttonDet)
+                    fieldset3.append(divButtonDet)
+
+                    divParent.appendChild(fieldset3);
+                    let tableModule4 = document.createElement('table');
+                    tableModule4.setAttribute('class', 'table table-bordered table-hover text-center    MHCol');
+
+                    tableModule4.innerHTML = `
+                    <tr>
+                    <td colspan='3' class="bg-secondary text-light" 
+                    style="border-right:2.5px solid #dee1e6"><b>Affectée</b></td>
+                    <td colspan='3' class="bg-secondary text-light"><b>Réalisée</b></td>
+                    </tr>
+                        <tr class="bg-secondary text-light ">
+                           
+                            <td>MH Affectée Présentiel S2</td>
+                            <td>MH Affectée Sync S2</td>
+                            <td style="border-right:2.5px solid #dee2e6">MH Total Affectée S2</td>
+                            
+                            
+                            <td>MH Réalisée Présentiel S2</td>
+                            <td>MH Réalisée Sync S2</td>
+                            <td>MH Total Réalisée S2</td>
+             
+                            <td>vitesse (Heure/Semaine) </td>
+                        </tr>
+  
+                    `;
+                    let vitesse2 = (MHAfectGlobalS2 - MHRealisGlobalS2) / tempsRestant(new Date())
+                    let diffS1 = MHAfectGlobalS1 - MHRealisGlobalS1
+
+                    if (diffS1 > 0 && new Date() > new Date("2024/01/29")) {
+                        vitesse2 = (MHAfectGlobalS2 + (diffS1) - MHRealisGlobalS2) / tempsRestant(new Date())
+                    }
+                    if (new Date() < new Date("2024/01/29")) {
+                        vitesse2 = ((MHAfectGlobalS2 - MHRealisGlobalS2) / tempsRestant(new Date("2024/01/29")))
+                    }
+                    let min2 = (vitesse2 - Math.floor(vitesse2)) * 60
+                    vitesse2 = Number(vitesse2.toFixed(0))
+                    if (min2 > 40) {
+                        vitesse2++
+                    }
+                    if (min2 < 40 && min2 >= 20) {
+                        vitesse2 += 0.5
+                    }
+                    if (new Date() > new Date("2024/01/29") && new Date() < new Date("2024/06/10")) {
+
+                        tableModule4.innerHTML += `
+                            <tr>
+                            <td>${MHAfectGlobalS2P}</td>
+                            <td>${MHAfectGlobalS2SYN}</td>
+                            <td style="border-right:2.5px solid #dee2e6"><b>${MHAfectGlobalS2}</b></td>
+                            <td>${MHRealisGlobalS2P}</td>
+                            <td>${MHRealisGlobalS2SYN}</td>
+                            <td><b>${MHRealisGlobalS2}</b></td>
+                                <td>${(vitesse2)}   ${diffS1 > 0 && "+(" + diffS1 + " heure de S1)"}</td>
+                             
+                            </tr>
+                            `;
+                    }
+                    else {
+                        tableModule4.innerHTML += `
+                            <tr>
+                            <td>${MHAfectGlobalS2P}</td>
+                            <td>${MHAfectGlobalS2SYN}</td>
+                            <td style="border-right:2.5px solid #dee2e6"><b>${MHAfectGlobalS2}</b></td>
+                            <td>${MHRealisGlobalS2P}</td>
+                            <td>${MHRealisGlobalS2SYN}</td>
+                            <td><b>${MHRealisGlobalS2}</b></td>
+                                <td>${(vitesse2)}   </td>
+                             
+                            </tr>
+                            `;
+                    }
+
+                    let fieldset4 = document.createElement('fieldset');
+                    let legend4 = document.createElement('legend');
+                    legend4.innerHTML = '<h5>Details S2</h5>'
+                    fieldset4.style = 'border:solid;padding-bottom: 20px;'
+                    legend4.style = 'width:fit-content;padding: 0 10px;'
+                    fieldset4.appendChild(legend4);
+                    fieldset4.appendChild(tableModule4);
+                    let divButtonDet2 = document.createElement("div");
+                    divButtonDet2.className = "d-flex justify-content-end mr-2";
+                    let buttonDet2 = document.createElement("button");
+                    buttonDet2.className = "btn btn-info";
+                    buttonDet2.innerText = "details S2"
+                    buttonDet2.addEventListener("click", () => detailsSFor(listS2, "S2"))
+                    divButtonDet2.append(buttonDet2)
+                    fieldset4.append(divButtonDet2)
+                    divParent.appendChild(fieldset4);
+
+                    tr.onclick = () => {
+                        swal({
+                            title: formateur,
+                            content: divParent,
+                            buttons: [
+                                'Ok',
+                                'Imprimer'
+                            ],
+                        }).then(function (isConfirm) {
+                            if (isConfirm) {
+                                let imprimeD = document.createElement("div")
+                                imprimeD.style.textAlign = "center"
+                                imprimeD.innerHTML = `<h3 style="margin-bottom:20px">${formateur}</h3>`
+                                imprimeD.append(divParent)
+                                imprime(imprimeD, formateur)
+                                swal({
+                                    title: 'Imprimer!',
+                                    text: `${formateur} imprimé(e) avec succes !`,
+                                    icon: 'success'
+                                })
+                            };
+                        })
+                            ;
+
+
+                    }
+                    table.append(tr)
+                }
+
+
+
+            })
+
+            ////////////////////////////////////////////////////////////////////////////
+
+            let groups = [];
+
+            jsonData.forEach((e) => {
+                if (!groups.includes(e.Groupe)) {
+                    let nomGroup = e.Groupe;
+                    groups.push(nomGroup);
+                }
+            });
+
+            groups.sort();
+
+            let tableGroup;
+
+            let taableG = document.querySelector('#Groupe table')
+            taableG.innerHTML = `
+        <tr class="bg-secondary text-light">
+            <th>Groupe</th>
+            <th>MH Affectée Globale</th>
+            <th>MH Réalisée Globale</th>
+            <th>Avancement</th>
+        </tr>
+    `;
+
+            let listModulesRegionalGroupe;
+
+            groups.forEach(group => {
+
+
+                tableGroup = jsonData.filter(elt => elt.Groupe == group)
+
+                // regional: objFormateur[''],
+                //         valider: objFormateur['Séance EFM']
+
+                listModulesRegionalGroupe = tableGroup.filter(e => e['Régional'] == 'O')
+
+
+                // tableGroup.forEach(m => {
+                //     objModuleGroupe = {
+                //         nom : m.Module
+                //     }
+                // })
+
+                let MHAfectGlobal = 0;
+                let MHRealisGlobal = 0;
+
+                let MHAfectGlobalS1 = 0;
+                let MHRealisGlobalS1 = 0;
+                let MHAfectGlobalS2 = 0;
+                let MHRealisGlobalS2 = 0;
+
+                let MHAfectGlobalS1P = 0;
+                let MHRealisGlobalS1P = 0;
+                let MHAfectGlobalS2P = 0;
+                let MHRealisGlobalS2P = 0;
+
+                let MHAfectGlobalS1SYN = 0;
+                let MHRealisGlobalS1SYN = 0;
+                let MHAfectGlobalS2SYN = 0;
+                let MHRealisGlobalS2SYN = 0;
+                let TauxMHRealisGlobal;
+                let res;
+                let listS1 = []
+                let listS2 = [];
+
+
+                tableGroup.forEach(elt => {
+
+
+
+                    if (elt["MH Affectée Globale (P & SYN)"]) {
+
+                        MHAfectGlobal += Number(elt["MH Affectée Globale (P & SYN)"]);
+
+                    }
+                    if (elt["MH Réalisée Globale"]) {
+
+                        MHRealisGlobal += Number(elt["MH Réalisée Globale"]);
+
+                    }
+                    if (elt["MH Affectée Globale (P & SYN)"]) {
+
+                        if (elt['MH Totale S1 DRIF'] != 0 && elt['MH Totale S1 DRIF'] >= elt['MH Totale S2 DRIF']) {
+                            listS1.push(elt)
+                            if (elt["Groupe"].includes("TREMOA")) {
+
+                                MHRealisGlobalS1 += Number(elt["MH Réalisée Globale"]) || 0;
+                                MHAfectGlobalS1 += Number(elt["MH Affectée Globale (P & SYN)"]) || 0;
+
+                                MHRealisGlobalS1P += Number(elt["MH Réalisée Présentiel"]) || 0;
+                                MHAfectGlobalS1P += Number(elt["MH Affectée Présentiel"]) || 0;
+
+                                MHRealisGlobalS1SYN += Number(elt["MH Réalisée Sync"]) || 0;
+                                MHAfectGlobalS1SYN += Number(elt["MH Affectée Sync"]) || 0;
+                            } else {
+
+                                if (elt['MH Totale S2 DRIF'] != 0) {
+                                    MHAfectGlobalS2 += Number(elt['MHP S2 DRIF'])
+                                    MHAfectGlobalS2 += Number(elt['MHSYN S2 DRIF'])
+                                    MHAfectGlobalS2P += Number(elt["MHP S2 DRIF"]);
+                                    MHAfectGlobalS2SYN += Number(elt["MHSYN S2 DRIF"]) || 0;
+                                    listS2.push(elt)
+
+
+
+                                }
+                                MHAfectGlobalS1 += Number(elt['MHP S1 DRIF'])
+                                MHRealisGlobalS1 += Number(elt['MH Réalisée Présentiel']) || 0;
+                                MHAfectGlobalS1 += Number(elt['MHSYN S1 DRIF'])
+                                MHRealisGlobalS1 += Number(elt['MH Réalisée Sync']) || 0
+
+                                MHAfectGlobalS1P += Number(elt['MHP S1 DRIF'])
+                                MHRealisGlobalS1P += Number(elt['MH Réalisée Présentiel']) || 0;
+                                MHAfectGlobalS1SYN += Number(elt['MHSYN S1 DRIF'])
+                                MHRealisGlobalS1SYN += Number(elt['MH Réalisée Sync']) || 0
+                            }
+
+                        }
+                        if (elt['MH Totale S2 DRIF'] != 0 && elt['MH Totale S1 DRIF'] < elt['MH Totale S2 DRIF']) {
+                            listS2.push(elt)
+                            if (elt["Groupe"].includes("TREMOA")) {
+
+
+                                MHRealisGlobalS2 += Number(elt["MH Réalisée Globale"]) || 0;
+                                MHAfectGlobalS2 += Number(elt["MH Affectée Globale (P & SYN)"]) || 0;
+
+                                MHRealisGlobalS2P += Number(elt["MH Réalisée Présentiel"]) || 0;
+                                MHAfectGlobalS2P += Number(elt["MH Affectée Présentiel"]) || 0;
+
+                                MHRealisGlobalS2SYN += Number(elt["MH Réalisée Sync"]) || 0;
+                                MHAfectGlobalS2SYN += Number(elt["MH Affectée Sync"]) || 0;
+                            } else {
+                                if (elt['MH Totale S1 DRIF'] != 0) {
+                                    MHAfectGlobalS1 += Number(elt['MHP S1 DRIF'])
+                                    MHAfectGlobalS1 += Number(elt['MHSYN S1 DRIF'])
+                                    MHAfectGlobalS1P += Number(elt["MHP S1 DRIF"]);
+                                    MHAfectGlobalS1SYN += Number(elt["MHSYH S1 DRIF"]) || 0;
+                                    listS1.push(elt)
+
+                                }
+                                MHAfectGlobalS2 += Number(elt['MHP S2 DRIF'])
+                                MHRealisGlobalS2 += Number(elt['MH Réalisée Présentiel']) || 0;
+                                MHAfectGlobalS2 += Number(elt['MHSYN S2 DRIF'])
+                                MHRealisGlobalS2 += Number(elt['MH Réalisée Sync']) || 0
+
+                                MHAfectGlobalS2P += Number(elt['MHP S2 DRIF'])
+                                MHRealisGlobalS2P += Number(elt['MH Réalisée Présentiel']) || 0;
+                                MHAfectGlobalS2SYN += Number(elt['MHSYN S2 DRIF'])
+                                MHRealisGlobalS2SYN += Number(elt['MH Réalisée Sync']) || 0
+                            }
+                        }
+                    }
+
+
+
+
+                })
+
+                TauxMHRealisGlobal = MHRealisGlobal * 100 / MHAfectGlobal;
+
+                res = TauxMHRealisGlobal ? TauxMHRealisGlobal : 0;
+
+                let tr = document.createElement('tr');
+                tr.innerHTML = `<tr>
+                                    <td>${group}</td>
+                                    <td>${MHAfectGlobal}</td>
+                                    <td>${MHRealisGlobal}</td>
+                                    <td>${res.toFixed(2)}%</td>
+                                </tr>`;
+                tr.setAttribute('name', group)
+
+
+
+
+                let divParent = document.createElement('div')
+                divParent.setAttribute('class', 'table-responsive-md');
+
+                let fieldset1 = document.createElement('fieldset');
+                let legend1 = document.createElement('legend');
+                legend1.innerHTML = '<h5>Modules Régionaux</h5>'
+                fieldset1.style = 'border:solid;padding-bottom: 20px;'
+                legend1.style = 'width:fit-content;padding: 0 10px;'
+                fieldset1.appendChild(legend1);
+
+                let listModulesRegionalGroupeS1 = listModulesRegionalGroupe.filter(m => m['MH Totale S1 DRIF'] != 0 && m['MH Totale S1 DRIF'] >= m['MH Totale S2 DRIF']);
+                let listModulesRegionalGroupeS2 = listModulesRegionalGroupe.filter(m => m['MH Totale S2 DRIF'] != 0 && m['MH Totale S1 DRIF'] < m['MH Totale S2 DRIF']);
+
+                let tableGroupe = document.createElement('table');
+                tableGroupe.setAttribute('class', 'table table-bordered table-hover text-center table-responsive-md MHCol');
+
+                tableGroupe.innerHTML = `
+                    <tr class="bg-secondary text-light">
+                        <td>Nom</td>
+                        <td>Formateur</td>
+                        <td>MH Affectée Présentiel</td>
+                        <td>MH Affectée Sync</td>
+                        <td>MH Affectée Globale (P & SYN)</td>
+                        <td>MH Réalisée Présentiel</td>
+                        <td>MH Réalisée Sync</td>
+                        <td>MH Réalisée Globale</td>
+                        <td>Avancement</td>
+                        <td>Réalisé</td>
+                    </tr>
+                    <tr class="bg-light">
+                        <td colspan='10'><b>S1</b></td>
+                    </tr>
+                `;
+                listModulesRegionalGroupeS1.forEach(m => {
+
+                    let Avancement = ((m['MH Réalisée Globale'] || 0) * 100) / m['MH Affectée Globale (P & SYN)']
+
+                    if (m['Formateur Affecté Présentiel Actif']) {
+                        tableGroupe.innerHTML += `
+                        <tr>
+                            <td>${m['Code Module']}-${m['Module']}</td>
+                            <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                            <td>${m['MH Affectée Présentiel'] || 0}</td>
+                            <td>${m["MH Affectée Sync"] || 0}</td>
+                            <td>${m["MH Affectée Globale (P & SYN)"] || 0}</td>
+                            <td>${m["MH Réalisée Présentiel"] || 0}</td>
+                            <td>${m["MH Réalisée Sync"] || 0}</td>
+                            <td>${m["MH Réalisée Globale"] || 0}</td>
+                            <td>${Avancement.toFixed(2)}%</td>
+                            <td>${m['Séance EFM']}</td>
+                        </tr>
+                        `;
+                    }
+                })
+
+                tableGroupe.innerHTML += `
+                    <tr class="bg-light">
+                        <td colspan='10'><b>S2</b></td>
+                    </tr>
+                `;
+                listModulesRegionalGroupeS2.forEach(m => {
+
+                    let Avancement = (m['MH Réalisée Globale'] || 0) * 100 / m['MH Affectée Globale (P & SYN)']
+                    if (m['Formateur Affecté Présentiel Actif']) {
+                        tableGroupe.innerHTML += `
+                        <tr>
+                            <td>${m['Code Module']}-${m['Module']}</td>
+                            <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                            <td>${m['MH Affectée Présentiel'] || 0}</td>
+                            <td>${m["MH Affectée Sync"] || 0}</td>
+                            <td>${m["MH Affectée Globale (P & SYN)"] || 0}</td>
+                            <td>${m["MH Réalisée Présentiel"] || 0}</td>
+                            <td>${m["MH Réalisée Sync"] || 0}</td>
+                            <td>${m["MH Réalisée Globale"] || 0}</td>
+                            <td>${Avancement.toFixed(2)}%</td>
+                            <td>${m['Séance EFM']}</td>
+                        </tr>
+                        `;
+                    }
+                })
+                fieldset1.appendChild(tableGroupe);
+                divParent.appendChild(fieldset1);
+
+                let hr = document.createElement('hr')
+                divParent.appendChild(hr)
+
+                let listModulesLocauxGroupe = tableGroup.filter(e => e['Régional'] == 'N');
+                let listModulesLocauxGroupeS1 = listModulesLocauxGroupe.filter(m => m['MH Totale S1 DRIF'] != 0 && m['MH Totale S1 DRIF'] >= m['MH Totale S2 DRIF']);
+                let listModulesLocauxGroupeS2 = listModulesLocauxGroupe.filter(m => m['MH Totale S2 DRIF'] != 0 && m['MH Totale S1 DRIF'] < m['MH Totale S2 DRIF']);
+
+                let fieldset2 = document.createElement('fieldset');
+                let legend2 = document.createElement('legend');
+                legend2.innerHTML = '<h5>Modules Locaux</h5>'
+                fieldset2.style = 'border:solid;padding-bottom: 20px;'
+                legend2.style = 'width:fit-content;padding: 0 10px;'
+                fieldset2.appendChild(legend2);
+
+
+                let tableGroupe2 = document.createElement('table');
+                tableGroupe2.setAttribute('class', 'table table-bordered table-hover text-center table-responsive-md MHCol');
+
+                tableGroupe2.innerHTML = `
+                    <tr class="bg-secondary text-light">
+                        <td>Nom</td>
+                        <td>Formateur</td>
+                        <td>MH Affectée Présentiel</td>
+                        <td>MH Affectée Sync</td>
+                        <td>MH Affectée Globale (P & SYN)</td>
+                        <td>MH Réalisée Présentiel</td>
+                        <td>MH Réalisée Sync</td>
+                        <td>MH Réalisée Globale</td>
+                        <td>Avancement</td>
+                        <td>Réalisé</td>
+                    </tr>
+                    <tr class="bg-light">
+                        <td colspan='10'><b>S1</b></td>
+                    </tr>
+                `;
+                listModulesLocauxGroupeS1.forEach(m => {
+
+                    let Avancement = ((m['MH Réalisée Globale'] || 0) * 100) / m['MH Affectée Globale (P & SYN)']
+
+                    if (m['Formateur Affecté Présentiel Actif']) {
+                        tableGroupe2.innerHTML += `
+                        <tr>
+                            <td>${m['Code Module']}-${m['Module']}</td>
+                            <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                            <td>${m['MH Affectée Présentiel'] || 0}</td>
+                            <td>${m["MH Affectée Sync"] || 0}</td>
+                            <td>${m["MH Affectée Globale (P & SYN)"] || 0}</td>
+                            <td>${m["MH Réalisée Présentiel"] || 0}</td>
+                            <td>${m["MH Réalisée Sync"] || 0}</td>
+                            <td>${m["MH Réalisée Globale"] || 0}</td>
+                            <td>${Avancement.toFixed(2)}%</td>
+                            <td>${m['Séance EFM']}</td>
+                        </tr>
+                        `;
+                    }
+                })
+
+                tableGroupe2.innerHTML += `
+                    <tr class="bg-light">
+                        <td colspan='10'><b>S2</b></td>
+                    </tr>
+                `;
+                listModulesLocauxGroupeS2.forEach(m => {
+
+                    let Avancement = ((m['MH Réalisée Globale'] || 0) * 100) / m['MH Affectée Globale (P & SYN)']
+                    if (m['Formateur Affecté Présentiel Actif']) {
+                        tableGroupe2.innerHTML += `
+                        <tr>
+                            <td>${m['Code Module']}-${m['Module']}</td>
+                            <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                            <td>${m['MH Affectée Présentiel'] || 0}</td>
+                            <td>${m["MH Affectée Sync"] || 0}</td>
+                            <td>${m["MH Affectée Globale (P & SYN)"] || 0}</td>
+                            <td>${m["MH Réalisée Présentiel"] || 0}</td>
+                            <td>${m["MH Réalisée Sync"] || 0}</td>
+                            <td>${m["MH Réalisée Globale"] || 0}</td>
+                            <td>${Avancement.toFixed(2)}%</td>
+                            <td>${m['Séance EFM']}</td>
+                        </tr>
+                        `;
+                    }
+                })
+
+                fieldset2.appendChild(tableGroupe2);
+                divParent.appendChild(fieldset2);
+
+                let tableModule3 = document.createElement('table');
+                tableModule3.setAttribute('class', 'table table-bordered table-hover text-center    MHCol');
+
+                tableModule3.innerHTML = `
+                <tr>
+                    <td colspan='3' class="bg-secondary text-light" 
+                    style="border-right:2.5px solid #dee1e6"><b>Affectée</b></td>
+                    <td colspan='3' class="bg-secondary text-light"><b>Réalisée</b></td>
+                    </tr>
+
+                        
+                <tr class="bg-secondary text-light ">
+                           
+                           <td>MH Affectée Présentiel S1</td>
+                           <td>MH Affectée Sync S1</td>
+                           <td style="border-right:2.5px solid #dee1e6">MH Total Affectée S1</td>
+                           
+                           
+                           <td>MH Réalisée Présentiel S1</td>
+                           <td>MH Réalisée Sync S1</td>
+                           <td>MH Total Réalisée S1</td>
+            
+                           <td>vitesse (Heure/Semaine) </td>
+                       </tr>
+  
+                    `;
+                let vitesse = ((MHAfectGlobalS1 - MHRealisGlobalS1) / tempsRestant(new Date()))
+                let min = (vitesse - Math.floor(vitesse)) * 60
+                vitesse = Number(vitesse.toFixed(0))
+                if (min > 40) {
+                    vitesse++
+                }
+                if (min < 40 && min >= 20) {
+                    vitesse += 0.5
+                }
+                tableModule3.innerHTML += `
+                <tr>
+                            <td>${MHAfectGlobalS1P}</td>
+                            <td>${MHAfectGlobalS1SYN}</td>
+                            <td style="border-right:2.5px solid #dee1e6"><b>${MHAfectGlobalS1}</b></td>
+                            <td>${MHRealisGlobalS1P}</td>
+                            <td>${MHRealisGlobalS1SYN}</td>
+                            <td><b>${MHRealisGlobalS1}</b></td>
+                                <td>${(vitesse)}   </td>
+                             
+                            </tr>
+                        `;
+
+                let fieldset3 = document.createElement('fieldset');
+                let legend3 = document.createElement('legend');
+                legend3.innerHTML = '<h5>Details S1</h5>'
+                fieldset3.style = 'border:solid;padding-bottom: 20px;'
+                legend3.style = 'width:fit-content;padding: 0 10px;'
+                fieldset3.appendChild(legend3);
+                fieldset3.appendChild(tableModule3);
+                let divButtonDet = document.createElement("div");
+                divButtonDet.className = "d-flex justify-content-end mr-2";
+                let buttonDet = document.createElement("button");
+                buttonDet.className = "btn btn-info";
+                buttonDet.innerText = "details S1"
+                buttonDet.addEventListener("click", () => detailsSGr(listS1, "S1"))
+                divButtonDet.append(buttonDet)
+                fieldset3.append(divButtonDet)
+                divParent.appendChild(fieldset3);
+                let tableModule4 = document.createElement('table');
+                tableModule4.setAttribute('class', 'table table-bordered table-hover text-center    MHCol');
+
+                tableModule4.innerHTML = `
+                <tr>
+                    <td colspan='3' class="bg-secondary text-light" 
+                    style="border-right:2.5px solid #dee1e6"><b>Affectée</b></td>
+                    <td colspan='3' class="bg-secondary text-light"><b>Réalisée</b></td>
+                    </tr>
+                <tr class="bg-secondary text-light ">
+                           
+                           <td>MH Affectée Présentiel S2</td>
+                           <td>MH Affectée Sync S2</td>
+                           <td style="border-right:2.5px solid #dee2e6">MH Total Affectée S2</td>
+                           
+                           
+                           <td>MH Réalisée Présentiel S2</td>
+                           <td>MH Réalisée Sync S2</td>
+                           <td>MH Total Réalisée S2</td>
+            
+                           <td>vitesse (Heure/Semaine) </td>
+                       </tr>
+  
+                    `;
+                let vitesse2 = ((MHAfectGlobalS2 - MHRealisGlobalS2) / tempsRestant(new Date()))
+                let diffS1 = MHAfectGlobalS1 - MHRealisGlobalS1
+
+
+                if (diffS1 > 0 && new Date() > new Date("2024/01/29")) {
+                    vitesse2 = ((MHAfectGlobalS2 + (diffS1) - MHRealisGlobalS2) / tempsRestant(new Date()))
+                }
+                if (new Date() < new Date("2024/01/29")) {
+                    vitesse2 = ((MHAfectGlobalS2 - MHRealisGlobalS2) / tempsRestant(new Date("2024/01/29")))
+                }
+                let min2 = (vitesse2 - Math.floor(vitesse2)) * 60
+                vitesse2 = Number(vitesse2.toFixed(0))
+                if (min2 > 40) {
+                    vitesse2++
+                }
+                if (min2 < 40 && min2 >= 20) {
+                    vitesse2 += 0.5
+                }
+
+                if (new Date() > new Date("2024/01/29") && new Date() < new Date("2024/06/10")) {
+
+                    tableModule4.innerHTML += `
+                            <tr>
+                            <td>${MHAfectGlobalS2P}</td>
+                            <td>${MHAfectGlobalS2SYN}</td>
+                            <td style="border-right:2.5px solid #dee2e6"><b>${MHAfectGlobalS2}</b></td>
+                            <td>${MHRealisGlobalS2P}</td>
+                            <td>${MHRealisGlobalS2SYN}</td>
+                            <td><b>${MHRealisGlobalS2}</b></td>
+                                <td>${(vitesse2)}   ${diffS1 > 0 && "+(" + diffS1 + " heure de S1)"}</td>
+                             
+                            </tr>
+                            `;
+                }
+                else {
+                    tableModule4.innerHTML += `
+                            <tr>
+                            <td>${MHAfectGlobalS2P}</td>
+                            <td>${MHAfectGlobalS2SYN}</td>
+                            <td style="border-right:2.5px solid #dee2e6"><b>${MHAfectGlobalS2}<b></td>
+                            <td>${MHRealisGlobalS2P}</td>
+                            <td>${MHRealisGlobalS2SYN}</td>
+                            <td><b>${MHRealisGlobalS2}</b></td>
+                                <td>${(vitesse2)}   </td>
+                             
+                            </tr>
+                            `;
+                }
+
+                let fieldset4 = document.createElement('fieldset');
+                let legend4 = document.createElement('legend');
+                legend4.innerHTML = '<h5>Details S2</h5>'
+                fieldset4.style = 'border:solid;padding-bottom: 20px;'
+                legend4.style = 'width:fit-content;padding: 0 10px;'
+                fieldset4.appendChild(legend4);
+                fieldset4.appendChild(tableModule4);
+                let divButtonDet2 = document.createElement("div");
+                divButtonDet2.className = "d-flex justify-content-end mr-2";
+                let buttonDet2 = document.createElement("button");
+                buttonDet2.className = "btn btn-info";
+                buttonDet2.innerText = "details S2"
+                buttonDet2.addEventListener("click", () => detailsSGr(listS2, "S2"))
+                divButtonDet2.append(buttonDet2)
+                fieldset4.append(divButtonDet2)
+                divParent.appendChild(fieldset4);
+
+
+                tr.onclick = () => {
+                    swal({
+                        title: group,
+                        content: divParent,
+                        buttons: [
+                            'Ok',
+                            'Imprimer'
+                        ],
+                    }).then(function (isConfirm) {
+                        if (isConfirm) {
+                            let imprimeD = document.createElement("div")
+                            imprimeD.style.textAlign = "center"
+                            imprimeD.innerHTML = `<h3 style="margin-bottom:20px">${group}</h3>`
+                            imprimeD.append(divParent)
+                            imprime(imprimeD, group)
+                            swal({
+                                title: 'Imprimer!',
+                                text: `${group} imprimé avec succes!`,
+                                icon: 'success'
+                            })
+                        };
+                    });
+
+                }
+
+                taableG.appendChild(tr);
+
+            })
+        }
+
+        function descOrAsc(FG, a) {
+            let num = FG == 'Formateur' ? 4 : 3;
+            if (a.value == 'descendant') {
+                var table = document.querySelector(`#${FG} table`);
+                var rows = Array.from(table.getElementsByTagName("tr")).slice(1);
+                rows.sort(function (a, b) {
+                    var numA = parseInt(a.cells[num].textContent);
+                    var numB = parseInt(b.cells[num].textContent);
+                    return numB - numA;
+                });
+                rows.forEach(function (row) {
+                    table.tBodies[0].appendChild(row);
+                });
+            } else if (a.value == 'ascendant') {
+                var table = document.querySelector(`#${FG} table`);
+                var rows = Array.from(table.getElementsByTagName("tr")).slice(1);
+                rows.sort(function (a, b) {
+                    var numA = parseInt(a.cells[num].textContent);
+                    var numB = parseInt(b.cells[num].textContent);
+                    return numA - numB;
+                });
+                rows.forEach(function (row) {
+                    table.tBodies[0].appendChild(row);
+                });
+            } else if (a.value == 'nom') {
+
+                let num2 = FG == 'Formateur' ? 1 : 0;
+
+                let myTable = document.querySelector(`#${FG} table`);
+
+                sortTableByColumn(myTable, num2);
+
+            }
+        };
+
+
+
+
+
+        ////////////////////////////////////////////////////////////////////////////
+
+        let btnControllers = document.querySelectorAll('#btnController div');
+        let tableFG = document.querySelectorAll('#Formateur, #Groupe');
+
+        btnControllers[0].onclick = function () {
+
+            this.classList.add('btn-success');
+            this.classList.remove('btn-outline-success');
+            btnControllers[1].classList.remove('btn-success');
+            btnControllers[1].classList.add('btn-outline-success');
+
+
+
+            tableFG[0].classList.remove('d-none')
+            tableFG[1].classList.add('d-none')
+
+        }
+
+        btnControllers[1].onclick = function () {
+
+            this.classList.add('btn-success');
+            this.classList.remove('btn-outline-success');
+
+            btnControllers[0].classList.remove('btn-success');
+            btnControllers[0].classList.add('btn-outline-success');
+
+
+            tableFG[1].classList.remove('d-none')
+            tableFG[0].classList.add('d-none')
+
+        }
+
+
+        ////////////////////////////////////////////////////////////////////////////
+
+        let inputFormateur = document.querySelector('#Formateur input');
+
+
+        inputFormateur.onkeyup = inputFormateurFct;
+
+        function inputFormateurFct() {
+
+            let trs = document.querySelectorAll('#Formateur table tr:not(tr:only-of-type)');
+
+            let a = inputFormateur.value;
+
+            let regex = new RegExp(`${a}`, 'i')
+
+            trs.forEach(e => {
+
+                if (regex.test(e.getAttribute('name'))) {
+
+                    e.classList.remove('d-none')
+
+                } else {
+
+                    e.classList.add('d-none')
+
+                }
+
+            })
+
+        }
+
+
+        let inputGroupe = document.querySelector('#Groupe input');
+
+
+        inputGroupe.onkeyup = inputGroupeFct;
+
+        function inputGroupeFct() {
+
+            let trs = document.querySelectorAll('#Groupe table tr:not(tr:only-of-type)');
+
+            let a = inputGroupe.value;
+
+            let regex = new RegExp(`${a}`, 'i')
+
+            trs.forEach(e => {
+
+                if (regex.test(e.getAttribute('name'))) {
+
+                    e.classList.remove('d-none')
+
+                } else {
+
+                    e.classList.add('d-none')
+
+                }
+
+            })
+
+        }
+        let imprimeGr = document.querySelector("#downloadGr")
+        imprimeGr.addEventListener("click", function () {
+            imprime(tableFG[1].querySelector('table'))
+        }
+
+        )
+        let imprimeFor = document.querySelector("#downloadFor")
+        imprimeFor.addEventListener("click", function () {
+            imprime(tableFG[0].querySelector('table'))
+        }
+
+        )
+        function imprime(tableImp, de = "") {
+            document.querySelector('.main').classList.add('d-none');
+            document.querySelector('.divSpiner').classList.add('d-flex');
+            document.querySelector('.divSpiner').classList.remove('d-none');
+            var copyTable = tableImp.cloneNode(true)
+
+            copyTable.className = "divTableCopy"
+            var elm = document.createElement("div")
+            elm.innerHTML = `
+            <style>
+            #headBar{
+                max-width: 95%;
+                margin: 1px auto 50px;
+                display: flex;
+                align-items: center;
+                text-align: center;
+            }
+            #headBar p{
+                width: 90%;
+                text-align: center;
+                font-size: 20px ;
+                font-family: 'Courier New', Courier, monospace;
+                font-weight: bold;
+            }
+            #headBar img{
+                width: 80px;
+                height: 80px;
+            }
+            #date{
+                text-align:end;
+                margin-bottom:18px;
+              color:black;
+              display:block;
+            }
+ 
+            table{
+                margin-top:0px;
+            }
+            .divTableCopy table{
+                border:0.1px solid black;
+                border-left:0;
+                border-right:0;
+                text-align:center
+
+            }
+            .divTableCopy tr:nth-of-type(even){
+                background:#e7e7e769;
+            }
+            .divTableCopy thead tr:nth-of-type(odd){
+                background:#d5d5d5;
+            }
+            .divTableCopy input{
+                display:none;
+            }
+            .MHCol td:nth-of-type(3),
+            .MHCol td:nth-of-type(4),
+            .MHCol td:nth-of-type(5),
+            .MHCol td:nth-of-type(6),
+            .MHCol td:nth-of-type(7),
+            .MHCol td:nth-of-type(8),
+            .MHCol th:nth-of-type(3),
+            .MHCol th:nth-of-type(4),
+            .MHCol th:nth-of-type(5),
+            .MHCol th:nth-of-type(6),
+            .MHCol th:nth-of-type(7),
+            .MHCol th:nth-of-type(8)
+            {
+                display:none;
+            }
+            </style>
+            `
+            elm.innerHTML += `
+    <div id="date">${date()}</div>
+    <div id="headBar">
+    <p>Institut Spécialisé de Technologie Appliquée Berkane</p>
+    </div>
+    `
+
+
+
+            elm.append(copyTable)
+            var opt = {
+                margin: 0.94,
+                filename: 'AvancementBerkane/' + de + "/" + (new Date().toLocaleDateString()) + '.pdf',
+                image: { type: 'jpeg', quality: 1 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+            html2pdf().from(elm).set(opt).toPdf().get('pdf').then(function (pdf) {
+                var totalPages = pdf.internal.getNumberOfPages();
+                for (i = 1; i <= totalPages; i++) {
+                    pdf.setPage(i);
+                    pdf.setFontSize(10);
+                    pdf.setTextColor(100);
+                    pdf.text('PAGE : ' + i + '/' + totalPages, (pdf.internal.pageSize.getWidth() / 2.3), (pdf.internal.pageSize.getHeight() - 0.4));
+                }
+
+
+                document.querySelector('.divSpiner').classList.remove('d-flex');
+                document.querySelector('.divSpiner').classList.add('d-none');
+                document.querySelector('.main').classList.remove('d-none');
+
+
+            }).save();
+        }
+
+        // function vide(a, i) {
+        //     let inp = document.querySelector(`#${i} input`)
+        //     inp.value = a.getAttribute('name')
+        //     if (i == 'Formateur') {
+        //         inputFormateurFct();
+        //     } else {
+        //         inputGroupeFct();
+        //     }
+        // }
+        function month(a) {
+            switch (a) {
+                case 0:
+                    return "janv";
+                case 1: return "févr";
+                case 2: return "mars";
+                case 3: return "avril";
+                case 4: return "mai";
+                case 5: return "juin"
+                case 6: return "juil";
+                case 7: return "août";
+                case 8: return "sept";
+                case 9: return "oct";
+                case 10: return "nov";
+                case 11: return "dec";
+
+
+
+
+
+            }
+        }
+        function date() {
+            let data = new Date()
+            return `${data.getDate()} ${month(data.getMonth())} ${data.getFullYear()}`
+        }
+        function sortTableByColumn(table, columnIndex) {
+            var table, rows, switching, i, x, y, shouldSwitch;
+            switching = true;
+            while (switching) {
+                switching = false;
+                rows = table.rows;
+                for (i = 1; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+                    x = rows[i].getElementsByTagName("td")[columnIndex];
+                    y = rows[i + 1].getElementsByTagName("td")[columnIndex];
+                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                }
+            }
+        }
+        function module5H() {
+            let data = JSON.parse(localStorage.jsonData);
+            let dataF = data.filter(e => {
+                let pr = e["MH Affectée Présentiel"] - e["MH Réalisée Présentiel"]
+                let ads = e["MH Affectée Sync"] - e["MH Réalisée Sync"]
+                return ((pr <= 5 && pr > 0) || (ads == 5 && ads > 0)) && (e['Séance EFM'] == "Non")
+            })
+            return dataF
+        }
+
+        function afficheModule5h() {
+            let data = module5H()
+            let divParent = document.createElement('div')
+            divParent.setAttribute('class', 'table-responsive-md');
+            divParent.setAttribute('id', 'module5H');
+            let fieldset1 = document.createElement('fieldset');
+            let legend1 = document.createElement('legend');
+            legend1.innerHTML = '<h5>Modules presque achevés</h5>'
+            fieldset1.style = 'border:solid;padding-bottom: 20px;'
+            legend1.style = 'width:fit-content;padding: 0 10px;'
+            fieldset1.appendChild(legend1);
+            let tableGroupe = document.createElement('table');
+            tableGroupe.setAttribute('class', 'table table-bordered table-hover text-center table-responsive-md');
+            tableGroupe.innerHTML = `
+                    <tr class="bg-secondary text-light">
+                        <td>Nom</td>
+                        <td>Formateur</td>
+                        <td>Groupe</td>
+                        <td>Présentiel</td>
+                        <td>Sync</td>
+                    </tr>
+                  
+                `;
+            data.forEach(m => {
+                let pr = m["MH Affectée Présentiel"] - m["MH Réalisée Présentiel"]
+                let ads = m["MH Affectée Sync"] - m["MH Réalisée Sync"]
+                // let Avancement = ((m['MH Réalisée Globale'] || 0) * 100) / m['MH Affectée Globale (P & SYN)']
+
+                if (m['Formateur Affecté Présentiel Actif']) {
+                    tableGroupe.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']}">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+                        <td>${pr}</td>
+                        <td>${ads} </td>
+                    </tr>
+                    `;
+                }
+            })
+            let input = document.createElement("input")
+            input.type = 'search'
+            input.placeholder = 'Rechercher un Formateur...'
+            input.className = 'rechercher form-control mx-auto my-5 w-75'
+            input.addEventListener("input", (e) => {
+                inputModule5H(e)
+
+            })
+            fieldset1.appendChild(tableGroupe);
+            divParent.appendChild(fieldset1);
+            divParent.appendChild(input);
+            swal({
+                content: divParent,
+                buttons: [
+                    'Ok',
+                    'Imprimer'
+                ],
+            }).then(function (isConfirm) {
+                if (isConfirm) {
+                    let imprimeD = document.createElement("div")
+                    imprimeD.style.textAlign = "center"
+                    // imprimeD.innerHTML = `<h3 style="margin-bottom:20px">Modules presque achevés</h3>`
+                    imprimeD.append(divParent)
+                    imprime(imprimeD, "Modules presque achevés")
+                    swal({
+                        title: 'Imprimer!',
+                        text: `Modules presque achevés imprimé avec succes!`,
+                        icon: 'success'
+                    })
+                };
+            });
+        }
+        function formateurEFM() {
+            let data = JSON.parse(localStorage.jsonData);
+            let dataF = data.filter(e => {
+
+                return e["Régional"] == "O"
+            })
+            return dataF
+        }
+        function afficheformateurEFM() {
+            let divParent = document.createElement('div')
+
+            divParent.setAttribute('class', 'table-responsive-md');
+            divParent.setAttribute('id', 'formateurEFM');
+            let data = formateurEFM()
+            let formateurs = [];
+            let fieldset1 = document.createElement('fieldset');
+            let legend1 = document.createElement('legend');
+            fieldset1.style = 'border:solid;margin-top:10px;padding-bottom: 20px;'
+            legend1.innerHTML = '<h5>Formateurs ayant des EFMR</h5>'
+            legend1.style = 'width:fit-content;padding: 0 10px;'
+            fieldset1.appendChild(legend1);
+            //  fieldset1.appendChild(tableGroupe);
+            data.forEach((e) => {
+                if (!formateurs.includes(e['Formateur Affecté Présentiel Actif'])) {
+                    let nomForm = e['Formateur Affecté Présentiel Actif'];
+                    formateurs.push(nomForm);
+                }
+            });
+            formateurs.sort()
+            let s1Formateur = []
+            let s2Formateur = []
+            formateurs.map((form) => {
+                data.map(ele => {
+
+                    if (ele['Formateur Affecté Présentiel Actif'] === form && ele['Formateur Affecté Présentiel Actif']) {
+                        if (ele['MH Totale S1 DRIF'] != 0 && ele['MH Totale S1 DRIF'] >= ele['MH Totale S2 DRIF']) {
+                            if (!s1Formateur.includes(ele['Formateur Affecté Présentiel Actif'])) {
+                                let nomForm = ele['Formateur Affecté Présentiel Actif'];
+                                s1Formateur.push(nomForm);
+                            }
+                        }
+                        else if (ele['MH Totale S2 DRIF'] != 0 && ele['MH Totale S1 DRIF'] < ele['MH Totale S2 DRIF']) {
+                            if (!s2Formateur.includes(ele['Formateur Affecté Présentiel Actif'])) {
+                                let nomForm = ele['Formateur Affecté Présentiel Actif'];
+                                s2Formateur.push(nomForm);
+                            }
+                        }
+
+
+
+                    }
+                })
+
+
+
+            })
+            let ul = document.createElement("ul")
+            ul.style = "list-style-type:none;margin:0"
+            ul.innerHTML = '<h3 class="bg-secondary text-white w-75 mx-auto" >S1</h3>'
+
+            s1Formateur.map((e, i) => {
+                ul.innerHTML += `<li name="${e}"  style="background:#ffff;margin:7px auto; display:flex;justify-content:center ">
+                        <span style=" cursor: pointer;"  onclick='formDetails("${e}")'>${i + 1} - ${e}</span> </li>`
+
+
+            }
+            )
+
+            fieldset1.append(ul)
+            let ul2 = document.createElement("ul")
+            ul2.style = "list-style-type:none;margin:0"
+            ul2.innerHTML = '<h3 class="bg-secondary text-white w-75 mx-auto" >S2</h3>'
+
+            s2Formateur.map((e, i) => {
+                ul2.innerHTML += `<li name="${e}" style="background:#ffff;margin:7px auto; display:flex;justify-content:center ">
+                        <span style=" cursor: pointer;"   onclick='formDetails("${e}")'>${i + 1} - ${e}</span></li>`
+
+            }
+            )
+            fieldset1.append(ul2)
+            divParent.appendChild(fieldset1);
+
+            let input = document.createElement("input")
+            input.type = 'search'
+            input.placeholder = 'Rechercher un Formateur...'
+            input.className = 'rechercher form-control mx-auto my-5 w-75'
+            input.addEventListener("input", (e) => {
+                inputFormateurFctEFM(e)
+
+            })
+
+            divParent.appendChild(input)
+
+
+
+            swal({
+                content: divParent,
+                buttons: [
+                    'Ok',
+                    'Imprimer'
+                ],
+            }).then(function (isConfirm) {
+                if (isConfirm) {
+                    let imprimeD = document.createElement("div")
+                    imprimeD.style.textAlign = "center"
+                    // imprimeD.innerHTML = `<h3 style="margin-bottom:20px">Formateurs ayant des EFMR</h3>`
+                    imprimeD.append(divParent)
+                    imprime(imprimeD, "Formateurs ayant des EFMR")
+                    swal({
+                        title: 'Imprimer!',
+                        text: `Formateurs ayant des EFMR imprimé avec succes!`,
+                        icon: 'success'
+                    })
+                };
+            });
+
+        }
+        function inputFormateurFctEFM(e) {
+            const a = e.target.value;
+            let trs = document.querySelectorAll('#formateurEFM li');
+
+
+            let regex = new RegExp(`${a}`, 'i')
+
+            trs.forEach(e => {
+
+                if (regex.test(e.getAttribute('name'))) {
+
+                    e.classList.remove('d-none')
+
+                } else {
+
+                    e.classList.add('d-none')
+
+                }
+
+            })
+        }
+        function formDetails(e) {
+            let tr = document.querySelector("#Formateur table").querySelector(`[name="${e}"]`)
+            tr.click()
+        }
+        function GrDetails(e) {
+            let tr = document.querySelector("#Groupe table").querySelector(`[name="${e}"]`)
+            tr.click()
+        }
+        function inputModule5H(e) {
+            let a = e.target.value;
+            let trs = document.querySelectorAll('#module5H tr:not(tbody:first-of-type tr)');
+
+            let regex = new RegExp(`${a}`, 'i')
+
+            trs.forEach(e => {
+
+                if (regex.test(e.getAttribute('name'))) {
+
+                    e.classList.remove('d-none')
+
+                } else {
+
+                    e.classList.add('d-none')
+
+                }
+
+            })
+
+        }
+        let autreBtn = document.getElementsByClassName("autreBtn")
+        autreBtn.forEach(e => {
+            let divParent = document.createElement("div")
+            divParent.innerHTML = `
+            <span class="btn btn-info d-block  m-2" id="downloadFor" onclick='ModulesS1Nonentames()' >Modules S1 non entamés</span>
+            <span class="btn btn-info d-block  m-2" id="downloadFor"  onclick='ModulesS2Nonentames()'>Modules S2 non entamés</span>
+            <span class="btn btn-success d-block  m-2" id="downloadFor" onclick="EFMSRealisesS1()">EFMS réalisés S1</span>
+            <span class="btn btn-success d-block  m-2" id="downloadFor" onclick="EFMSRealisesS2()">EFMS réalisés S2</span>
+            <span class="btn btn-warning d-block  m-2" id="downloadFor" onclick="classG()">Conseils de classes</span>
+            `
+            e.addEventListener("click", function () {
+
+                swal({
+
+                    content: divParent
+                })
+            })
+        })
+        function ModulesS1Nonentames() {
+            let divParent = document.createElement('div')
+            divParent.setAttribute('class', 'table-responsive-md');
+            divParent.setAttribute('id', 'ModulesS1Nonentames');
+
+            let fieldset1 = document.createElement('fieldset');
+            let legend1 = document.createElement('legend');
+            legend1.innerHTML = '<h5>Modules S1 non entamés Régionaux</h5>'
+            fieldset1.style = 'border:solid;padding-bottom: 20px;'
+            legend1.style = 'width:fit-content;padding: 0 10px;'
+            fieldset1.appendChild(legend1);
+            let data = dataModulesNonentames()
+            let dataS1 = data.filter(m => {
+                return m['MH Totale S1 DRIF'] != 0 && m['MH Totale S1 DRIF'] >= m['MH Totale S2 DRIF']
+            })
+            let dataRegS1 = dataS1.filter(m => {
+                return m['Régional'] == 'O'
+            })
+            let dataLocS1 = dataS1.filter(m => {
+                return m['Régional'] == 'N'
+            })
+
+
+            let tableS1Reg = document.createElement('table');
+            tableS1Reg.setAttribute('class', 'table table-bordered table-hover text-center table-responsive-md');
+            tableS1Reg.innerHTML = `
+                    <tr class="bg-secondary text-light">
+                        <td>Nom</td>
+                        <td>Formateur</td>
+                        <td>Groupe</td>
+         
+                    </tr>
+                    
+                `;
+            dataRegS1.forEach(m => {
+
+
+                if (m['Formateur Affecté Présentiel Actif']) {
+                    tableS1Reg.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']}">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+          
+            
+                        </tr>
+                        `;
+                }
+            })
+            fieldset1.append(tableS1Reg)
+            divParent.append(fieldset1)
+            let fieldset2 = document.createElement('fieldset');
+            let legend2 = document.createElement('legend');
+            legend2.innerHTML = '<h5>Modules S1 non entamés Locaux</h5>'
+            fieldset2.style = 'border:solid;padding-bottom: 20px;'
+            legend2.style = 'width:fit-content;padding: 0 10px;'
+            fieldset2.appendChild(legend2);
+            let tableS1loc = document.createElement('table');
+            tableS1loc.setAttribute('class', 'table table-bordered table-hover text-center table-responsive-md');
+            tableS1loc.innerHTML = `
+                    <tr class="bg-secondary text-light">
+                        <td>Nom</td>
+                        <td>Formateur</td>
+                        <td>Groupe</td>
+         
+                    </tr>
+   
+                `;
+            dataLocS1.forEach(m => {
+
+
+                if (m['Formateur Affecté Présentiel Actif']) {
+                    tableS1loc.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} ">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+               
+            
+                        </tr>
+                        `;
+                }
+            })
+            fieldset2.append(tableS1loc)
+            divParent.append(fieldset2)
+            let input = document.createElement("input")
+            input.type = 'search'
+            input.placeholder = 'Rechercher ...'
+            input.className = 'rechercher form-control mx-auto my-5 w-75'
+            input.addEventListener("input", (e) => {
+                inputModuleS1Entames(e)
+
+            })
+
+
+            divParent.appendChild(input);
+            swal({
+
+                content: divParent
+            })
+
+        }
+        function ModulesS2Nonentames() {
+            let divParent = document.createElement('div')
+            divParent.setAttribute('class', 'table-responsive-md');
+            divParent.setAttribute('id', 'ModulesS2Nonentames');
+            let fieldset1 = document.createElement('fieldset');
+            let legend1 = document.createElement('legend');
+            legend1.innerHTML = '<h5>Modules S2 non entamés Régionaux</h5>'
+            fieldset1.style = 'border:solid;padding-bottom: 20px;'
+            legend1.style = 'width:fit-content;padding: 0 10px;'
+            fieldset1.appendChild(legend1);
+            let data = dataModulesNonentames()
+            let dataS2 = data.filter(m => {
+                return m['MH Totale S2 DRIF'] != 0 && m['MH Totale S1 DRIF'] < m['MH Totale S2 DRIF']
+            })
+            let dataRegS2 = dataS2.filter(m => {
+                return m['Régional'] == 'O'
+            })
+            let dataLocS2 = dataS2.filter(m => {
+                return m['Régional'] == 'N'
+            })
+            let tableS2Reg = document.createElement('table');
+            tableS2Reg.setAttribute('class', 'table table-bordered table-hover text-center table-responsive-md');
+            tableS2Reg.innerHTML = `
+                    <tr class="bg-secondary text-light">
+                        <td>Nom</td>
+                        <td>Formateur</td>
+                        <td>Groupe</td>
+         
+                    </tr>
+                    
+                `;
+            dataRegS2.forEach(m => {
+
+
+                if (m['Formateur Affecté Présentiel Actif']) {
+                    tableS2Reg.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']}">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+            
+                        </tr>
+                        `;
+                }
+            })
+            fieldset1.append(tableS2Reg)
+            divParent.append(fieldset1)
+            let fieldset2 = document.createElement('fieldset');
+            let legend2 = document.createElement('legend');
+            legend2.innerHTML = '<h5>Modules S2 non entamés Locaux</h5>'
+            fieldset2.style = 'border:solid;padding-bottom: 20px;'
+            legend2.style = 'width:fit-content;padding: 0 10px;'
+            fieldset2.appendChild(legend2);
+            let tableS2loc = document.createElement('table');
+            tableS2loc.setAttribute('class', 'table table-bordered table-hover text-center table-responsive-md');
+            tableS2loc.innerHTML = `
+                    <tr class="bg-secondary text-light">
+                        <td>Nom</td>
+                        <td>Formateur</td>
+                        <td>Groupe</td>
+         
+                    </tr>
+   
+                `;
+            dataLocS2.forEach(m => {
+
+
+                if (m['Formateur Affecté Présentiel Actif']) {
+                    tableS2loc.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']}">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+            
+                        </tr>
+                        `;
+                }
+            })
+            fieldset2.append(tableS2loc)
+            divParent.append(fieldset2)
+            let input = document.createElement("input")
+            input.type = 'search'
+            input.placeholder = 'Rechercher ...'
+            input.className = 'rechercher form-control mx-auto my-5 w-75'
+            input.addEventListener("input", (e) => {
+                inputModuleS2Entames(e)
+
+            })
+
+
+            divParent.appendChild(input);
+            swal({
+
+                content: divParent
+            })
+
+        }
+        function EFMSRealisesS1() {
+            let divParent = document.createElement('div')
+            divParent.setAttribute('class', 'table-responsive-md');
+            divParent.setAttribute('id', 'EFMSRealisesS1');
+
+
+            let fieldset1 = document.createElement('fieldset');
+            let legend1 = document.createElement('legend');
+            legend1.innerHTML = '<h5>EFMS réalisés S1 Régionaux</h5>'
+            fieldset1.style = 'border:solid;padding-bottom: 20px;'
+            legend1.style = 'width:fit-content;padding: 0 10px;'
+            fieldset1.appendChild(legend1);
+            let data = dataModulesRealises()
+            let dataS1 = data.filter(m => {
+                return m['MH Totale S1 DRIF'] != 0 && m['MH Totale S1 DRIF'] >= m['MH Totale S2 DRIF']
+            })
+            let dataRegS1 = dataS1.filter(m => {
+                return m['Régional'] == 'O'
+            })
+            let dataLocS1 = dataS1.filter(m => {
+                return m['Régional'] == 'N'
+            })
+            let tableS1Reg = document.createElement('table');
+            tableS1Reg.setAttribute('class', 'table table-bordered table-hover text-center table-responsive-md');
+            tableS1Reg.innerHTML = `
+                    <tr class="bg-secondary text-light">
+                        <td>Nom</td>
+                        <td>Formateur</td>
+                        <td>Groupe</td>
+         
+                    </tr>
+                    
+                `;
+            dataRegS1.forEach(m => {
+
+
+                if (m['Formateur Affecté Présentiel Actif']) {
+                    tableS1Reg.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']}">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+            
+                        </tr>
+                        `;
+                }
+            })
+            fieldset1.append(tableS1Reg)
+            divParent.append(fieldset1)
+            let fieldset2 = document.createElement('fieldset');
+            let legend2 = document.createElement('legend');
+            legend2.innerHTML = '<h5>EFMS réalisés S1 Locaux</h5>'
+            fieldset2.style = 'border:solid;padding-bottom: 20px;'
+            legend2.style = 'width:fit-content;padding: 0 10px;'
+            fieldset2.appendChild(legend2);
+            let tableS1loc = document.createElement('table');
+            tableS1loc.setAttribute('class', 'table table-bordered table-hover text-center table-responsive-md');
+            tableS1loc.innerHTML = `
+                    <tr class="bg-secondary text-light">
+                        <td>Nom</td>
+                        <td>Formateur</td>
+                        <td>Groupe</td>
+         
+                    </tr>
+   
+                `;
+            dataLocS1.forEach(m => {
+
+
+                if (m['Formateur Affecté Présentiel Actif']) {
+                    tableS1loc.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']}">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m['Groupe']}</td>
+            
+                        </tr>
+                        `;
+                }
+            })
+            fieldset2.append(tableS1loc)
+            divParent.append(fieldset2)
+            let input = document.createElement("input")
+            input.type = 'search'
+            input.placeholder = 'Rechercher ...'
+            input.className = 'rechercher form-control mx-auto my-5 w-75'
+            input.addEventListener("input", (e) => {
+                inputEFMSRealisesS1(e)
+
+            })
+
+
+            divParent.appendChild(input);
+
+            swal({
+
+                content: divParent
+            })
+
+        }
+        function EFMSRealisesS2() {
+            let divParent = document.createElement('div')
+            divParent.setAttribute('class', 'table-responsive-md');
+            divParent.setAttribute('id', 'EFMSRealisesS2');
+
+            let fieldset1 = document.createElement('fieldset');
+            let legend1 = document.createElement('legend');
+            legend1.innerHTML = '<h5>EFMS réalisés S2 Régionaux</h5>'
+            fieldset1.style = 'border:solid;padding-bottom: 20px;'
+            legend1.style = 'width:fit-content;padding: 0 10px;'
+            fieldset1.appendChild(legend1);
+            let data = dataModulesRealises()
+            let dataS2 = data.filter(m => {
+                return m['MH Totale S2 DRIF'] != 0 && m['MH Totale S1 DRIF'] < m['MH Totale S2 DRIF']
+            })
+            let dataRegS2 = dataS2.filter(m => {
+                return m['Régional'] == 'O'
+            })
+            let dataLocS2 = dataS2.filter(m => {
+                return m['Régional'] == 'N'
+            })
+            let tableS2Reg = document.createElement('table');
+            tableS2Reg.setAttribute('class', 'table table-bordered table-hover text-center table-responsive-md');
+            tableS2Reg.innerHTML = `
+                    <tr class="bg-secondary text-light">
+                        <td>Nom</td>
+                        <td>Formateur</td>
+                        <td>Groupe</td>
+         
+                    </tr>
+                    
+                `;
+            dataRegS2.forEach(m => {
+
+
+                if (m['Formateur Affecté Présentiel Actif']) {
+                    tableS2Reg.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']}">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+            
+                        </tr>
+                        `;
+                }
+            })
+            fieldset1.append(tableS2Reg)
+            divParent.append(fieldset1)
+            let fieldset2 = document.createElement('fieldset');
+            let legend2 = document.createElement('legend');
+            legend2.innerHTML = '<h5>EFMS réalisés S2 Locaux</h5>'
+            fieldset2.style = 'border:solid;padding-bottom: 20px;'
+            legend2.style = 'width:fit-content;padding: 0 10px;'
+            fieldset2.appendChild(legend2);
+            let tableS2loc = document.createElement('table');
+            tableS2loc.setAttribute('class', 'table table-bordered table-hover text-center table-responsive-md');
+            tableS2loc.innerHTML = `
+                    <tr class="bg-secondary text-light">
+                        <td>Nom</td>
+                        <td>Formateur</td>
+                        <td>Groupe</td>
+         
+                    </tr>
+   
+                `;
+            dataLocS2.forEach(m => {
+
+
+                if (m['Formateur Affecté Présentiel Actif']) {
+                    tableS2loc.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']}">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+            
+                        </tr>
+                        `;
+                }
+            })
+            fieldset2.append(tableS2loc)
+            divParent.append(fieldset2)
+            let input = document.createElement("input")
+            input.type = 'search'
+            input.placeholder = 'Rechercher ...'
+            input.className = 'rechercher form-control mx-auto my-5 w-75'
+            input.addEventListener("input", (e) => {
+                inputEFMSRealisesS2(e)
+
+            })
+
+
+            divParent.appendChild(input);
+
+            swal({
+
+                content: divParent
+            })
+
+        }
+        function dataModulesNonentames() {
+            let data = JSON.parse(localStorage.jsonData);
+            return data.filter(e => {
+                return !e["MH Réalisée Globale"] && e['Formateur Affecté Présentiel Actif']
+            })
+
+        }
+        function dataModulesRealises() {
+            let data = JSON.parse(localStorage.jsonData);
+            return data.filter(e => {
+                return e["Séance EFM"] == "Oui"
+            })
+
+        }
+        function inputModuleS1Entames(e) {
+            let a = e.target.value;
+            let trs = document.querySelectorAll('#ModulesS1Nonentames tr:not(tbody:first-of-type tr)');
+
+            let regex = new RegExp(`${a}`, 'i')
+
+            trs.forEach(e => {
+
+                if (regex.test(e.getAttribute('name'))) {
+
+                    e.classList.remove('d-none')
+
+                } else {
+
+                    e.classList.add('d-none')
+
+                }
+
+            })
+
+        }
+        function inputModuleS2Entames(e) {
+            let a = e.target.value;
+            let trs = document.querySelectorAll('#ModulesS2Nonentames tr:not(tbody:first-of-type tr)');
+
+            let regex = new RegExp(`${a}`, 'i')
+
+            trs.forEach(e => {
+
+                if (regex.test(e.getAttribute('name'))) {
+
+                    e.classList.remove('d-none')
+
+                } else {
+
+                    e.classList.add('d-none')
+
+                }
+
+            })
+
+        }
+        function inputEFMSRealisesS1(e) {
+            let a = e.target.value;
+            let trs = document.querySelectorAll('#EFMSRealisesS1 tr:not(tbody:first-of-type tr)');
+
+            let regex = new RegExp(`${a}`, 'i')
+
+            trs.forEach(e => {
+
+                if (regex.test(e.getAttribute('name'))) {
+
+                    e.classList.remove('d-none')
+
+                } else {
+
+                    e.classList.add('d-none')
+
+                }
+
+            })
+
+        }
+        function inputEFMSRealisesS2(e) {
+            let a = e.target.value;
+            let trs = document.querySelectorAll('#EFMSRealisesS2 tr:not(tbody:first-of-type tr)');
+
+            let regex = new RegExp(`${a}`, 'i')
+
+            trs.forEach(e => {
+
+                if (regex.test(e.getAttribute('name'))) {
+
+                    e.classList.remove('d-none')
+
+                } else {
+
+                    e.classList.add('d-none')
+
+                }
+
+            })
+
+        }
+        function tempsRestant(dat) {
+
+            var dateDebut = dat;
+            var dateFinS1 = new Date("2024/01/29")
+
+
+            var dateFinS2 = new Date("2024/06/09")
+            let diffS = 0
+
+            numbrDeSem = 0;
+            let vac = [
+                {
+                    dateDebut: new Date("2023/12/03"),
+                    dateFin: new Date("2023/12/10")
+                },
+                {
+                    dateDebut: new Date("2024/01/21"),
+                    dateFin: new Date("2024/01/28")
+                },
+                {
+                    dateDebut: new Date("2024/03/10"),
+                    dateFin: new Date("2024/03/17")
+                },
+                {
+                    dateDebut: new Date("2024/04/28"),
+                    dateFin: new Date("2024/05/05")
+                }
+
+            ]
+            if (dateDebut < new Date("2024/01/29")) {
+                diffS = (dateFinS1 - dateDebut)
+                vac.map(e => {
+                    if (e.dateDebut >= dateDebut && e.dateFin < dateFinS1) {
+                        numbrDeSem++;
+                    }
+
+                })
+
+            }
+            if (dateDebut >= new Date("2024/01/29")) {
+                diffS = (dateFinS2 - dateDebut)
+                vac.map(e => {
+                    if (e.dateDebut >= dateDebut && e.dateFin < dateFinS2) {
+
+                        numbrDeSem++;
+                    }
+                })
+            }
+            let difRest = Math.floor(Math.floor(diffS / (1000 * 60 * 60 * 24)) / 7)
+
+            diffS = Math.floor((Math.floor(diffS / (1000 * 60 * 60 * 24)) - difRest) / 6)
+
+            return diffS - numbrDeSem
+        }
+
+
+        function detailsSFor(listS, type) {
+            let divParent = document.createElement("div")
+            let tableModule3 = document.createElement('table');
+            let listSexist = []
+            tableModule3.setAttribute('class', 'table table-bordered table-hover text-center    MHCol');
+
+            tableModule3.innerHTML = `
+        <tr>
+            <td colspan='2'></td>
+            <td colspan='3' class="bg-secondary text-light" 
+            style="border-right:2.5px solid #dee1e6"><b>Affectée</b></td>
+            <td colspan='3' class="bg-secondary text-light"><b>Réalisée</b></td>
+            </tr>
+
+                
+            <tr class="bg-secondary text-light ">
+                
+                <td>Groupe</td>
+                <td>number du module</td>
+                <td>MH Affectée  Présentiel </td>
+                <td>MH Affectée  Sync </td>
+                <td style="border-right:2.5px solid #dee1e6">MH Affectée Total  </td>
+                
+                
+                <td>MH Réalisée Présentiel </td>
+                <td>MH Réalisée Sync </td>
+                <td>MH Total Réalisée </td>
+
+                <td>vitesse (Heure/Semaine) </td>
+                </tr>
+
+            `;
+            listS.map(elt => {
+
+                let annees = [];
+                let MHAfectGlobalS1 = 0;
+                let MHRealisGlobalS1 = 0;
+                let MHAfectGlobalS2 = 0;
+                let MHRealisGlobalS2 = 0;
+                let MHAfectGlobalS1P = 0;
+                let MHRealisGlobalS1P = 0;
+                let MHAfectGlobalS2P = 0;
+                let MHRealisGlobalS2P = 0;
+                let MHAfectGlobalS1SYN = 0;
+                let MHRealisGlobalS1SYN = 0;
+                let MHAfectGlobalS2SYN = 0;
+                let MHRealisGlobalS2SYN = 0;
+
+                if (!listSexist.includes(elt["Groupe"])) {
+                    listSexist.push(elt["Groupe"])
+                    let data = listS.filter(e => e["Groupe"] == elt["Groupe"])
+                    console.log(data);
+
+                    data.map(groupe => {
+                        if (groupe['MH Totale S1 DRIF'] != 0 && groupe['MH Totale S1 DRIF'] >= groupe['MH Totale S2 DRIF']) {
+
+                            if (groupe["Groupe"].includes("TREMOA")) {
+
+                                MHRealisGlobalS1 += Number(groupe["MH Réalisée Présentiel"]) || 0;
+                                MHAfectGlobalS1 += Number(groupe["MH Affectée Présentiel"]) || 0;
+
+                                MHRealisGlobalS1P += Number(groupe["MH Réalisée Présentiel"]) || 0;
+                                MHAfectGlobalS1P += Number(groupe["MH Affectée Présentiel"]) || 0;
+                            } else {
+                                if (groupe['MH Totale S2 DRIF'] != 0) {
+                                    MHAfectGlobalS2 += Number(groupe['MHP S2 DRIF'])
+                                    MHAfectGlobalS2P += Number(groupe['MHP S2 DRIF'])
+
+
+
+                                }
+                                MHAfectGlobalS1 += Number(groupe['MHP S1 DRIF'])
+                                MHRealisGlobalS1 += Number(groupe['MH Réalisée Présentiel']) || 0;
+                                MHAfectGlobalS1P += Number(groupe['MHP S1 DRIF'])
+                                MHRealisGlobalS1P += Number(groupe['MH Réalisée Présentiel']) || 0;
+                            }
+                        }
+
+
+                        if (groupe['MH Totale S2 DRIF'] != 0 && groupe['MH Totale S1 DRIF'] < groupe['MH Totale S2 DRIF']) {
+
+                            if (groupe["Groupe"].includes("TREMOA")) {
+
+                                MHRealisGlobalS2 += Number(groupe["MH Réalisée Présentiel"]) || 0;
+                                MHAfectGlobalS2 += Number(groupe["MH Affectée Présentiel"]) || 0;
+
+                                MHRealisGlobalS2P += Number(groupe["MH Réalisée Présentiel"]) || 0;
+                                MHAfectGlobalS2P += Number(groupe["MH Affectée Présentiel"]) || 0;
+                            } else {
+                                MHAfectGlobalS2 += Number(groupe['MHP S2 DRIF'])
+                                MHRealisGlobalS2 += Number(groupe['MH Réalisée Présentiel']) || 0;
+                                MHAfectGlobalS2P += Number(groupe['MHP S2 DRIF'])
+                                MHRealisGlobalS2P += Number(groupe['MH Réalisée Présentiel']) || 0;
+                                if (groupe['MH Totale S1 DRIF'] != 0) {
+                                    MHAfectGlobalS1 += Number(groupe['MHP S1 DRIF'])
+                                    MHAfectGlobalS1P += Number(groupe['MHP S1 DRIF'])
+
+
+                                }
+
+                            }
+                        }
+
+
+
+
+
+                        if (groupe['MH Totale S1 DRIF'] != 0 && groupe['MH Totale S1 DRIF'] >= groupe['MH Totale S2 DRIF']) {
+                            if (groupe["Groupe"].includes("TREMOA")) {
+
+                                MHRealisGlobalS1 += Number(groupe["MH Réalisée Sync"]) || 0;
+                                MHAfectGlobalS1 += Number(groupe["MH Affectée Sync"]) || 0;
+                                MHRealisGlobalS1SYN += Number(groupe["MH Réalisée Sync"]) || 0;
+                                MHAfectGlobalS1SYN += Number(groupe["MH Affectée Sync"]) || 0;
+                            } else {
+
+                                MHAfectGlobalS1 += Number(groupe['MHSYN S1 DRIF'])
+                                MHRealisGlobalS1 += Number(groupe['MH Réalisée Sync']) || 0
+                                MHAfectGlobalS1SYN += Number(groupe['MHSYN S1 DRIF'])
+                                MHRealisGlobalS1SYN += Number(groupe['MH Réalisée Sync']) || 0
+                                if (groupe['MH Totale S2 DRIF'] != 0) {
+                                    MHAfectGlobalS2 += Number(groupe['MHSYN S2 DRIF'])
+                                    MHAfectGlobalS2SYN += Number(groupe['MHSYN S2 DRIF'])
+
+                                }
+                            }
+
+                        }
+
+
+                        if (groupe['MH Totale S2 DRIF'] != 0 && groupe['MH Totale S1 DRIF'] < groupe['MH Totale S2 DRIF']) {
+                            if (groupe["Groupe"].includes("TREMOA")) {
+
+                                MHRealisGlobalS2 += Number(groupe["MH Réalisée Sync"]) || 0;
+                                MHAfectGlobalS2 += Number(groupe["MH Affectée Sync"]) || 0;
+                                MHRealisGlobalS2SYN += Number(groupe["MH Réalisée Sync"]) || 0;
+                                MHAfectGlobalS2SYN += Number(groupe["MH Affectée Sync"]) || 0;
+                            } else {
+                                if (groupe['MH Totale S1 DRIF'] != 0) {
+                                    MHAfectGlobalS1 += Number(groupe['MHSYN S1 DRIF'])
+                                    MHAfectGlobalS1SYN += Number(groupe['MHSYN S1 DRIF'])
+
+                                }
+                                MHAfectGlobalS2 += Number(groupe['MHSYN S2 DRIF'])
+                                MHRealisGlobalS2 += Number(groupe['MH Réalisée Sync']) || 0
+                                MHAfectGlobalS2SYN += Number(groupe['MHSYN S2 DRIF'])
+                                MHRealisGlobalS2SYN += Number(groupe['MH Réalisée Sync']) || 0
+
+                            }
+
+                        }
+
+
+
+                    })
+
+
+                    if (type == "S1") {
+
+                        let vitesse = ((MHAfectGlobalS1 - MHRealisGlobalS1) / tempsRestant(new Date()))
+                        let min = (vitesse - Math.floor(vitesse)) * 60
+                        vitesse = Number(vitesse.toFixed(0))
+                        if (min >= 40) {
+                            vitesse++
+                        }
+                        if (min < 40 && min >= 20) {
+                            vitesse += 0.5
+                        }
+                        tableModule3.innerHTML += `
+                    <tr>
+                        
+                        <td>${elt["Groupe"]}</td>
+                        <td>
+                            ${data.length}</td>
+                        <td>${MHAfectGlobalS1P} </td>
+                        <td>${MHAfectGlobalS1SYN} </td>
+                        <td style="border-right:2.5px solid #dee1e6"><b>${MHAfectGlobalS1}</b> </td>
+                        
+                        
+                        <td>${MHRealisGlobalS1P} </td>
+                        <td>${MHRealisGlobalS1SYN} </td>
+                        <td><b>${MHRealisGlobalS1}</b> </td>
+        
+                        <td>${vitesse}  </td>
+                       </tr>
+    
+                    `;
+                    }
+                    if (type == "S2") {
+
+                        let vitesse2 = (MHAfectGlobalS2 - MHRealisGlobalS2) / tempsRestant(new Date())
+
+                        if (new Date() < new Date("2024/01/29")) {
+                            vitesse2 = ((MHAfectGlobalS2 - MHRealisGlobalS2) / tempsRestant(new Date("2024/01/29")))
+                        }
+                        let min2 = (vitesse2 - Math.floor(vitesse2)) * 60
+                        vitesse2 = Number(vitesse2.toFixed(0))
+                        if (min2 > 40) {
+                            vitesse2++
+                        }
+                        if (min2 < 40 && min2 >= 20) {
+                            vitesse2 += 0.5
+                        }
+                        if (new Date() > new Date("2024/01/29") && new Date() < new Date("2024/06/10")) {
+
+                            tableModule3.innerHTML += `
+                            <tr>
+                                <td>${elt["Groupe"]}</td>
+                        <td>
+                            ${data.length}</td>
+                            <td>${MHAfectGlobalS2P}</td>
+                            <td>${MHAfectGlobalS2SYN}</td>
+                            <td style="border-right:2.5px solid #dee2e6"><b>${MHAfectGlobalS2}</b></td>
+                            <td>${MHRealisGlobalS2P}</td>
+                            <td>${MHRealisGlobalS2SYN}</td>
+                            <td><b>${MHRealisGlobalS2}</b></td>
+                                <td>${(vitesse2)} </td>
+                             
+                            </tr>
+                            `;
+                        }
+                        else {
+                            tableModule3.innerHTML += `
+                            <tr>
+                                <td>${elt["Groupe"]}</td>
+                        <td>
+                            ${data.length}</td>
+                            <td>${MHAfectGlobalS2P}</td>
+                            <td>${MHAfectGlobalS2SYN}</td>
+                            <td style="border-right:2.5px solid #dee2e6"><b>${MHAfectGlobalS2}</b></td>
+                            <td>${MHRealisGlobalS2P}</td>
+                            <td>${MHRealisGlobalS2SYN}</td>
+                            <td><b>${MHRealisGlobalS2}</b></td>
+                                <td>${(vitesse2)}   </td>
+                             
+                            </tr>
+                            `;
+                        }
+                    }
+
+                }
+            })
+            let fieldset3 = document.createElement('fieldset');
+            let legend3 = document.createElement('legend');
+            legend3.innerHTML = `<h5>Details ${type} de formateur ${listS[0]['Formateur Affecté Présentiel Actif']}</h5>`
+            fieldset3.style = 'border:solid;padding-bottom: 20px;'
+            legend3.style = 'width:fit-content;padding: 0 10px;'
+            fieldset3.appendChild(legend3);
+            fieldset3.appendChild(tableModule3);
+            divParent.appendChild(fieldset3);
+            swal({
+
+                content: divParent
+            })
+
+
+        }
+        function detailsSGr(listS, type) {
+            let divParent = document.createElement("div")
+            let tableModule3 = document.createElement('table');
+            let listSexist = []
+            tableModule3.setAttribute('class', 'table table-bordered table-hover text-center    MHCol');
+
+            tableModule3.innerHTML = `
+        <tr>
+            <td colspan='2'></td>
+            <td colspan='3' class="bg-secondary text-light" 
+            style="border-right:2.5px solid #dee1e6"><b>Affectée</b></td>
+            <td colspan='3' class="bg-secondary text-light"><b>Réalisée</b></td>
+            </tr>
+
+                
+            <tr class="bg-secondary text-light ">
+                
+                <td>formateur</td>
+                <td>number du module</td>
+                <td>MH Affectée  Présentiel </td>
+                <td>MH Affectée  Sync </td>
+                <td style="border-right:2.5px solid #dee1e6">MH Affectée Total  </td>
+                
+                
+                <td>MH Réalisée Présentiel </td>
+                <td>MH Réalisée Sync </td>
+                <td>MH Total Réalisée </td>
+
+                <td>vitesse (Heure/Semaine) </td>
+                </tr>
+
+            `;
+            listS.map(elt => {
+
+                let annees = [];
+                let MHAfectGlobalS1 = 0;
+                let MHRealisGlobalS1 = 0;
+                let MHAfectGlobalS2 = 0;
+                let MHRealisGlobalS2 = 0;
+                let MHAfectGlobalS1P = 0;
+                let MHRealisGlobalS1P = 0;
+                let MHAfectGlobalS2P = 0;
+                let MHRealisGlobalS2P = 0;
+                let MHAfectGlobalS1SYN = 0;
+                let MHRealisGlobalS1SYN = 0;
+                let MHAfectGlobalS2SYN = 0;
+                let MHRealisGlobalS2SYN = 0;
+                if (!listSexist.includes(elt["Formateur Affecté Présentiel Actif"])) {
+                    listSexist.push(elt["Formateur Affecté Présentiel Actif"])
+                    let data = listS.filter(e => e["Formateur Affecté Présentiel Actif"] == elt["Formateur Affecté Présentiel Actif"])
+
+                    data.map(groupe => {
+                        if (groupe['MH Totale S1 DRIF'] != 0 && groupe['MH Totale S1 DRIF'] >= groupe['MH Totale S2 DRIF']) {
+
+                            if (groupe["Groupe"].includes("TREMOA")) {
+
+                                MHRealisGlobalS1 += Number(groupe["MH Réalisée Globale"]) || 0;
+                                MHAfectGlobalS1 += Number(groupe["MH Affectée Globale (P & SYN)"]) || 0;
+
+                                MHRealisGlobalS1P += Number(groupe["MH Réalisée Présentiel"]) || 0;
+                                MHAfectGlobalS1P += Number(groupe["MH Affectée Présentiel"]) || 0;
+
+                                MHRealisGlobalS1SYN += Number(groupe["MH Réalisée Sync"]) || 0;
+                                MHAfectGlobalS1SYN += Number(groupe["MH Affectée Sync"]) || 0;
+                            } else {
+
+                                if (groupe['MH Totale S2 DRIF'] != 0) {
+
+                                    MHAfectGlobalS2 += Number(groupe['MHP S2 DRIF'])
+                                    MHAfectGlobalS2 += Number(groupe['MHSYN S2 DRIF'])
+                                    MHAfectGlobalS2P += Number(groupe["MHP S2 DRIF"]);
+                                    MHAfectGlobalS2SYN += Number(groupe["MHSYN S2 DRIF"]) || 0;
+
+
+
+
+                                }
+                                MHAfectGlobalS1 += Number(groupe['MHP S1 DRIF'])
+                                MHRealisGlobalS1 += Number(groupe['MH Réalisée Présentiel']) || 0;
+                                MHAfectGlobalS1 += Number(groupe['MHSYN S1 DRIF'])
+                                MHRealisGlobalS1 += Number(groupe['MH Réalisée Sync']) || 0
+
+                                MHAfectGlobalS1P += Number(groupe['MHP S1 DRIF'])
+                                MHRealisGlobalS1P += Number(groupe['MH Réalisée Présentiel']) || 0;
+                                MHAfectGlobalS1SYN += Number(groupe['MHSYN S1 DRIF'])
+                                MHRealisGlobalS1SYN += Number(groupe['MH Réalisée Sync']) || 0
+                            }
+
+                        }
+                        if (groupe['MH Totale S2 DRIF'] != 0 && groupe['MH Totale S1 DRIF'] < groupe['MH Totale S2 DRIF']) {
+
+                            if (groupe["Groupe"].includes("TREMOA")) {
+
+
+                                MHRealisGlobalS2 += Number(groupe["MH Réalisée Globale"]) || 0;
+                                MHAfectGlobalS2 += Number(groupe["MH Affectée Globale (P & SYN)"]) || 0;
+
+                                MHRealisGlobalS2P += Number(groupe["MH Réalisée Présentiel"]) || 0;
+                                MHAfectGlobalS2P += Number(groupe["MH Affectée Présentiel"]) || 0;
+
+                                MHRealisGlobalS2SYN += Number(groupe["MH Réalisée Sync"]) || 0;
+                                MHAfectGlobalS2SYN += Number(groupe["MH Affectée Sync"]) || 0;
+                            } else {
+                                if (groupe['MH Totale S1 DRIF'] != 0) {
+                                    MHAfectGlobalS1 += Number(groupe['MHP S1 DRIF'])
+                                    MHAfectGlobalS1 += Number(groupe['MHSYN S1 DRIF'])
+                                    MHAfectGlobalS1P += Number(groupe["MHP S1 DRIF"]);
+                                    MHAfectGlobalS1SYN += Number(groupe["MHSYH S1 DRIF"]) || 0;
+
+
+                                }
+                                MHAfectGlobalS2 += Number(groupe['MHP S2 DRIF'])
+                                MHRealisGlobalS2 += Number(groupe['MH Réalisée Présentiel']) || 0;
+                                MHAfectGlobalS2 += Number(groupe['MHSYN S2 DRIF'])
+                                MHRealisGlobalS2 += Number(groupe['MH Réalisée Sync']) || 0
+
+                                MHAfectGlobalS2P += Number(groupe['MHP S2 DRIF'])
+                                MHRealisGlobalS2P += Number(groupe['MH Réalisée Présentiel']) || 0;
+                                MHAfectGlobalS2SYN += Number(groupe['MHSYN S2 DRIF'])
+                                MHRealisGlobalS2SYN += Number(groupe['MH Réalisée Sync']) || 0
+                            }
+                        }
+
+
+
+                    })
+
+                    if (type == "S1") {
+
+                        let vitesse = ((MHAfectGlobalS1 - MHRealisGlobalS1) / tempsRestant(new Date()))
+                        let min = (vitesse - Math.floor(vitesse)) * 60
+                        vitesse = Number(vitesse.toFixed(0))
+                        if (min >= 40) {
+                            vitesse++
+                        }
+                        if (min < 40 && min >= 20) {
+                            vitesse += 0.5
+                        }
+                        tableModule3.innerHTML += `
+                                <tr>
+                                    
+                                    <td>${elt["Formateur Affecté Présentiel Actif"]}</td>
+                                    <td>
+                                        ${data.length}</td>
+                                    <td>${MHAfectGlobalS1P} </td>
+                                    <td>${MHAfectGlobalS1SYN} </td>
+                                    <td style="border-right:2.5px solid #dee1e6"><b>${MHAfectGlobalS1}</b> </td>
+                                    
+                                    
+                                    <td>${MHRealisGlobalS1P} </td>
+                                    <td>${MHRealisGlobalS1SYN} </td>
+                                    <td><b>${MHRealisGlobalS1}</b> </td>
+                    
+                                    <td>${vitesse}  </td>
+                                </tr>
+    
+                        `;
+                    }
+                    if (type == "S2") {
+
+                        let vitesse2 = (MHAfectGlobalS2 - MHRealisGlobalS2) / tempsRestant(new Date())
+
+                        if (new Date() < new Date("2024/01/29")) {
+                            vitesse2 = ((MHAfectGlobalS2 - MHRealisGlobalS2) / tempsRestant(new Date("2024/01/29")))
+                        }
+                        let min2 = (vitesse2 - Math.floor(vitesse2)) * 60
+                        vitesse2 = Number(vitesse2.toFixed(0))
+                        if (min2 > 40) {
+                            vitesse2++
+                        }
+                        if (min2 < 40 && min2 >= 20) {
+                            vitesse2 += 0.5
+                        }
+                        if (new Date() > new Date("2024/01/29") && new Date() < new Date("2024/06/10")) {
+
+                            tableModule3.innerHTML += `
+                            <tr>
+                                <td>${elt["Groupe"]}</td>
+                        <td>
+                            ${data.length}</td>
+                            <td>${MHAfectGlobalS2P}</td>
+                            <td>${MHAfectGlobalS2SYN}</td>
+                            <td style="border-right:2.5px solid #dee2e6"><b>${MHAfectGlobalS2}</b></td>
+                            <td>${MHRealisGlobalS2P}</td>
+                            <td>${MHRealisGlobalS2SYN}</td>
+                            <td><b>${MHRealisGlobalS2}</b></td>
+                                <td>${(vitesse2)} </td>
+                             
+                            </tr>
+                            `;
+                        }
+                        else {
+                            tableModule3.innerHTML += `
+                            <tr>
+                                <td>${elt["Formateur Affecté Présentiel Actif"]}</td>
+                        <td>
+                            ${data.length}</td>
+                            <td>${MHAfectGlobalS2P}</td>
+                            <td>${MHAfectGlobalS2SYN}</td>
+                            <td style="border-right:2.5px solid #dee2e6"><b>${MHAfectGlobalS2}</b></td>
+                            <td>${MHRealisGlobalS2P}</td>
+                            <td>${MHRealisGlobalS2SYN}</td>
+                            <td><b>${MHRealisGlobalS2}</b></td>
+                                <td>${(vitesse2)}   </td>
+                             
+                            </tr>
+                            `;
+                        }
+                    }
+
+                }
+
+            })
+            let fieldset3 = document.createElement('fieldset');
+            let legend3 = document.createElement('legend');
+            legend3.innerHTML = `<h5>Details ${type} de Groupe ${listS[0]['Groupe']}</h5>`
+            fieldset3.style = 'border:solid;padding-bottom: 20px;'
+            legend3.style = 'width:fit-content;padding: 0 10px;'
+            fieldset3.appendChild(legend3);
+            fieldset3.appendChild(tableModule3);
+            divParent.appendChild(fieldset3);
+            swal({
+
+                content: divParent
+            })
+
+
+        }
+        function classG() {
+            let divParent=document.createElement('div')
+            divParent.id="classG"
+           
+            let groups = [];
+            let jsonData = JSON.parse(localStorage.jsonData)
+            jsonData.forEach((e) => {
+                if (!groups.includes(e.Groupe)) {
+                    let nomGroup = e.Groupe;
+                    groups.push(nomGroup);
+                }
+            });
+
+            groups.sort();
+
+            groups.map(groupe => {
+                
+                let tableGroup = jsonData.filter(elt => elt.Groupe == groupe)
+                let nbrForPrans = 0
+                let nbrForVac = 0
+                let totalModule = 0
+                let nbrModuleReg = 0
+                let nbrModuleLoc = 0
+                let nbrModuleRls = 0
+                let nbrModuleRlsReg = 0
+                let nbrModuleRlsLoc = 0
+                let listFor = []
+                tableGroup.map(elt => {
+                    if (elt["Mle Affecté Présentiel Actif"]) {
+
+                        if (!listFor.includes(elt["Mle Affecté Présentiel Actif"])) {
+                            listFor.push(elt["Mle Affecté Présentiel Actif"])
+                            if (!isNaN(elt["Mle Affecté Présentiel Actif"])) {
+                                nbrForPrans += 1
+                            }
+                            else {
+
+                                nbrForVac += 1
+                            }
+                        }
+                        totalModule += 1
+                        if (elt['Régional'] == "O") {
+                            nbrModuleReg += 1
+                        }
+                        else {
+                            nbrModuleLoc += 1
+                        }
+                        if (elt["Séance EFM"] == "Oui") {
+                            nbrModuleRls += 1
+                            if (elt['Régional'] == "O") {
+                                nbrModuleRlsReg += 1
+                            }
+                            else {
+                                nbrModuleRlsLoc += 1
+                            }
+                        }
+                    }
+
+
+                })
+                let table=document.createElement("table")
+                table.innerHTML = `
+                        <tr class=" bg-secondary text-white" >
+                         
+                            <th style="border:2px solid #dee2e6"> nbr de formateurs permanents</th>
+                            <th style="border:2px solid #dee2e6"> nbr de formateurs vacataires</th>
+                            <th style="border:2px solid #dee2e6"> nbr de modules</th>
+                            <th style="border:2px solid #dee2e6">  de modules achevés</th>
+                         
+                            <th style="border:2px solid #dee2e6">  EFM régionales prévues</th>
+                            <th style="border:2px solid #dee2e6">  EFM régionales réalisées</th>
+                    <th style="border:2px solid #dee2e6">  EFM locales prévues</th>
+                    <th style="border:2px solid #dee2e6"> EFM locales réalisées</th>
+                        </tr>
+
+
+                        <tr class="m-3">
+
+                            <td class="p-3 " style="border:2px solid #dee2e6;">${nbrForPrans}</td>
+                            <td class="p-3 " style="border:2px solid #dee2e6;">${nbrForVac}</td>
+                            <td class="p-3 " style="border:2px solid #dee2e6;">${totalModule}</td>
+                            <td class="p-3 " style="border:2px solid #dee2e6;">${nbrModuleRls}</td>
+                     
+                  
+                      
+                            <td class="p-3  " style="border:2px solid #dee2e6">${nbrModuleReg}</td>
+                            <td class="p-3  " style="border:2px solid #dee2e6">${nbrModuleRlsReg}</td>
+                            <td class="p-3  " style="border:2px solid #dee2e6">${nbrModuleLoc}</td>
+                            <td class="p-3  " style="border:2px solid #dee2e6">${nbrModuleRlsLoc}</td>
+                        
+                        </tr>
+                        `;
+                        let fieldset4 = document.createElement('fieldset');
+                        
+
+                    let legend4 = document.createElement('legend');
+                    legend4.innerHTML = `<h5>${groupe}</h5>`
+                    fieldset4.style = 'border:solid;padding-bottom: 20px;margin:10px auto;'
+                    legend4.style = 'width:fit-content;padding: 0 10px;'
+                    legend4.onclick=()=>{
+                        GrDetails(groupe)
+                    }
+                    legend4.style.cursor='pointer'
+                    fieldset4.appendChild(legend4);
+                    let divFex=document.createElement("div")
+                    fieldset4.appendChild(table);
+                    fieldset4.style.background='rgb(247 247 247)'
+                    fieldset4.name=(groupe)
+                    divParent.appendChild(fieldset4)
+                }
+                
+                )
+                let input = document.createElement("input")
+            input.type = 'search'
+            input.placeholder = 'Rechercher ...'
+            input.className = 'rechercher form-control mx-auto my-5 w-75'
+            input.focus()
+            input.addEventListener("input", (e) => {
+                inputclassG(e)
+
+            })
+            divParent.appendChild(input);
+
+
+                swal({
+                    title: "Conseils de classes",
+                    content: divParent,
+                })
+
+        }
+        function inputclassG(e) {
+            let a = e.target.value;
+            let trs = document.querySelectorAll('#classG fieldset');
+            console.log(trs);
+
+            let regex = new RegExp(`${a}`, 'i')
+
+            trs.forEach(e => {
+
+                if (regex.test(e.getAttribute('name'))) {
+
+                    e.classList.remove('d-none')
+
+                } else {
+
+                    e.classList.add('d-none')
+
+                }
+
+            })
+
+        }
+    </script>
+</body>
+
+</html>
