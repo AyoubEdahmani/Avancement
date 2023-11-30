@@ -295,6 +295,15 @@
 
                     MHRealisGlobal += Number(objFormateur['MH Réalisée Présentiel']) || 0;
                     MHAfectGlobal += Number(objFormateur['MH Affectée Présentiel']) || 0;
+
+                    if (objFormateur["Groupe"].includes("TREMOA") && (objFormateur["Module"].includes("Compétences") ||
+                        objFormateur["Module"].includes("Français") || objFormateur["Module"].includes("Anglais"))) {
+
+                        MHRealisGlobal += Number(objFormateur['MH Réalisée Sync']) || 0;
+                        MHAfectGlobal += Number(objFormateur['MH Affectée Sync']) || 0;
+
+
+                    }
                     if (objFormateur['MH Totale S1 DRIF'] != 0 && objFormateur['MH Totale S1 DRIF'] >= objFormateur['MH Totale S2 DRIF']) {
                         listS1.push(objFormateur)
                         if (objFormateur["Groupe"].includes("TREMOA")) {
@@ -304,11 +313,29 @@
 
                             MHRealisGlobalS1P += Number(objFormateur["MH Réalisée Présentiel"]) || 0;
                             MHAfectGlobalS1P += Number(objFormateur["MH Affectée Présentiel"]) || 0;
+                            if (objFormateur["Module"].includes("Compétences") ||
+                                objFormateur["Module"].includes("Français") || objFormateur["Module"].includes("Anglais")) {
+
+                                MHRealisGlobalS1 += Number(objFormateur["MH Réalisée Sync"]) || 0;
+                                MHAfectGlobalS1 += Number(objFormateur["MH Affectée Sync"]) || 0;
+                                MHRealisGlobalS1SYN += Number(objFormateur["MH Réalisée Sync"]) || 0;
+                                MHAfectGlobalS1SYN += Number(objFormateur["MH Affectée Sync"]) || 0;
+
+
+                            }
                         } else {
                             if (objFormateur['MH Totale S2 DRIF'] != 0) {
                                 MHAfectGlobalS2 += Number(objFormateur['MHP S2 DRIF'])
                                 MHAfectGlobalS2P += Number(objFormateur['MHP S2 DRIF'])
                                 listS2.push(objFormateur)
+                                let dif = Number(objFormateur["MH Réalisée Présentiel"]) - Number(objFormateur['MHP S1 DRIF'])
+                                if (dif > 0) {
+                                    MHRealisGlobalS2 += Number(dif)
+                                    MHRealisGlobalS2P += Number(dif)
+                                    MHRealisGlobalS1 -= Number(dif)
+                                    MHRealisGlobalS1P -= Number(dif)
+
+                                }
 
 
                             }
@@ -327,6 +354,17 @@
 
                             MHRealisGlobalS2P += Number(objFormateur["MH Réalisée Présentiel"]) || 0;
                             MHAfectGlobalS2P += Number(objFormateur["MH Affectée Présentiel"]) || 0;
+                            if (objFormateur["Module"].includes("Compétences") ||
+                                objFormateur["Module"].includes("Français") || objFormateur["Module"].includes("Anglais")) {
+
+                                MHRealisGlobalS2 += Number(objFormateur["MH Réalisée Sync"]) || 0;
+                                MHAfectGlobalS2 += Number(objFormateur["MH Affectée Sync"]) || 0;
+                                MHRealisGlobalS2SYN += Number(objFormateur["MH Réalisée Sync"]) || 0;
+                                MHAfectGlobalS2SYN += Number(objFormateur["MH Affectée Sync"]) || 0;
+
+
+                            }
+
                         } else {
                             MHAfectGlobalS2 += Number(objFormateur['MHP S2 DRIF'])
                             MHRealisGlobalS2 += Number(objFormateur['MH Réalisée Présentiel']) || 0;
@@ -336,6 +374,14 @@
                                 MHAfectGlobalS1 += Number(objFormateur['MHP S1 DRIF'])
                                 MHAfectGlobalS1P += Number(objFormateur['MHP S1 DRIF'])
                                 listS1.push(objFormateur)
+                                let dif = Number(objFormateur["MH Réalisée Présentiel"]) - Number(objFormateur['MHP S1 DRIF'])
+                                if (dif < 0) {
+                                    MHRealisGlobalS1 += Number(objFormateur['MH Réalisée Présentiel'])
+                                    MHRealisGlobalS1P += Number(objFormateur['MH Réalisée Présentiel'])
+                                    MHRealisGlobalS2 -= Number(objFormateur['MH Réalisée Présentiel'])
+                                    MHRealisGlobalS2P -= Number(objFormateur['MH Réalisée Présentiel'])
+
+                                }
 
                             }
 
@@ -398,7 +444,12 @@
                                     // console.log(gr);
 
                                     tableFormateur.forEach(dt => {
-                                        if (dt['Groupe'] == gr && dt["Année de formation"] == annee && dt['Code Filière'] == e && dt['Code Module'] == eM) {
+
+                                        let condTr = !(dt["Groupe"].includes("TREMOA") && (dt["Module"].includes("Compétences") ||
+                                            dt["Module"].includes("Français") || dt["Module"].includes("Anglais")))
+
+                                        if (dt['Groupe'] == gr && condTr && dt["Année de formation"] == annee && dt['Code Filière'] == e && dt['Code Module'] == eM) {
+                                            // console.log(condTr);
                                             MHAfectGlobal += Number(dt['MH Affectée Sync']) || 0;
                                             MHRealisGlobal += Number(dt['MH Réalisée Sync']) || 0;
                                             if (dt['MH Totale S1 DRIF'] != 0 && dt['MH Totale S1 DRIF'] >= dt['MH Totale S2 DRIF']) {
@@ -417,6 +468,15 @@
                                                     if (dt['MH Totale S2 DRIF'] != 0) {
                                                         MHAfectGlobalS2 += Number(dt['MHSYN S2 DRIF'])
                                                         MHAfectGlobalS2SYN += Number(dt['MHSYN S2 DRIF'])
+                                                        let dif = Number(dt["MH Réalisée Sync"]) - Number(dt['MHSYN S1 DRIF'])
+
+                                                        if (dif > 0) {
+                                                            MHRealisGlobalS2 += Number(dif)
+                                                            MHRealisGlobalS2SYN += Number(dif)
+                                                            MHRealisGlobalS1 -= Number(dif)
+                                                            MHRealisGlobalS1SYN -= Number(dif)
+
+                                                        }
 
                                                     }
                                                 }
@@ -432,7 +492,14 @@
                                                     if (dt['MH Totale S1 DRIF'] != 0) {
                                                         MHAfectGlobalS1 += Number(dt['MHSYN S1 DRIF'])
                                                         MHAfectGlobalS1SYN += Number(dt['MHSYN S1 DRIF'])
+                                                        let dif = Number(dt["MH Réalisée Sync"]) - Number(dt['MHSYN S1 DRIF'])
+                                                        if (dif < 0) {
+                                                            MHRealisGlobalS1 += Number(dt['MH Réalisée Sync'])
+                                                            MHRealisGlobalS1SYN += Number(dt['MH Réalisée Sync'])
+                                                            MHRealisGlobalS2 -= Number(dt['MH Réalisée Sync'])
+                                                            MHRealisGlobalS2SYN -= Number(dt['MH Réalisée Sync'])
 
+                                                        }
                                                     }
                                                     MHAfectGlobalS2 += Number(dt['MHSYN S2 DRIF'])
                                                     MHRealisGlobalS2 += Number(dt['MH Réalisée Sync']) || 0
@@ -675,7 +742,7 @@
                     `;
                     let vitesse = ((MHAfectGlobalS1 - MHRealisGlobalS1) / tempsRestant(new Date()))
                     let min = (vitesse - Math.floor(vitesse)) * 60
-                    vitesse = Number(vitesse.toFixed(0))
+                    vitesse = Number(Math.floor(vitesse))
                     if (min >= 40) {
                         vitesse++
                     }
@@ -690,7 +757,7 @@
                             <td>${MHRealisGlobalS1P}</td>
                             <td>${MHRealisGlobalS1SYN}</td>
                             <td><b>${MHRealisGlobalS1}</b></td>
-                            <td>${(vitesse)}  </td>
+                            <td>${(vitesse >= 0 && vitesse) || 0}  </td>
                          
                         </tr>
                         `;
@@ -747,7 +814,7 @@
                         vitesse2 = ((MHAfectGlobalS2 - MHRealisGlobalS2) / tempsRestant(new Date("2024/01/29")))
                     }
                     let min2 = (vitesse2 - Math.floor(vitesse2)) * 60
-                    vitesse2 = Number(vitesse2.toFixed(0))
+                    vitesse2 = Number(Math.floor(vitesse2))
                     if (min2 > 40) {
                         vitesse2++
                     }
@@ -764,7 +831,7 @@
                             <td>${MHRealisGlobalS2P}</td>
                             <td>${MHRealisGlobalS2SYN}</td>
                             <td><b>${MHRealisGlobalS2}</b></td>
-                                <td>${(vitesse2)}   ${diffS1 > 0 && "+(" + diffS1 + " heure de S1)"}</td>
+                                <td>${(vitesse2 >= 0 && vitesse2) || 0}   ${diffS1 > 0 && "+(" + diffS1 + " heure de S1)"}</td>
                              
                             </tr>
                             `;
@@ -778,7 +845,7 @@
                             <td>${MHRealisGlobalS2P}</td>
                             <td>${MHRealisGlobalS2SYN}</td>
                             <td><b>${MHRealisGlobalS2}</b></td>
-                                <td>${(vitesse2)}   </td>
+                                <td>${(vitesse2 >= 0 && vitesse2) || 0}   </td>
                              
                             </tr>
                             `;
@@ -937,6 +1004,24 @@
                                     MHAfectGlobalS2P += Number(elt["MHP S2 DRIF"]);
                                     MHAfectGlobalS2SYN += Number(elt["MHSYN S2 DRIF"]) || 0;
                                     listS2.push(elt)
+                                    let dif = Number(elt["MH Réalisée Sync"]) - Number(elt['MHSYN S1 DRIF'])
+
+                                    if (dif > 0) {
+                                        MHRealisGlobalS2 += Number(dif)
+                                        MHRealisGlobalS2SYN += Number(dif)
+                                        MHRealisGlobalS1 -= Number(dif)
+                                        MHRealisGlobalS1SYN -= Number(dif)
+
+                                    }
+                                    let dif2 = Number(elt["MH Réalisée Présentiel"]) - Number(elt['MHP S1 DRIF'])
+
+                                    if (dif2 > 0) {
+                                        MHRealisGlobalS2 += Number(dif2)
+                                        MHRealisGlobalS2P += Number(dif2)
+                                        MHRealisGlobalS1 -= Number(dif2)
+                                        MHRealisGlobalS1P -= Number(dif2)
+
+                                    }
 
 
 
@@ -973,6 +1058,22 @@
                                     MHAfectGlobalS1P += Number(elt["MHP S1 DRIF"]);
                                     MHAfectGlobalS1SYN += Number(elt["MHSYH S1 DRIF"]) || 0;
                                     listS1.push(elt)
+                                    let dif = Number(elt["MH Réalisée Sync"]) - Number(elt['MHSYN S1 DRIF'])
+                                    if (dif < 0) {
+                                        MHRealisGlobalS1 += Number(elt['MH Réalisée Sync'])
+                                        MHRealisGlobalS1SYN += Number(elt['MH Réalisée Sync'])
+                                        MHRealisGlobalS2 -= Number(elt['MH Réalisée Sync'])
+                                        MHRealisGlobalS2SYN -= Number(elt['MH Réalisée Sync'])
+
+                                    }
+                                    let dif2 = Number(elt["MH Réalisée Présentiel"]) - Number(elt['MHP S1 DRIF'])
+                                    if (dif2 < 0) {
+                                        MHRealisGlobalS1 += Number(elt['MH Réalisée Présentiel'])
+                                        MHRealisGlobalS1P += Number(elt['MH Réalisée Présentiel'])
+                                        MHAfectGlobalS2 -= Number(elt['MH Réalisée Présentiel'])
+                                        MHAfectGlobalS2P -= Number(elt['MH Réalisée Présentiel'])
+
+                                    }
 
                                 }
                                 MHAfectGlobalS2 += Number(elt['MHP S2 DRIF'])
@@ -1147,14 +1248,14 @@
                     var numB = parseInt(b['MH Réalisée Globale']);
                     return numB - numA;
                 })
-                listModulesLocauxGroupeS1.forEach((m,i) => {
+                listModulesLocauxGroupeS1.forEach((m, i) => {
 
                     let Avancement = ((m['MH Réalisée Globale'] || 0) * 100) / m['MH Affectée Globale (P & SYN)']
 
                     if (m['Formateur Affecté Présentiel Actif']) {
                         tableGroupe2.innerHTML += `
                         <tr>
-                            <td>${i+1}</td>
+                            <td>${i + 1}</td>
                             <td>${m['Code Module']}-${m['Module']}</td>
                             <td>${m['Formateur Affecté Présentiel Actif']}</td>
                             <td>${m['MH Affectée Présentiel'] || 0}</td>
@@ -1180,13 +1281,13 @@
                     var numB = parseInt(b['MH Réalisée Globale']);
                     return numB - numA;
                 })
-                listModulesLocauxGroupeS2.forEach((m,i) => {
+                listModulesLocauxGroupeS2.forEach((m, i) => {
 
                     let Avancement = ((m['MH Réalisée Globale'] || 0) * 100) / m['MH Affectée Globale (P & SYN)']
                     if (m['Formateur Affecté Présentiel Actif']) {
                         tableGroupe2.innerHTML += `
                         <tr>                            
-                            <td>${i+1}</td>
+                            <td>${i + 1}</td>
                             <td>${m['Code Module']}-${m['Module']}</td>
                             <td>${m['Formateur Affecté Présentiel Actif']}</td>
                             <td>${m['MH Affectée Présentiel'] || 0}</td>
@@ -1233,7 +1334,7 @@
                     `;
                 let vitesse = ((MHAfectGlobalS1 - MHRealisGlobalS1) / tempsRestant(new Date()))
                 let min = (vitesse - Math.floor(vitesse)) * 60
-                vitesse = Number(vitesse.toFixed(0))
+                vitesse = Number(Math.floor(vitesse))
                 if (min > 40) {
                     vitesse++
                 }
@@ -1248,7 +1349,7 @@
                             <td>${MHRealisGlobalS1P}</td>
                             <td>${MHRealisGlobalS1SYN}</td>
                             <td><b>${MHRealisGlobalS1}</b></td>
-                                <td>${(vitesse)}   </td>
+                                <td>${(vitesse >= 0 && vitesse) || 0}   </td>
                              
                             </tr>
                         `;
@@ -1304,7 +1405,7 @@
                     vitesse2 = ((MHAfectGlobalS2 - MHRealisGlobalS2) / tempsRestant(new Date("2024/01/29")))
                 }
                 let min2 = (vitesse2 - Math.floor(vitesse2)) * 60
-                vitesse2 = Number(vitesse2.toFixed(0))
+                vitesse2 = Number(Math.floor(vitesse2))
                 if (min2 > 40) {
                     vitesse2++
                 }
@@ -1322,7 +1423,7 @@
                             <td>${MHRealisGlobalS2P}</td>
                             <td>${MHRealisGlobalS2SYN}</td>
                             <td><b>${MHRealisGlobalS2}</b></td>
-                                <td>${(vitesse2)}   ${diffS1 > 0 && "+(" + diffS1 + " heure de S1)"}</td>
+                                <td>${(vitesse2 >= 0 && vitesse2) || 0}   ${diffS1 > 0 && "+(" + diffS1 + " heure de S1)"}</td>
                              
                             </tr>
                             `;
@@ -1336,7 +1437,7 @@
                             <td>${MHRealisGlobalS2P}</td>
                             <td>${MHRealisGlobalS2SYN}</td>
                             <td><b>${MHRealisGlobalS2}</b></td>
-                                <td>${(vitesse2)}   </td>
+                                <td>${(vitesse2 >= 0 && vitesse2) || 0}   </td>
                              
                             </tr>
                             `;
@@ -1398,7 +1499,7 @@
                 rows.sort(function (a, b) {
                     var numA = parseInt(a.cells[num].textContent);
                     var numB = parseInt(b.cells[num].textContent);
-                    
+
                     return numB - numA;
                 });
                 rows.forEach(function (row) {
@@ -2517,11 +2618,20 @@
         }
 
 
+
         function detailsSFor(listS, type) {
-            listS=listS.sort(function (a, b) {
-                var numA = parseInt(a["Groupe"]);
-                var numB = parseInt(b["Groupe"]);
-                return numB - numA;
+            listS = listS.sort(function (a, b) {
+                var numA = (a["Groupe"]).toUpperCase();
+                var numB = (b["Groupe"]).toUpperCase();
+                if (numA < numB) {
+                    return -1; // a comes before b
+                }
+
+                if (numA > numB) {
+                    return 1; // a comes after b
+                }
+
+                return 0; // names are equal
             })
             let divParent = document.createElement("div")
             let tableModule3 = document.createElement('table');
@@ -2554,7 +2664,7 @@
                 </tr>
 
             `;
-  
+
             listS.map(elt => {
 
                 let annees = [];
@@ -2571,12 +2681,12 @@
                 let MHAfectGlobalS2SYN = 0;
                 let MHRealisGlobalS2SYN = 0;
 
-                
+
                 if (!listSexist.includes(elt["Groupe"])) {
                     listSexist.push(elt["Groupe"])
                     let data = listS.filter(e => e["Groupe"] == elt["Groupe"])
-                    
-           
+
+
                     data.map(groupe => {
                         if (groupe['MH Totale S1 DRIF'] != 0 && groupe['MH Totale S1 DRIF'] >= groupe['MH Totale S2 DRIF']) {
 
@@ -2591,7 +2701,15 @@
                                 if (groupe['MH Totale S2 DRIF'] != 0) {
                                     MHAfectGlobalS2 += Number(groupe['MHP S2 DRIF'])
                                     MHAfectGlobalS2P += Number(groupe['MHP S2 DRIF'])
+                                    let dif2 = Number(groupe["MH Réalisée Présentiel"]) - Number(groupe['MHP S1 DRIF'])
 
+                                    if (dif2 > 0) {
+                                        MHRealisGlobalS2 += Number(dif2)
+                                        MHRealisGlobalS2P += Number(dif2)
+                                        MHRealisGlobalS1 -= Number(dif2)
+                                        MHRealisGlobalS1P -= Number(dif2)
+
+                                    }
 
 
                                 }
@@ -2620,7 +2738,14 @@
                                 if (groupe['MH Totale S1 DRIF'] != 0) {
                                     MHAfectGlobalS1 += Number(groupe['MHP S1 DRIF'])
                                     MHAfectGlobalS1P += Number(groupe['MHP S1 DRIF'])
+                                    let dif2 = Number(groupe["MH Réalisée Présentiel"]) - Number(groupe['MHP S1 DRIF'])
+                                    if (dif2 < 0) {
+                                        MHRealisGlobalS1 += Number(groupe['MH Réalisée Présentiel'])
+                                        MHRealisGlobalS1P += Number(groupe['MH Réalisée Présentiel'])
+                                        MHAfectGlobalS2 -= Number(groupe['MH Réalisée Présentiel'])
+                                        MHAfectGlobalS2P -= Number(groupe['MH Réalisée Présentiel'])
 
+                                    }
 
                                 }
 
@@ -2647,6 +2772,14 @@
                                 if (groupe['MH Totale S2 DRIF'] != 0) {
                                     MHAfectGlobalS2 += Number(groupe['MHSYN S2 DRIF'])
                                     MHAfectGlobalS2SYN += Number(groupe['MHSYN S2 DRIF'])
+                                    let dif = Number(groupe["MH Réalisée Sync"]) - Number(groupe['MHSYN S1 DRIF'])
+                                    if (dif > 0) {
+                                        MHRealisGlobalS2 += Number(dif)
+                                        MHRealisGlobalS2SYN += Number(dif)
+                                        MHRealisGlobalS1 -= Number(dif)
+                                        MHRealisGlobalS1SYN -= Number(dif)
+
+                                    }
 
                                 }
                             }
@@ -2665,7 +2798,14 @@
                                 if (groupe['MH Totale S1 DRIF'] != 0) {
                                     MHAfectGlobalS1 += Number(groupe['MHSYN S1 DRIF'])
                                     MHAfectGlobalS1SYN += Number(groupe['MHSYN S1 DRIF'])
+                                    let dif = Number(groupe["MH Réalisée Sync"]) - Number(groupe['MHSYN S1 DRIF'])
+                                    if (dif < 0) {
+                                        MHRealisGlobalS1 += Number(groupe['MH Réalisée Sync'])
+                                        MHRealisGlobalS1SYN += Number(groupe['MH Réalisée Sync'])
+                                        MHRealisGlobalS2 -= Number(groupe['MH Réalisée Sync'])
+                                        MHRealisGlobalS2SYN -= Number(groupe['MH Réalisée Sync'])
 
+                                    }
                                 }
                                 MHAfectGlobalS2 += Number(groupe['MHSYN S2 DRIF'])
                                 MHRealisGlobalS2 += Number(groupe['MH Réalisée Sync']) || 0
@@ -2685,7 +2825,7 @@
 
                         let vitesse = ((MHAfectGlobalS1 - MHRealisGlobalS1) / tempsRestant(new Date()))
                         let min = (vitesse - Math.floor(vitesse)) * 60
-                        vitesse = Number(vitesse.toFixed(0))
+                        vitesse = Number(Math.floor(vitesse))
                         if (min >= 40) {
                             vitesse++
                         }
@@ -2707,7 +2847,7 @@
                         <td>${MHRealisGlobalS1SYN} </td>
                         <td><b>${MHRealisGlobalS1}</b> </td>
         
-                        <td>${vitesse}  </td>
+                        <td>${vitesse >= 0 && vitesse || 0}  </td>
                        </tr>
     
                     `;
@@ -2720,7 +2860,7 @@
                             vitesse2 = ((MHAfectGlobalS2 - MHRealisGlobalS2) / tempsRestant(new Date("2024/01/29")))
                         }
                         let min2 = (vitesse2 - Math.floor(vitesse2)) * 60
-                        vitesse2 = Number(vitesse2.toFixed(0))
+                        vitesse2 = Number(Math.floor(vitesse2))
                         if (min2 > 40) {
                             vitesse2++
                         }
@@ -2740,7 +2880,7 @@
                             <td>${MHRealisGlobalS2P}</td>
                             <td>${MHRealisGlobalS2SYN}</td>
                             <td><b>${MHRealisGlobalS2}</b></td>
-                                <td>${(vitesse2)} </td>
+                                <td>${(vitesse2 >= 0 && vitesse2) || 0} </td>
                              
                             </tr>
                             `;
@@ -2757,7 +2897,7 @@
                             <td>${MHRealisGlobalS2P}</td>
                             <td>${MHRealisGlobalS2SYN}</td>
                             <td><b>${MHRealisGlobalS2}</b></td>
-                                <td>${(vitesse2)}   </td>
+                                <td>${(vitesse2 >= 0 && vitesse2) || 0}   </td>
                              
                             </tr>
                             `;
@@ -2853,6 +2993,23 @@
                                     MHAfectGlobalS2 += Number(groupe['MHSYN S2 DRIF'])
                                     MHAfectGlobalS2P += Number(groupe["MHP S2 DRIF"]);
                                     MHAfectGlobalS2SYN += Number(groupe["MHSYN S2 DRIF"]) || 0;
+                                    let dif = Number(elt["MH Réalisée Sync"]) - Number(elt['MHSYN S1 DRIF'])
+                                    if (dif > 0) {
+                                        MHRealisGlobalS2 += Number(dif)
+                                        MHRealisGlobalS2SYN += Number(dif)
+                                        MHRealisGlobalS1 -= Number(dif)
+                                        MHRealisGlobalS1SYN -= Number(dif)
+
+                                    }
+                                    let dif2 = Number(elt["MH Réalisée Présentiel"]) - Number(elt['MHP S1 DRIF'])
+
+                                    if (dif2 > 0) {
+                                        MHRealisGlobalS2 += Number(dif2)
+                                        MHRealisGlobalS2P += Number(dif2)
+                                        MHRealisGlobalS1 -= Number(dif2)
+                                        MHRealisGlobalS1P -= Number(dif2)
+
+                                    }
 
 
 
@@ -2890,6 +3047,22 @@
                                     MHAfectGlobalS1P += Number(groupe["MHP S1 DRIF"]);
                                     MHAfectGlobalS1SYN += Number(groupe["MHSYH S1 DRIF"]) || 0;
 
+                                    let dif = Number(elt["MH Réalisée Sync"]) - Number(elt['MHSYN S1 DRIF'])
+                                    if (dif < 0) {
+                                        MHRealisGlobalS1 += Number(elt['MH Réalisée Sync'])
+                                        MHRealisGlobalS1SYN += Number(elt['MH Réalisée Sync'])
+                                        MHRealisGlobalS2 -= Number(elt['MH Réalisée Sync'])
+                                        MHRealisGlobalS2SYN -= Number(elt['MH Réalisée Sync'])
+
+                                    }
+                                    let dif2 = Number(elt["MH Réalisée Présentiel"]) - Number(elt['MHP S1 DRIF'])
+                                    if (dif2 < 0) {
+                                        MHRealisGlobalS1 += Number(elt['MH Réalisée Présentiel'])
+                                        MHRealisGlobalS1P += Number(elt['MH Réalisée Présentiel'])
+                                        MHAfectGlobalS2 -= Number(elt['MH Réalisée Présentiel'])
+                                        MHAfectGlobalS2P -= Number(elt['MH Réalisée Présentiel'])
+
+                                    }
 
                                 }
                                 MHAfectGlobalS2 += Number(groupe['MHP S2 DRIF'])
@@ -2912,13 +3085,17 @@
 
                         let vitesse = ((MHAfectGlobalS1 - MHRealisGlobalS1) / tempsRestant(new Date()))
                         let min = (vitesse - Math.floor(vitesse)) * 60
-                        vitesse = Number(vitesse.toFixed(0))
+                        vitesse = Number(Math.floor(vitesse))
+
                         if (min >= 40) {
                             vitesse++
+
                         }
                         if (min < 40 && min >= 20) {
+
                             vitesse += 0.5
                         }
+
                         tableModule3.innerHTML += `
                                 <tr>
                                     
@@ -2934,7 +3111,7 @@
                                     <td>${MHRealisGlobalS1SYN} </td>
                                     <td><b>${MHRealisGlobalS1}</b> </td>
                     
-                                    <td>${vitesse}  </td>
+                                    <td>${vitesse >= 0 && vitesse || 0}  </td>
                                 </tr>
     
                         `;
@@ -2947,7 +3124,7 @@
                             vitesse2 = ((MHAfectGlobalS2 - MHRealisGlobalS2) / tempsRestant(new Date("2024/01/29")))
                         }
                         let min2 = (vitesse2 - Math.floor(vitesse2)) * 60
-                        vitesse2 = Number(vitesse2.toFixed(0))
+                        vitesse2 = Number(Math.floor(vitesse2))
                         if (min2 > 40) {
                             vitesse2++
                         }
@@ -2967,7 +3144,7 @@
                             <td>${MHRealisGlobalS2P}</td>
                             <td>${MHRealisGlobalS2SYN}</td>
                             <td><b>${MHRealisGlobalS2}</b></td>
-                                <td>${(vitesse2)} </td>
+                                <td>${(vitesse2 >= 0 && vitesse2) || 0} </td>
                              
                             </tr>
                             `;
@@ -2984,7 +3161,7 @@
                             <td>${MHRealisGlobalS2P}</td>
                             <td>${MHRealisGlobalS2SYN}</td>
                             <td><b>${MHRealisGlobalS2}</b></td>
-                                <td>${(vitesse2)}   </td>
+                                <td>${(vitesse2 >= 0 && vitesse2) || 0}   </td>
                              
                             </tr>
                             `;
@@ -3018,14 +3195,14 @@
             jsonData.forEach((e) => {
                 let groupe = ""
                 let groupeSpr = e.Groupe.split("")
-                for (let e of groupeSpr) {
-                    if (isNaN(e)) {
+                for (let t of groupeSpr) {
+                    if (isNaN(t)) {
 
-                        groupe += e
+                        groupe += t
 
                     }
                     else {
-                        groupe += e
+                        groupe += t
                         break;
                     }
 
@@ -3070,20 +3247,23 @@
                             nbrForVac += 1
                         }
                     }
-                    totalModule += 1
-                    if (elt['Régional'] == "O") {
-                        nbrModuleReg += 1
-                    }
-                    else {
-                        nbrModuleLoc += 1
-                    }
-                    if (elt["Séance EFM"] == "Oui") {
-                        nbrModuleRls += 1
+                    if (elt["MH Affectée Globale (P & SYN)"]) {
+
+                        totalModule += 1
                         if (elt['Régional'] == "O") {
-                            nbrModuleRlsReg += 1
+                            nbrModuleReg += 1
                         }
                         else {
-                            nbrModuleRlsLoc += 1
+                            nbrModuleLoc += 1
+                        }
+                        if (elt["Séance EFM"] == "Oui") {
+                            nbrModuleRls += 1
+                            if (elt['Régional'] == "O") {
+                                nbrModuleRlsReg += 1
+                            }
+                            else {
+                                nbrModuleRlsLoc += 1
+                            }
                         }
                     }
 
@@ -3097,7 +3277,7 @@
                             <td style="border:2px solid #dee2e6"> nbr de formateurs permanents</td>
                             <td style="border:2px solid #dee2e6"> nbr de formateurs vacataires</td>
                             <td style="border:2px solid #dee2e6"> nbr de modules</td>
-                            <td style="border:2px solid #dee2e6">  de modules achevés</td>
+                            <td style="border:2px solid #dee2e6"> nbr de modules achevés</td>
                          
                             <td style="border:2px solid #dee2e6">  EFM régionales prévues</td>
                             <td style="border:2px solid #dee2e6">  EFM régionales réalisées</td>
@@ -3129,7 +3309,6 @@
                 legend4.innerHTML = `<h5>${listGr.join("-")}</h5>`
                 fieldset4.style = 'border:solid;padding-bottom: 20px;margin:10px auto;'
                 legend4.style = 'width:fit-content;padding: 0 10px;'
-             
                 fieldset4.appendChild(legend4);
                 let divFex = document.createElement("div")
                 fieldset4.appendChild(table);
