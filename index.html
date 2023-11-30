@@ -38,7 +38,7 @@
         }
 
         .swal-modal {
-            width: 80% !important;
+            width: 85% !important;
         }
 
 
@@ -486,6 +486,7 @@
                     tableModule.innerHTML = `
                         
                         <tr class="bg-secondary text-light">
+                            <td>N°</td>
                             <td>Nom</td>
                             <td>Groupe</td>
                             <td>MH Affectée Présentiel</td>
@@ -498,21 +499,28 @@
                             <td>Réalisé</td>
                         </tr>
                         <tr class="bg-light">
-                            <td colspan='10'><b>S1</b></td>
+                            <td colspan='11'><b>S1</b></td>
                         </tr>
                     `;
-                    listModulesRegionalS1.forEach(m => {
+                    listModulesRegionalS1.sort(function (a, b) {
+                        var numA = parseInt(a.MHRG);
+                        var numB = parseInt(b.MHRG);
+                        return numB - numA;
+                    });
+
+                    listModulesRegionalS1.forEach((m, i) => {
 
                         tableModule.innerHTML += `
                         <tr>
+                            <td>${i + 1}</td>
                             <td>${m.nom}</td>
                             <td>${m.group}</td>
                             <td>${m.MHAP}</td>
                             <td>${m.MHAS}</td>
-                            <td>${m.MHAG}</td>
+                            <td><b>${m.MHAG}</b></td>
                             <td>${m.MHRP}</td>
                             <td>${m.MHRS}</td>
-                            <td>${m.MHRG}</td>
+                            <td><b>${m.MHRG}</b></td>
                             <td>${m.p}%</td>
                             <td>${m.valider}</td>
                         </tr>
@@ -520,22 +528,28 @@
                     })
                     tableModule.innerHTML += `
                         <tr class="bg-light">
-                            <td colspan='10'><b>S2</b></td>
+                            <td colspan='11'><b>S2</b></td>
                         </tr>
                        
                     `;
-                    listModulesRegionalS2.forEach(m => {
+                    listModulesRegionalS2.sort(function (a, b) {
+                        var numA = parseInt(a.MHRG);
+                        var numB = parseInt(b.MHRG);
+                        return numB - numA;
+                    });
+                    listModulesRegionalS2.forEach((m, i) => {
 
                         tableModule.innerHTML += `
                         <tr>
+                            <td>${i + 1}</td>
                             <td>${m.nom}</td>
                             <td>${m.group}</td>
                             <td>${m.MHAP}</td>
                             <td>${m.MHAS}</td>
-                            <td>${m.MHAG}</td>
+                            <td><b>${m.MHAG}</b></td>
                             <td>${m.MHRP}</td>
                             <td>${m.MHRS}</td>
-                            <td>${m.MHRG}</td>
+                            <td><b>${m.MHRG}</b></td>
                             <td>${m.p}%</td>
                             <td>${m.valider}</td>
                         </tr>
@@ -563,6 +577,7 @@
                     tableModule2.innerHTML = `
                         
                         <tr class="bg-secondary text-light">
+                            <td>N°</td>
                             <td>Nom</td>
                             <td>Groupe</td>
                             <td>MH Affectée Présentiel</td>
@@ -575,21 +590,27 @@
                             <td>Réalisé</td>
                         </tr>
                         <tr class="bg-light">
-                            <td colspan='10'><b>S1</b></td>
+                            <td colspan='11'><b>S1</b></td>
                         </tr>
                     `;
-                    listModulesLocauxValiderS1.forEach(m => {
+                    listModulesLocauxValiderS1.sort(function (a, b) {
+                        var numA = parseInt(a.MHRG);
+                        var numB = parseInt(b.MHRG);
+                        return numB - numA;
+                    });
+                    listModulesLocauxValiderS1.forEach((m, i) => {
 
                         tableModule2.innerHTML += `
                         <tr>
+                            <td>${i + 1}</td>
                             <td>${m.nom}</td>
                             <td>${m.group}</td>
                             <td>${m.MHAP}</td>
                             <td>${m.MHAS}</td>
-                            <td>${m.MHAG}</td>
+                            <td><b>${m.MHAG}</b></td>
                             <td>${m.MHRP}</td>
                             <td>${m.MHRS}</td>
-                            <td>${m.MHRG}</td>
+                            <td><b>${m.MHRG}<b></td>
                             <td>${m.p}%</td>
                             <td>${m.valider}</td>
                         </tr>
@@ -597,22 +618,28 @@
                     })
                     tableModule2.innerHTML += `
                         <tr class="bg-light">
-                            <td colspan='10'><b>S2</b></td>
+                            <td colspan='11'><b>S2</b></td>
                         </tr>
                        
                     `;
-                    listModulesLocauxValiderS2.forEach(m => {
+                    listModulesLocauxValiderS2.sort(function (a, b) {
+                        var numA = parseInt(a.MHRG);
+                        var numB = parseInt(b.MHRG);
+                        return numB - numA;
+                    });
+                    listModulesLocauxValiderS2.forEach((m, i) => {
 
                         tableModule2.innerHTML += `
                         <tr>
+                            <td>${i + 1}</td>
                             <td>${m.nom}</td>
                             <td>${m.group}</td>
                             <td>${m.MHAP}</td>
                             <td>${m.MHAS}</td>
-                            <td>${m.MHAG}</td>
+                            <td><b>${m.MHAG}</b></td>
                             <td>${m.MHRP}</td>
                             <td>${m.MHRS}</td>
-                            <td>${m.MHRG}</td>
+                            <td><b>${m.MHRG}</b></td>
                             <td>${m.p}%</td>
                             <td>${m.valider}</td>
                         </tr>
@@ -1000,6 +1027,8 @@
 
                 tableGroupe.innerHTML = `
                     <tr class="bg-secondary text-light">
+
+                        <td>N°</td>
                         <td>Nom</td>
                         <td>Formateur</td>
                         <td>MH Affectée Présentiel</td>
@@ -1012,24 +1041,30 @@
                         <td>Réalisé</td>
                     </tr>
                     <tr class="bg-light">
-                        <td colspan='10'><b>S1</b></td>
+                        <td colspan='11'><b>S1</b></td>
                     </tr>
                 `;
-                listModulesRegionalGroupeS1.forEach(m => {
+                listModulesRegionalGroupeS1.sort(function (a, b) {
+                    var numA = parseInt(a['MH Réalisée Globale']);
+                    var numB = parseInt(b['MH Réalisée Globale']);
+                    return numB - numA;
+                })
+                listModulesRegionalGroupeS1.forEach((m, i) => {
 
                     let Avancement = ((m['MH Réalisée Globale'] || 0) * 100) / m['MH Affectée Globale (P & SYN)']
 
                     if (m['Formateur Affecté Présentiel Actif']) {
                         tableGroupe.innerHTML += `
                         <tr>
+                            <td>${i + 1}</td>
                             <td>${m['Code Module']}-${m['Module']}</td>
                             <td>${m['Formateur Affecté Présentiel Actif']}</td>
                             <td>${m['MH Affectée Présentiel'] || 0}</td>
                             <td>${m["MH Affectée Sync"] || 0}</td>
-                            <td>${m["MH Affectée Globale (P & SYN)"] || 0}</td>
+                            <td><b>${m["MH Affectée Globale (P & SYN)"] || 0}</b></td>
                             <td>${m["MH Réalisée Présentiel"] || 0}</td>
                             <td>${m["MH Réalisée Sync"] || 0}</td>
-                            <td>${m["MH Réalisée Globale"] || 0}</td>
+                            <td><b>${m["MH Réalisée Globale"] || 0}</b></td>
                             <td>${Avancement.toFixed(2)}%</td>
                             <td>${m['Séance EFM']}</td>
                         </tr>
@@ -1039,23 +1074,29 @@
 
                 tableGroupe.innerHTML += `
                     <tr class="bg-light">
-                        <td colspan='10'><b>S2</b></td>
+                        <td colspan='11'><b>S2</b></td>
                     </tr>
                 `;
-                listModulesRegionalGroupeS2.forEach(m => {
+                listModulesRegionalGroupeS2.sort(function (a, b) {
+                    var numA = parseInt(a['MH Réalisée Globale']);
+                    var numB = parseInt(b['MH Réalisée Globale']);
+                    return numB - numA;
+                })
+                listModulesRegionalGroupeS2.forEach((m, i) => {
 
                     let Avancement = (m['MH Réalisée Globale'] || 0) * 100 / m['MH Affectée Globale (P & SYN)']
                     if (m['Formateur Affecté Présentiel Actif']) {
                         tableGroupe.innerHTML += `
-                        <tr>
+                        <tr>                            
+                            <td>${i + 1}</td>
                             <td>${m['Code Module']}-${m['Module']}</td>
                             <td>${m['Formateur Affecté Présentiel Actif']}</td>
                             <td>${m['MH Affectée Présentiel'] || 0}</td>
                             <td>${m["MH Affectée Sync"] || 0}</td>
-                            <td>${m["MH Affectée Globale (P & SYN)"] || 0}</td>
+                            <td><b>${m["MH Affectée Globale (P & SYN)"] || 0}</b></td>
                             <td>${m["MH Réalisée Présentiel"] || 0}</td>
                             <td>${m["MH Réalisée Sync"] || 0}</td>
-                            <td>${m["MH Réalisée Globale"] || 0}</td>
+                            <td><b>${m["MH Réalisée Globale"] || 0}</b></td>
                             <td>${Avancement.toFixed(2)}%</td>
                             <td>${m['Séance EFM']}</td>
                         </tr>
@@ -1085,6 +1126,7 @@
 
                 tableGroupe2.innerHTML = `
                     <tr class="bg-secondary text-light">
+                        <td>N°</td>
                         <td>Nom</td>
                         <td>Formateur</td>
                         <td>MH Affectée Présentiel</td>
@@ -1097,24 +1139,30 @@
                         <td>Réalisé</td>
                     </tr>
                     <tr class="bg-light">
-                        <td colspan='10'><b>S1</b></td>
+                        <td colspan='11'><b>S1</b></td>
                     </tr>
                 `;
-                listModulesLocauxGroupeS1.forEach(m => {
+                listModulesLocauxGroupeS1.sort(function (a, b) {
+                    var numA = parseInt(a['MH Réalisée Globale']);
+                    var numB = parseInt(b['MH Réalisée Globale']);
+                    return numB - numA;
+                })
+                listModulesLocauxGroupeS1.forEach((m,i) => {
 
                     let Avancement = ((m['MH Réalisée Globale'] || 0) * 100) / m['MH Affectée Globale (P & SYN)']
 
                     if (m['Formateur Affecté Présentiel Actif']) {
                         tableGroupe2.innerHTML += `
                         <tr>
+                            <td>${i+1}</td>
                             <td>${m['Code Module']}-${m['Module']}</td>
                             <td>${m['Formateur Affecté Présentiel Actif']}</td>
                             <td>${m['MH Affectée Présentiel'] || 0}</td>
                             <td>${m["MH Affectée Sync"] || 0}</td>
-                            <td>${m["MH Affectée Globale (P & SYN)"] || 0}</td>
+                            <td><b>${m["MH Affectée Globale (P & SYN)"] || 0}</b></td>
                             <td>${m["MH Réalisée Présentiel"] || 0}</td>
                             <td>${m["MH Réalisée Sync"] || 0}</td>
-                            <td>${m["MH Réalisée Globale"] || 0}</td>
+                            <td><b>${m["MH Réalisée Globale"] || 0}</b></td>
                             <td>${Avancement.toFixed(2)}%</td>
                             <td>${m['Séance EFM']}</td>
                         </tr>
@@ -1124,23 +1172,29 @@
 
                 tableGroupe2.innerHTML += `
                     <tr class="bg-light">
-                        <td colspan='10'><b>S2</b></td>
+                        <td colspan='11'><b>S2</b></td>
                     </tr>
                 `;
-                listModulesLocauxGroupeS2.forEach(m => {
+                listModulesLocauxGroupeS2.sort(function (a, b) {
+                    var numA = parseInt(a['MH Réalisée Globale']);
+                    var numB = parseInt(b['MH Réalisée Globale']);
+                    return numB - numA;
+                })
+                listModulesLocauxGroupeS2.forEach((m,i) => {
 
                     let Avancement = ((m['MH Réalisée Globale'] || 0) * 100) / m['MH Affectée Globale (P & SYN)']
                     if (m['Formateur Affecté Présentiel Actif']) {
                         tableGroupe2.innerHTML += `
-                        <tr>
+                        <tr>                            
+                            <td>${i+1}</td>
                             <td>${m['Code Module']}-${m['Module']}</td>
                             <td>${m['Formateur Affecté Présentiel Actif']}</td>
                             <td>${m['MH Affectée Présentiel'] || 0}</td>
                             <td>${m["MH Affectée Sync"] || 0}</td>
-                            <td>${m["MH Affectée Globale (P & SYN)"] || 0}</td>
+                            <td><b>${m["MH Affectée Globale (P & SYN)"] || 0}</b></td>
                             <td>${m["MH Réalisée Présentiel"] || 0}</td>
                             <td>${m["MH Réalisée Sync"] || 0}</td>
-                            <td>${m["MH Réalisée Globale"] || 0}</td>
+                            <td><b>${m["MH Réalisée Globale"] || 0}</b></td>
                             <td>${Avancement.toFixed(2)}%</td>
                             <td>${m['Séance EFM']}</td>
                         </tr>
@@ -1344,6 +1398,7 @@
                 rows.sort(function (a, b) {
                     var numA = parseInt(a.cells[num].textContent);
                     var numB = parseInt(b.cells[num].textContent);
+                    
                     return numB - numA;
                 });
                 rows.forEach(function (row) {
@@ -2463,6 +2518,11 @@
 
 
         function detailsSFor(listS, type) {
+            listS=listS.sort(function (a, b) {
+                var numA = parseInt(a["Groupe"]);
+                var numB = parseInt(b["Groupe"]);
+                return numB - numA;
+            })
             let divParent = document.createElement("div")
             let tableModule3 = document.createElement('table');
             let listSexist = []
@@ -2494,6 +2554,7 @@
                 </tr>
 
             `;
+  
             listS.map(elt => {
 
                 let annees = [];
@@ -2510,11 +2571,12 @@
                 let MHAfectGlobalS2SYN = 0;
                 let MHRealisGlobalS2SYN = 0;
 
+                
                 if (!listSexist.includes(elt["Groupe"])) {
                     listSexist.push(elt["Groupe"])
                     let data = listS.filter(e => e["Groupe"] == elt["Groupe"])
-                    console.log(data);
-
+                    
+           
                     data.map(groupe => {
                         if (groupe['MH Totale S1 DRIF'] != 0 && groupe['MH Totale S1 DRIF'] >= groupe['MH Totale S2 DRIF']) {
 
@@ -2948,23 +3010,39 @@
 
         }
         function classG() {
-            let divParent=document.createElement('div')
-            divParent.id="classG"
-           
+            let divParent = document.createElement('div')
+            divParent.id = "classG"
+
             let groups = [];
             let jsonData = JSON.parse(localStorage.jsonData)
             jsonData.forEach((e) => {
-                if (!groups.includes(e.Groupe)) {
-                    let nomGroup = e.Groupe;
-                    groups.push(nomGroup);
+                let groupe = ""
+                let groupeSpr = e.Groupe.split("")
+                for (let e of groupeSpr) {
+                    if (isNaN(e)) {
+
+                        groupe += e
+
+                    }
+                    else {
+                        groupe += e
+                        break;
+                    }
+
+                }
+
+
+                if (!groups.includes(groupe)) {
+                    groups.push(groupe);
                 }
             });
 
             groups.sort();
 
+
             groups.map(groupe => {
-                
-                let tableGroup = jsonData.filter(elt => elt.Groupe == groupe)
+
+                let tableGroup = jsonData.filter(elt => elt.Groupe.startsWith(groupe))
                 let nbrForPrans = 0
                 let nbrForVac = 0
                 let totalModule = 0
@@ -2974,52 +3052,57 @@
                 let nbrModuleRlsReg = 0
                 let nbrModuleRlsLoc = 0
                 let listFor = []
+                let listGr = []
                 tableGroup.map(elt => {
-                    if (elt["Mle Affecté Présentiel Actif"]) {
+                    if (!listGr.includes(elt["Groupe"])) {
+                        listGr.push(elt["Groupe"]);
+                    }
+                    listGr.sort()
 
-                        if (!listFor.includes(elt["Mle Affecté Présentiel Actif"])) {
-                            listFor.push(elt["Mle Affecté Présentiel Actif"])
-                            if (!isNaN(elt["Mle Affecté Présentiel Actif"])) {
-                                nbrForPrans += 1
-                            }
-                            else {
 
-                                nbrForVac += 1
-                            }
-                        }
-                        totalModule += 1
-                        if (elt['Régional'] == "O") {
-                            nbrModuleReg += 1
+                    if (!listFor.includes(elt["Mle Affecté Présentiel Actif"]) && elt["Mle Affecté Présentiel Actif"]) {
+                        listFor.push(elt["Mle Affecté Présentiel Actif"])
+                        if (!isNaN(elt["Mle Affecté Présentiel Actif"])) {
+                            nbrForPrans += 1
                         }
                         else {
-                            nbrModuleLoc += 1
+
+                            nbrForVac += 1
                         }
-                        if (elt["Séance EFM"] == "Oui") {
-                            nbrModuleRls += 1
-                            if (elt['Régional'] == "O") {
-                                nbrModuleRlsReg += 1
-                            }
-                            else {
-                                nbrModuleRlsLoc += 1
-                            }
+                    }
+                    totalModule += 1
+                    if (elt['Régional'] == "O") {
+                        nbrModuleReg += 1
+                    }
+                    else {
+                        nbrModuleLoc += 1
+                    }
+                    if (elt["Séance EFM"] == "Oui") {
+                        nbrModuleRls += 1
+                        if (elt['Régional'] == "O") {
+                            nbrModuleRlsReg += 1
+                        }
+                        else {
+                            nbrModuleRlsLoc += 1
                         }
                     }
 
 
+
                 })
-                let table=document.createElement("table")
+                let table = document.createElement("table")
                 table.innerHTML = `
                         <tr class=" bg-secondary text-white" >
                          
-                            <th style="border:2px solid #dee2e6"> nbr de formateurs permanents</th>
-                            <th style="border:2px solid #dee2e6"> nbr de formateurs vacataires</th>
-                            <th style="border:2px solid #dee2e6"> nbr de modules</th>
-                            <th style="border:2px solid #dee2e6">  de modules achevés</th>
+                            <td style="border:2px solid #dee2e6"> nbr de formateurs permanents</td>
+                            <td style="border:2px solid #dee2e6"> nbr de formateurs vacataires</td>
+                            <td style="border:2px solid #dee2e6"> nbr de modules</td>
+                            <td style="border:2px solid #dee2e6">  de modules achevés</td>
                          
-                            <th style="border:2px solid #dee2e6">  EFM régionales prévues</th>
-                            <th style="border:2px solid #dee2e6">  EFM régionales réalisées</th>
-                    <th style="border:2px solid #dee2e6">  EFM locales prévues</th>
-                    <th style="border:2px solid #dee2e6"> EFM locales réalisées</th>
+                            <td style="border:2px solid #dee2e6">  EFM régionales prévues</td>
+                            <td style="border:2px solid #dee2e6">  EFM régionales réalisées</td>
+                    <td style="border:2px solid #dee2e6">  EFM locales prévues</td>
+                    <td style="border:2px solid #dee2e6"> EFM locales réalisées</td>
                         </tr>
 
 
@@ -3039,27 +3122,24 @@
                         
                         </tr>
                         `;
-                        let fieldset4 = document.createElement('fieldset');
-                        
+                let fieldset4 = document.createElement('fieldset');
 
-                    let legend4 = document.createElement('legend');
-                    legend4.innerHTML = `<h5>${groupe}</h5>`
-                    fieldset4.style = 'border:solid;padding-bottom: 20px;margin:10px auto;'
-                    legend4.style = 'width:fit-content;padding: 0 10px;'
-                    legend4.onclick=()=>{
-                        GrDetails(groupe)
-                    }
-                    legend4.style.cursor='pointer'
-                    fieldset4.appendChild(legend4);
-                    let divFex=document.createElement("div")
-                    fieldset4.appendChild(table);
-                    fieldset4.style.background='rgb(247 247 247)'
-                    fieldset4.name=(groupe)
-                    divParent.appendChild(fieldset4)
-                }
-                
-                )
-                let input = document.createElement("input")
+
+                let legend4 = document.createElement('legend');
+                legend4.innerHTML = `<h5>${listGr.join("-")}</h5>`
+                fieldset4.style = 'border:solid;padding-bottom: 20px;margin:10px auto;'
+                legend4.style = 'width:fit-content;padding: 0 10px;'
+             
+                fieldset4.appendChild(legend4);
+                let divFex = document.createElement("div")
+                fieldset4.appendChild(table);
+                fieldset4.style.background = 'rgb(247 247 247)'
+                fieldset4.name = (groupe)
+                divParent.appendChild(fieldset4)
+            }
+
+            )
+            let input = document.createElement("input")
             input.type = 'search'
             input.placeholder = 'Rechercher ...'
             input.className = 'rechercher form-control mx-auto my-5 w-75'
@@ -3071,16 +3151,16 @@
             divParent.appendChild(input);
 
 
-                swal({
-                    title: "Conseils de classes",
-                    content: divParent,
-                })
+            swal({
+                title: "Conseils de classes",
+                content: divParent,
+            })
 
         }
         function inputclassG(e) {
             let a = e.target.value;
             let trs = document.querySelectorAll('#classG fieldset');
-            console.log(trs);
+            // console.log(trs);
 
             let regex = new RegExp(`${a}`, 'i')
 
