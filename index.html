@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="UTF-8">
@@ -264,7 +264,7 @@
 
                 tableFormateur.forEach(objFormateur => {
 
-                    let p = ((objFormateur['MH Réalisée Globale'] || 0) * 100) / objFormateur['MH Affectée Globale (P & SYN)']
+                    let p = ((objFormateur['MH Réalisée Globale'] || 0) * 100) / (Number((Number(objFormateur["MH Totale  DRIF"]) - Number(objFormateur["MHASYN Totale DRIF"]))) || 0);
 
                     objModule = {
                         p: p.toFixed(2),
@@ -273,9 +273,9 @@
                         regional: objFormateur['Régional'],
                         s1: objFormateur['MH Totale S1 DRIF'],
                         s2: objFormateur['MH Totale S2 DRIF'],
-                        MHAG: objFormateur['MH Affectée Globale (P & SYN)'] || 0,
-                        MHAP: objFormateur['MH Affectée Présentiel'] || 0,
-                        MHAS: objFormateur['MH Affectée Sync'] || 0,
+                        MHAG: Number((Number(objFormateur["MH Totale  DRIF"]) - Number(objFormateur["MHASYN Totale DRIF"]))),
+                        MHAP: objFormateur['MHP Totale DRIF'] || 0,
+                        MHAS: objFormateur['MHSYN Totale DRIF'] || 0,
                         MHRP: objFormateur['MH Réalisée Présentiel'] || 0,
                         MHRS: objFormateur['MH Réalisée Sync'] || 0,
                         MHRG: objFormateur['MH Réalisée Globale'] || 0,
@@ -294,13 +294,13 @@
                     }
 
                     MHRealisGlobal += Number(objFormateur['MH Réalisée Présentiel']) || 0;
-                    MHAfectGlobal += Number(objFormateur['MH Affectée Présentiel']) || 0;
+                    MHAfectGlobal += Number(objFormateur["MHP Totale DRIF"]) || 0;
 
                     if (objFormateur["Groupe"].includes("TREMOA") && (objFormateur["Module"].includes("Compétences") ||
                         objFormateur["Module"].includes("Français") || objFormateur["Module"].includes("Anglais"))) {
 
                         MHRealisGlobal += Number(objFormateur['MH Réalisée Sync']) || 0;
-                        MHAfectGlobal += Number(objFormateur['MH Affectée Sync']) || 0;
+                        MHAfectGlobal += Number(objFormateur["MHSYN Totale DRIF"]) || 0;
 
 
                     }
@@ -309,17 +309,17 @@
                         if (objFormateur["Groupe"].includes("TREMOA")) {
 
                             MHRealisGlobalS1 += Number(objFormateur["MH Réalisée Présentiel"]) || 0;
-                            MHAfectGlobalS1 += Number(objFormateur["MH Affectée Présentiel"]) || 0;
+                            MHAfectGlobalS1 += Number(objFormateur["MHP Totale DRIF"]) || 0;
 
                             MHRealisGlobalS1P += Number(objFormateur["MH Réalisée Présentiel"]) || 0;
-                            MHAfectGlobalS1P += Number(objFormateur["MH Affectée Présentiel"]) || 0;
+                            MHAfectGlobalS1P += Number(objFormateur["MHP Totale DRIF"]) || 0;
                             if (objFormateur["Module"].includes("Compétences") ||
                                 objFormateur["Module"].includes("Français") || objFormateur["Module"].includes("Anglais")) {
 
                                 MHRealisGlobalS1 += Number(objFormateur["MH Réalisée Sync"]) || 0;
-                                MHAfectGlobalS1 += Number(objFormateur["MH Affectée Sync"]) || 0;
+                                MHAfectGlobalS1 += Number(objFormateur["MHSYN Totale DRIF"]) || 0;
                                 MHRealisGlobalS1SYN += Number(objFormateur["MH Réalisée Sync"]) || 0;
-                                MHAfectGlobalS1SYN += Number(objFormateur["MH Affectée Sync"]) || 0;
+                                MHAfectGlobalS1SYN += Number(objFormateur["MHSYN Totale DRIF"]) || 0;
 
 
                             }
@@ -350,17 +350,17 @@
                         if (objFormateur["Groupe"].includes("TREMOA")) {
 
                             MHRealisGlobalS2 += Number(objFormateur["MH Réalisée Présentiel"]) || 0;
-                            MHAfectGlobalS2 += Number(objFormateur["MH Affectée Présentiel"]) || 0;
+                            MHAfectGlobalS2 += Number(objFormateur["MHP Totale DRIF"]) || 0;
 
                             MHRealisGlobalS2P += Number(objFormateur["MH Réalisée Présentiel"]) || 0;
-                            MHAfectGlobalS2P += Number(objFormateur["MH Affectée Présentiel"]) || 0;
+                            MHAfectGlobalS2P += Number(objFormateur["MHP Totale DRIF"]) || 0;
                             if (objFormateur["Module"].includes("Compétences") ||
                                 objFormateur["Module"].includes("Français") || objFormateur["Module"].includes("Anglais")) {
 
                                 MHRealisGlobalS2 += Number(objFormateur["MH Réalisée Sync"]) || 0;
-                                MHAfectGlobalS2 += Number(objFormateur["MH Affectée Sync"]) || 0;
+                                MHAfectGlobalS2 += Number(objFormateur["MHSYN Totale DRIF"]) || 0;
                                 MHRealisGlobalS2SYN += Number(objFormateur["MH Réalisée Sync"]) || 0;
-                                MHAfectGlobalS2SYN += Number(objFormateur["MH Affectée Sync"]) || 0;
+                                MHAfectGlobalS2SYN += Number(objFormateur["MHSYN Totale DRIF"]) || 0;
 
 
                             }
@@ -450,15 +450,15 @@
 
                                         if (dt['Groupe'] == gr && condTr && dt["Année de formation"] == annee && dt['Code Filière'] == e && dt['Code Module'] == eM) {
                                             // console.log(condTr);
-                                            MHAfectGlobal += Number(dt['MH Affectée Sync']) || 0;
+                                            MHAfectGlobal += Number(dt["MHSYN Totale DRIF"]) || 0;
                                             MHRealisGlobal += Number(dt['MH Réalisée Sync']) || 0;
                                             if (dt['MH Totale S1 DRIF'] != 0 && dt['MH Totale S1 DRIF'] >= dt['MH Totale S2 DRIF']) {
                                                 if (dt["Groupe"].includes("TREMOA")) {
 
                                                     MHRealisGlobalS1 += Number(dt["MH Réalisée Sync"]) || 0;
-                                                    MHAfectGlobalS1 += Number(dt["MH Affectée Sync"]) || 0;
+                                                    MHAfectGlobalS1 += Number(dt["MHSYN Totale DRIF"]) || 0;
                                                     MHRealisGlobalS1SYN += Number(dt["MH Réalisée Sync"]) || 0;
-                                                    MHAfectGlobalS1SYN += Number(dt["MH Affectée Sync"]) || 0;
+                                                    MHAfectGlobalS1SYN += Number(dt["MHSYN Totale DRIF"]) || 0;
                                                 } else {
 
                                                     MHAfectGlobalS1 += Number(dt['MHSYN S1 DRIF'])
@@ -485,9 +485,9 @@
                                                 if (dt["Groupe"].includes("TREMOA")) {
 
                                                     MHRealisGlobalS2 += Number(dt["MH Réalisée Sync"]) || 0;
-                                                    MHAfectGlobalS2 += Number(dt["MH Affectée Sync"]) || 0;
+                                                    MHAfectGlobalS2 += Number(dt["MHSYN Totale DRIF"]) || 0;
                                                     MHRealisGlobalS2SYN += Number(dt["MH Réalisée Sync"]) || 0;
-                                                    MHAfectGlobalS2SYN += Number(dt["MH Affectée Sync"]) || 0;
+                                                    MHAfectGlobalS2SYN += Number(dt["MHSYN Totale DRIF"]) || 0;
                                                 } else {
                                                     if (dt['MH Totale S1 DRIF'] != 0) {
                                                         MHAfectGlobalS1 += Number(dt['MHSYN S1 DRIF'])
@@ -972,9 +972,9 @@
 
 
 
-                    if (elt["MH Affectée Globale (P & SYN)"]) {
+                    if ((elt["Module"] != "Culture entrepreneuriale") || (elt["Module"] == "Culture entrepreneuriale" && elt["Mle Affecté Présentiel Actif"])) {
 
-                        MHAfectGlobal += Number(elt["MH Affectée Globale (P & SYN)"]);
+                        MHAfectGlobal += Number(elt["MH Totale  DRIF"]) - Number(elt["MHASYN Totale DRIF"]);
 
                     }
                     if (elt["MH Réalisée Globale"]) {
@@ -982,20 +982,20 @@
                         MHRealisGlobal += Number(elt["MH Réalisée Globale"]);
 
                     }
-                    if (elt["MH Affectée Globale (P & SYN)"]) {
+                    if ((elt["Module"] != "Culture entrepreneuriale") || (elt["Module"] == "Culture entrepreneuriale" && elt["Mle Affecté Présentiel Actif"])) {
 
                         if (elt['MH Totale S1 DRIF'] != 0 && elt['MH Totale S1 DRIF'] >= elt['MH Totale S2 DRIF']) {
                             listS1.push(elt)
                             if (elt["Groupe"].includes("TREMOA")) {
 
                                 MHRealisGlobalS1 += Number(elt["MH Réalisée Globale"]) || 0;
-                                MHAfectGlobalS1 += Number(elt["MH Affectée Globale (P & SYN)"]) || 0;
+                                MHAfectGlobalS1 += Number((Number(elt["MH Totale  DRIF"]) - Number(elt["MHASYN Totale DRIF"]))) || 0;
 
                                 MHRealisGlobalS1P += Number(elt["MH Réalisée Présentiel"]) || 0;
-                                MHAfectGlobalS1P += Number(elt["MH Affectée Présentiel"]) || 0;
+                                MHAfectGlobalS1P += Number(elt["MHP Totale DRIF"]) || 0;
 
                                 MHRealisGlobalS1SYN += Number(elt["MH Réalisée Sync"]) || 0;
-                                MHAfectGlobalS1SYN += Number(elt["MH Affectée Sync"]) || 0;
+                                MHAfectGlobalS1SYN += Number(elt["MHSYN Totale DRIF"]) || 0;
                             } else {
 
                                 if (elt['MH Totale S2 DRIF'] != 0) {
@@ -1044,13 +1044,13 @@
 
 
                                 MHRealisGlobalS2 += Number(elt["MH Réalisée Globale"]) || 0;
-                                MHAfectGlobalS2 += Number(elt["MH Affectée Globale (P & SYN)"]) || 0;
+                                MHAfectGlobalS2 += Number((Number(elt["MH Totale  DRIF"]) - Number(elt["MHASYN Totale DRIF"]))) || 0;
 
                                 MHRealisGlobalS2P += Number(elt["MH Réalisée Présentiel"]) || 0;
-                                MHAfectGlobalS2P += Number(elt["MH Affectée Présentiel"]) || 0;
+                                MHAfectGlobalS2P += Number(elt['MHP S1 DRIF']) || 0;
 
                                 MHRealisGlobalS2SYN += Number(elt["MH Réalisée Sync"]) || 0;
-                                MHAfectGlobalS2SYN += Number(elt["MH Affectée Sync"]) || 0;
+                                MHAfectGlobalS2SYN += Number(elt['MHSYN S1 DRIF']) || 0;
                             } else {
                                 if (elt['MH Totale S1 DRIF'] != 0) {
                                     MHAfectGlobalS1 += Number(elt['MHP S1 DRIF'])
@@ -1152,17 +1152,17 @@
                 })
                 listModulesRegionalGroupeS1.forEach((m, i) => {
 
-                    let Avancement = ((m['MH Réalisée Globale'] || 0) * 100) / m['MH Affectée Globale (P & SYN)']
+                    let Avancement = ((m['MH Réalisée Globale'] || 0) * 100) / (Number(m["MH Totale  DRIF"]) - Number(m["MHASYN Totale DRIF"]))
 
-                    if (m['Formateur Affecté Présentiel Actif']) {
+                    if ((m["Module"] != "Culture entrepreneuriale") || (m["Module"] == "Culture entrepreneuriale" && m["Mle Affecté Présentiel Actif"])) {
                         tableGroupe.innerHTML += `
                         <tr>
                             <td>${i + 1}</td>
                             <td>${m['Code Module']}-${m['Module']}</td>
                             <td>${m['Formateur Affecté Présentiel Actif']}</td>
-                            <td>${m['MH Affectée Présentiel'] || 0}</td>
-                            <td>${m["MH Affectée Sync"] || 0}</td>
-                            <td><b>${m["MH Affectée Globale (P & SYN)"] || 0}</b></td>
+                            <td>${m['MHP Totale DRIF'] || 0}</td>
+                            <td>${m["MHSYN Totale DRIF"] || 0}</td>
+                            <td><b>${(Number(m["MH Totale  DRIF"]) - Number(m["MHASYN Totale DRIF"])) || 0}</b></td>
                             <td>${m["MH Réalisée Présentiel"] || 0}</td>
                             <td>${m["MH Réalisée Sync"] || 0}</td>
                             <td><b>${m["MH Réalisée Globale"] || 0}</b></td>
@@ -1185,16 +1185,16 @@
                 })
                 listModulesRegionalGroupeS2.forEach((m, i) => {
 
-                    let Avancement = (m['MH Réalisée Globale'] || 0) * 100 / m['MH Affectée Globale (P & SYN)']
-                    if (m['Formateur Affecté Présentiel Actif']) {
+                    let Avancement = (m['MH Réalisée Globale'] || 0) * 100 / (Number(m["MH Totale  DRIF"]) - Number(m["MHASYN Totale DRIF"]))
+                    if ((m["Module"] != "Culture entrepreneuriale") || (m["Module"] == "Culture entrepreneuriale" && m["Mle Affecté Présentiel Actif"])) {
                         tableGroupe.innerHTML += `
                         <tr>                            
                             <td>${i + 1}</td>
                             <td>${m['Code Module']}-${m['Module']}</td>
                             <td>${m['Formateur Affecté Présentiel Actif']}</td>
-                            <td>${m['MH Affectée Présentiel'] || 0}</td>
-                            <td>${m["MH Affectée Sync"] || 0}</td>
-                            <td><b>${m["MH Affectée Globale (P & SYN)"] || 0}</b></td>
+                            <td>${m['MHP Totale DRIF'] || 0}</td>
+                            <td>${m["MHSYN Totale DRIF"] || 0}</td>
+                            <td><b>${(Number(m["MH Totale  DRIF"]) - Number(m["MHASYN Totale DRIF"])) || 0}</b></td>
                             <td>${m["MH Réalisée Présentiel"] || 0}</td>
                             <td>${m["MH Réalisée Sync"] || 0}</td>
                             <td><b>${m["MH Réalisée Globale"] || 0}</b></td>
@@ -1250,17 +1250,17 @@
                 })
                 listModulesLocauxGroupeS1.forEach((m, i) => {
 
-                    let Avancement = ((m['MH Réalisée Globale'] || 0) * 100) / m['MH Affectée Globale (P & SYN)']
+                    let Avancement = ((m['MH Réalisée Globale'] || 0) * 100) / (Number(m["MH Totale  DRIF"]) - Number(m["MHASYN Totale DRIF"]))
 
-                    if (m['Formateur Affecté Présentiel Actif']) {
+                    if ((m["Module"] != "Culture entrepreneuriale") || (m["Module"] == "Culture entrepreneuriale" && m["Mle Affecté Présentiel Actif"])) {
                         tableGroupe2.innerHTML += `
                         <tr>
                             <td>${i + 1}</td>
                             <td>${m['Code Module']}-${m['Module']}</td>
                             <td>${m['Formateur Affecté Présentiel Actif']}</td>
-                            <td>${m['MH Affectée Présentiel'] || 0}</td>
-                            <td>${m["MH Affectée Sync"] || 0}</td>
-                            <td><b>${m["MH Affectée Globale (P & SYN)"] || 0}</b></td>
+                            <td>${m['MHP Totale DRIF'] || 0}</td>
+                            <td>${m["MHSYN Totale DRIF"] || 0}</td>
+                            <td><b>${(Number(m["MH Totale  DRIF"]) - Number(m["MHASYN Totale DRIF"])) || 0}</b></td>
                             <td>${m["MH Réalisée Présentiel"] || 0}</td>
                             <td>${m["MH Réalisée Sync"] || 0}</td>
                             <td><b>${m["MH Réalisée Globale"] || 0}</b></td>
@@ -1283,16 +1283,16 @@
                 })
                 listModulesLocauxGroupeS2.forEach((m, i) => {
 
-                    let Avancement = ((m['MH Réalisée Globale'] || 0) * 100) / m['MH Affectée Globale (P & SYN)']
-                    if (m['Formateur Affecté Présentiel Actif']) {
+                    let Avancement = ((m['MH Réalisée Globale'] || 0) * 100) / (Number(m["MH Totale  DRIF"]) - Number(m["MHASYN Totale DRIF"]))
+                    if ((m["Module"] != "Culture entrepreneuriale") || (m["Module"] == "Culture entrepreneuriale" && m["Mle Affecté Présentiel Actif"])) {
                         tableGroupe2.innerHTML += `
                         <tr>                            
                             <td>${i + 1}</td>
                             <td>${m['Code Module']}-${m['Module']}</td>
                             <td>${m['Formateur Affecté Présentiel Actif']}</td>
-                            <td>${m['MH Affectée Présentiel'] || 0}</td>
-                            <td>${m["MH Affectée Sync"] || 0}</td>
-                            <td><b>${m["MH Affectée Globale (P & SYN)"] || 0}</b></td>
+                            <td>${m['MHP Totale DRIF'] || 0}</td>
+                            <td>${m["MHSYN Totale DRIF"] || 0}</td>
+                            <td><b>${(Number(m["MH Totale  DRIF"]) - Number(m["MHASYN Totale DRIF"])) || 0}</b></td>
                             <td>${m["MH Réalisée Présentiel"] || 0}</td>
                             <td>${m["MH Réalisée Sync"] || 0}</td>
                             <td><b>${m["MH Réalisée Globale"] || 0}</b></td>
@@ -1802,8 +1802,8 @@
         function module5H() {
             let data = JSON.parse(localStorage.jsonData);
             let dataF = data.filter(e => {
-                let pr = e["MH Affectée Présentiel"] - e["MH Réalisée Présentiel"]
-                let ads = e["MH Affectée Sync"] - e["MH Réalisée Sync"]
+                let pr = e["MHP Totale DRIF"] - e["MH Réalisée Présentiel"]
+                let ads = e["MHSYN Totale DRIF"] - e["MH Réalisée Sync"]
                 return ((pr <= 5 && pr > 0) || (ads == 5 && ads > 0)) && (e['Séance EFM'] == "Non")
             })
             return dataF
@@ -1833,8 +1833,8 @@
                   
                 `;
             data.forEach(m => {
-                let pr = m["MH Affectée Présentiel"] - m["MH Réalisée Présentiel"]
-                let ads = m["MH Affectée Sync"] - m["MH Réalisée Sync"]
+                let pr = m["MHP Totale DRIF"] - m["MH Réalisée Présentiel"]
+                let ads = m["MHSYN Totale DRIF"] - m["MH Réalisée Sync"]
                 // let Avancement = ((m['MH Réalisée Globale'] || 0) * 100) / m['MH Affectée Globale (P & SYN)']
 
                 if (m['Formateur Affecté Présentiel Actif']) {
@@ -2101,9 +2101,19 @@
                     
                 `;
             dataRegS1.forEach(m => {
+                if (m["Module"] == "Culture entrepreneuriale" && m['Formateur Affecté Présentiel Actif']) {
+                    tableS1loc.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} ">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+               
+            
+                        </tr>
+                        `;
+                }
 
-
-                if (m['Formateur Affecté Présentiel Actif']) {
+                if (m["Module"] != "Culture entrepreneuriale") {
                     tableS1Reg.innerHTML += `
                     <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']}">
                         <td>${m['Code Module']}-${m['Module']}</td>
@@ -2135,9 +2145,19 @@
    
                 `;
             dataLocS1.forEach(m => {
+                if (m["Module"] == "Culture entrepreneuriale" && m['Formateur Affecté Présentiel Actif']) {
+                    tableS1loc.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} ">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+               
+            
+                        </tr>
+                        `;
+                }
 
-
-                if (m['Formateur Affecté Présentiel Actif']) {
+                if (m["Module"] != "Culture entrepreneuriale") {
                     tableS1loc.innerHTML += `
                     <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} ">
                         <td>${m['Code Module']}-${m['Module']}</td>
@@ -2200,9 +2220,19 @@
                     
                 `;
             dataRegS2.forEach(m => {
+                if (m["Module"] == "Culture entrepreneuriale" && m['Formateur Affecté Présentiel Actif']) {
+                    tableS2loc.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} ">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+               
+            
+                        </tr>
+                        `;
+                }
 
-
-                if (m['Formateur Affecté Présentiel Actif']) {
+                if (m["Module"] != "Culture entrepreneuriale") {
                     tableS2Reg.innerHTML += `
                     <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']}">
                         <td>${m['Code Module']}-${m['Module']}</td>
@@ -2233,9 +2263,19 @@
    
                 `;
             dataLocS2.forEach(m => {
+                if (m["Module"] == "Culture entrepreneuriale" && m['Formateur Affecté Présentiel Actif']) {
+                    tableS2loc.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} ">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+               
+            
+                        </tr>
+                        `;
+                }
 
-
-                if (m['Formateur Affecté Présentiel Actif']) {
+                if (m["Module"] != "Culture entrepreneuriale") {
                     tableS2loc.innerHTML += `
                     <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']}">
                         <td>${m['Code Module']}-${m['Module']}</td>
@@ -2467,7 +2507,7 @@
         function dataModulesNonentames() {
             let data = JSON.parse(localStorage.jsonData);
             return data.filter(e => {
-                return !e["MH Réalisée Globale"] && e['Formateur Affecté Présentiel Actif']
+                return (!e["MH Réalisée Globale"])
             })
 
         }
@@ -2633,6 +2673,7 @@
 
                 return 0; // names are equal
             })
+
             let divParent = document.createElement("div")
             let tableModule3 = document.createElement('table');
             let listSexist = []
@@ -2693,10 +2734,10 @@
                             if (groupe["Groupe"].includes("TREMOA")) {
 
                                 MHRealisGlobalS1 += Number(groupe["MH Réalisée Présentiel"]) || 0;
-                                MHAfectGlobalS1 += Number(groupe["MH Affectée Présentiel"]) || 0;
+                                MHAfectGlobalS1 += Number(groupe["MHP Totale DRIF"]) || 0;
 
                                 MHRealisGlobalS1P += Number(groupe["MH Réalisée Présentiel"]) || 0;
-                                MHAfectGlobalS1P += Number(groupe["MH Affectée Présentiel"]) || 0;
+                                MHAfectGlobalS1P += Number(groupe["MHP Totale DRIF"]) || 0;
                             } else {
                                 if (groupe['MH Totale S2 DRIF'] != 0) {
                                     MHAfectGlobalS2 += Number(groupe['MHP S2 DRIF'])
@@ -2726,10 +2767,10 @@
                             if (groupe["Groupe"].includes("TREMOA")) {
 
                                 MHRealisGlobalS2 += Number(groupe["MH Réalisée Présentiel"]) || 0;
-                                MHAfectGlobalS2 += Number(groupe["MH Affectée Présentiel"]) || 0;
+                                MHAfectGlobalS2 += Number(groupe["MHP Totale DRIF"]) || 0;
 
                                 MHRealisGlobalS2P += Number(groupe["MH Réalisée Présentiel"]) || 0;
-                                MHAfectGlobalS2P += Number(groupe["MH Affectée Présentiel"]) || 0;
+                                MHAfectGlobalS2P += Number(groupe["MHP Totale DRIF"]) || 0;
                             } else {
                                 MHAfectGlobalS2 += Number(groupe['MHP S2 DRIF'])
                                 MHRealisGlobalS2 += Number(groupe['MH Réalisée Présentiel']) || 0;
@@ -2760,9 +2801,9 @@
                             if (groupe["Groupe"].includes("TREMOA")) {
 
                                 MHRealisGlobalS1 += Number(groupe["MH Réalisée Sync"]) || 0;
-                                MHAfectGlobalS1 += Number(groupe["MH Affectée Sync"]) || 0;
+                                MHAfectGlobalS1 += Number(groupe["MHSYN Totale DRIF"]) || 0;
                                 MHRealisGlobalS1SYN += Number(groupe["MH Réalisée Sync"]) || 0;
-                                MHAfectGlobalS1SYN += Number(groupe["MH Affectée Sync"]) || 0;
+                                MHAfectGlobalS1SYN += Number(groupe["MHSYN Totale DRIF"]) || 0;
                             } else {
 
                                 MHAfectGlobalS1 += Number(groupe['MHSYN S1 DRIF'])
@@ -2791,9 +2832,9 @@
                             if (groupe["Groupe"].includes("TREMOA")) {
 
                                 MHRealisGlobalS2 += Number(groupe["MH Réalisée Sync"]) || 0;
-                                MHAfectGlobalS2 += Number(groupe["MH Affectée Sync"]) || 0;
+                                MHAfectGlobalS2 += Number(groupe["MHSYN Totale DRIF"]) || 0;
                                 MHRealisGlobalS2SYN += Number(groupe["MH Réalisée Sync"]) || 0;
-                                MHAfectGlobalS2SYN += Number(groupe["MH Affectée Sync"]) || 0;
+                                MHAfectGlobalS2SYN += Number(groupe["MHSYN Totale DRIF"]) || 0;
                             } else {
                                 if (groupe['MH Totale S1 DRIF'] != 0) {
                                     MHAfectGlobalS1 += Number(groupe['MHSYN S1 DRIF'])
@@ -2922,6 +2963,7 @@
 
         }
         function detailsSGr(listS, type) {
+
             let divParent = document.createElement("div")
             let tableModule3 = document.createElement('table');
             let listSexist = []
@@ -2969,77 +3011,84 @@
                 let MHAfectGlobalS2SYN = 0;
                 let MHRealisGlobalS2SYN = 0;
                 if (!listSexist.includes(elt["Formateur Affecté Présentiel Actif"])) {
+                    let listM = []
                     listSexist.push(elt["Formateur Affecté Présentiel Actif"])
                     let data = listS.filter(e => e["Formateur Affecté Présentiel Actif"] == elt["Formateur Affecté Présentiel Actif"])
-
+                    console.log(data);
+                    console.log("-------------------");
                     data.map(groupe => {
-                        if (groupe['MH Totale S1 DRIF'] != 0 && groupe['MH Totale S1 DRIF'] >= groupe['MH Totale S2 DRIF']) {
+                        if (!listM.includes(groupe["Code Module"])){
+                            console.log(groupe["Code Module"]);
+                            listM.push(groupe["Code Module"])
 
-                            if (groupe["Groupe"].includes("TREMOA")) {
+                        
+                            if (groupe['MH Totale S1 DRIF'] != 0 && groupe['MH Totale S1 DRIF'] >= groupe['MH Totale S2 DRIF']) {
 
-                                MHRealisGlobalS1 += Number(groupe["MH Réalisée Globale"]) || 0;
-                                MHAfectGlobalS1 += Number(groupe["MH Affectée Globale (P & SYN)"]) || 0;
+                                if (groupe["Groupe"].includes("TREMOA")) {
 
-                                MHRealisGlobalS1P += Number(groupe["MH Réalisée Présentiel"]) || 0;
-                                MHAfectGlobalS1P += Number(groupe["MH Affectée Présentiel"]) || 0;
+                                    MHRealisGlobalS1 += Number(groupe["MH Réalisée Globale"]) || 0;
+                                    MHAfectGlobalS1 += Number((Number(groupe["MH Totale  DRIF"]) - Number(groupe["MHASYN Totale DRIF"]))) || 0;
 
-                                MHRealisGlobalS1SYN += Number(groupe["MH Réalisée Sync"]) || 0;
-                                MHAfectGlobalS1SYN += Number(groupe["MH Affectée Sync"]) || 0;
-                            } else {
+                                    MHRealisGlobalS1P += Number(groupe["MH Réalisée Présentiel"]) || 0;
+                                    MHAfectGlobalS1P += Number(groupe["MHP Totale DRIF"]) || 0;
 
-                                if (groupe['MH Totale S2 DRIF'] != 0) {
+                                    MHRealisGlobalS1SYN += Number(groupe["MH Réalisée Sync"]) || 0;
+                                    MHAfectGlobalS1SYN += Number(groupe["MHSYN Totale DRIF"]) || 0;
+                                } else {
 
-                                    MHAfectGlobalS2 += Number(groupe['MHP S2 DRIF'])
-                                    MHAfectGlobalS2 += Number(groupe['MHSYN S2 DRIF'])
-                                    MHAfectGlobalS2P += Number(groupe["MHP S2 DRIF"]);
-                                    MHAfectGlobalS2SYN += Number(groupe["MHSYN S2 DRIF"]) || 0;
-                                    let dif = Number(elt["MH Réalisée Sync"]) - Number(elt['MHSYN S1 DRIF'])
-                                    if (dif > 0) {
-                                        MHRealisGlobalS2 += Number(dif)
-                                        MHRealisGlobalS2SYN += Number(dif)
-                                        MHRealisGlobalS1 -= Number(dif)
-                                        MHRealisGlobalS1SYN -= Number(dif)
+                                    if (groupe['MH Totale S2 DRIF'] != 0) {
+
+                                        MHAfectGlobalS2 += Number(groupe['MHP S2 DRIF'])
+                                        MHAfectGlobalS2 += Number(groupe['MHSYN S2 DRIF'])
+                                        MHAfectGlobalS2P += Number(groupe["MHP S2 DRIF"]);
+                                        MHAfectGlobalS2SYN += Number(groupe["MHSYN S2 DRIF"]) || 0;
+                                        let dif = Number(groupe["MH Réalisée Sync"]) - Number(groupe['MHSYN S1 DRIF'])
+                                        if (dif > 0) {
+                                            MHRealisGlobalS2 += Number(dif)
+                                            MHRealisGlobalS2SYN += Number(dif)
+                                            MHRealisGlobalS1 -= Number(dif)
+                                            MHRealisGlobalS1SYN -= Number(dif)
+
+                                        }
+                                        let dif2 = Number(groupe["MH Réalisée Présentiel"]) - Number(groupe['MHP S1 DRIF'])
+
+                                        if (dif2 > 0) {
+                                            MHRealisGlobalS2 += Number(dif2)
+                                            MHRealisGlobalS2P += Number(dif2)
+                                            MHRealisGlobalS1 -= Number(dif2)
+                                            MHRealisGlobalS1P -= Number(dif2)
+
+                                        }
+
+
+
 
                                     }
-                                    let dif2 = Number(elt["MH Réalisée Présentiel"]) - Number(elt['MHP S1 DRIF'])
+                                    MHAfectGlobalS1 += Number(groupe['MHP S1 DRIF'])
+                                    MHRealisGlobalS1 += Number(groupe['MH Réalisée Présentiel']) || 0;
+                                    MHAfectGlobalS1 += Number(groupe['MHSYN S1 DRIF'])
+                                    MHRealisGlobalS1 += Number(groupe['MH Réalisée Sync']) || 0
 
-                                    if (dif2 > 0) {
-                                        MHRealisGlobalS2 += Number(dif2)
-                                        MHRealisGlobalS2P += Number(dif2)
-                                        MHRealisGlobalS1 -= Number(dif2)
-                                        MHRealisGlobalS1P -= Number(dif2)
-
-                                    }
-
-
-
-
+                                    MHAfectGlobalS1P += Number(groupe['MHP S1 DRIF'])
+                                    MHRealisGlobalS1P += Number(groupe['MH Réalisée Présentiel']) || 0;
+                                    MHAfectGlobalS1SYN += Number(groupe['MHSYN S1 DRIF'])
+                                    MHRealisGlobalS1SYN += Number(groupe['MH Réalisée Sync']) || 0
                                 }
-                                MHAfectGlobalS1 += Number(groupe['MHP S1 DRIF'])
-                                MHRealisGlobalS1 += Number(groupe['MH Réalisée Présentiel']) || 0;
-                                MHAfectGlobalS1 += Number(groupe['MHSYN S1 DRIF'])
-                                MHRealisGlobalS1 += Number(groupe['MH Réalisée Sync']) || 0
 
-                                MHAfectGlobalS1P += Number(groupe['MHP S1 DRIF'])
-                                MHRealisGlobalS1P += Number(groupe['MH Réalisée Présentiel']) || 0;
-                                MHAfectGlobalS1SYN += Number(groupe['MHSYN S1 DRIF'])
-                                MHRealisGlobalS1SYN += Number(groupe['MH Réalisée Sync']) || 0
                             }
-
-                        }
                         if (groupe['MH Totale S2 DRIF'] != 0 && groupe['MH Totale S1 DRIF'] < groupe['MH Totale S2 DRIF']) {
 
                             if (groupe["Groupe"].includes("TREMOA")) {
 
 
                                 MHRealisGlobalS2 += Number(groupe["MH Réalisée Globale"]) || 0;
-                                MHAfectGlobalS2 += Number(groupe["MH Affectée Globale (P & SYN)"]) || 0;
+                                MHAfectGlobalS2 += Number((Number(groupe["MH Totale  DRIF"]) - Number(groupe["MHASYN Totale DRIF"]))) || 0;
 
                                 MHRealisGlobalS2P += Number(groupe["MH Réalisée Présentiel"]) || 0;
-                                MHAfectGlobalS2P += Number(groupe["MH Affectée Présentiel"]) || 0;
+                                MHAfectGlobalS2P += Number(groupe["MHP Totale DRIF"]) || 0;
 
                                 MHRealisGlobalS2SYN += Number(groupe["MH Réalisée Sync"]) || 0;
-                                MHAfectGlobalS2SYN += Number(groupe["MH Affectée Sync"]) || 0;
+                                MHAfectGlobalS2SYN += Number(groupe["MHSYN Totale DRIF"]) || 0;
                             } else {
                                 if (groupe['MH Totale S1 DRIF'] != 0) {
                                     MHAfectGlobalS1 += Number(groupe['MHP S1 DRIF'])
@@ -3047,20 +3096,20 @@
                                     MHAfectGlobalS1P += Number(groupe["MHP S1 DRIF"]);
                                     MHAfectGlobalS1SYN += Number(groupe["MHSYH S1 DRIF"]) || 0;
 
-                                    let dif = Number(elt["MH Réalisée Sync"]) - Number(elt['MHSYN S1 DRIF'])
+                                    let dif = Number(groupe["MH Réalisée Sync"]) - Number(groupe['MHSYN S1 DRIF'])
                                     if (dif < 0) {
-                                        MHRealisGlobalS1 += Number(elt['MH Réalisée Sync'])
-                                        MHRealisGlobalS1SYN += Number(elt['MH Réalisée Sync'])
-                                        MHRealisGlobalS2 -= Number(elt['MH Réalisée Sync'])
-                                        MHRealisGlobalS2SYN -= Number(elt['MH Réalisée Sync'])
+                                        MHRealisGlobalS1 += Number(groupe['MH Réalisée Sync'])
+                                        MHRealisGlobalS1SYN += Number(groupe['MH Réalisée Sync'])
+                                        MHRealisGlobalS2 -= Number(groupe['MH Réalisée Sync'])
+                                        MHRealisGlobalS2SYN -= Number(groupe['MH Réalisée Sync'])
 
                                     }
-                                    let dif2 = Number(elt["MH Réalisée Présentiel"]) - Number(elt['MHP S1 DRIF'])
+                                    let dif2 = Number(groupe["MH Réalisée Présentiel"]) - Number(groupe['MHP S1 DRIF'])
                                     if (dif2 < 0) {
-                                        MHRealisGlobalS1 += Number(elt['MH Réalisée Présentiel'])
-                                        MHRealisGlobalS1P += Number(elt['MH Réalisée Présentiel'])
-                                        MHAfectGlobalS2 -= Number(elt['MH Réalisée Présentiel'])
-                                        MHAfectGlobalS2P -= Number(elt['MH Réalisée Présentiel'])
+                                        MHRealisGlobalS1 += Number(groupe['MH Réalisée Présentiel'])
+                                        MHRealisGlobalS1P += Number(groupe['MH Réalisée Présentiel'])
+                                        MHAfectGlobalS2 -= Number(groupe['MH Réalisée Présentiel'])
+                                        MHAfectGlobalS2P -= Number(groupe['MH Réalisée Présentiel'])
 
                                     }
 
@@ -3078,7 +3127,7 @@
                         }
 
 
-
+                    }
                     })
 
                     if (type == "S1") {
@@ -3247,7 +3296,7 @@
                             nbrForVac += 1
                         }
                     }
-                    if (elt["MH Affectée Globale (P & SYN)"]) {
+                    if ((elt["Module"] != "Culture entrepreneuriale") || (elt["Module"] == "Culture entrepreneuriale" && elt["Mle Affecté Présentiel Actif"])) {
 
                         totalModule += 1
                         if (elt['Régional'] == "O") {
