@@ -123,7 +123,7 @@
 
         <div id="Groupe" class="d-none">
             <div class="d-flex justify-content-end py-3 align-items-center inputs">
-                <input type="text" class="rechercher form-control mx-auto m-3" placeholder="Rechercher un Groupe...">
+                <input type="search" class="rechercher form-control mx-auto m-3" placeholder="Rechercher un Groupe...">
                 <!-- <span class="btn btn-dark ml-1" onclick="Descendant('Groupe')">Descendant</span> -->
                 <div class="btns d-flex">
                     <select id="select" onchange="descOrAsc('Groupe', this)" class="form-control">
@@ -1570,7 +1570,7 @@
         let inputFormateur = document.querySelector('#Formateur input');
 
 
-        inputFormateur.onkeyup = inputFormateurFct;
+        inputFormateur.oninput = inputFormateurFct;
 
         function inputFormateurFct() {
 
@@ -1600,7 +1600,7 @@
         let inputGroupe = document.querySelector('#Groupe input');
 
 
-        inputGroupe.onkeyup = inputGroupeFct;
+        inputGroupe.oninput = inputGroupeFct;
 
         function inputGroupeFct() {
 
@@ -2634,17 +2634,22 @@
             if (dateDebut < new Date("2024/01/29")) {
                 diffS = (dateFinS1 - dateDebut)
                 vac.map(e => {
-                    if (e.dateDebut >= dateDebut && e.dateFin < dateFinS1) {
+
+                    let difD = (dateDebut - e.dateDebut) / (1000 * 60 * 60 * 24)
+
+
+
+                    if (e.dateFin < dateFinS1 && difD < 6) {
                         numbrDeSem++;
                     }
 
                 })
-
             }
             if (dateDebut >= new Date("2024/01/29")) {
                 diffS = (dateFinS2 - dateDebut)
                 vac.map(e => {
-                    if (e.dateDebut >= dateDebut && e.dateFin < dateFinS2) {
+                    let difD = (dateDebut - e.dateDebut) / (1000 * 60 * 60 * 24)
+                    if (difD < 6 && e.dateFin < dateFinS2) {
 
                         numbrDeSem++;
                     }
@@ -2656,6 +2661,7 @@
 
             return diffS - numbrDeSem
         }
+
 
 
 
@@ -2705,7 +2711,7 @@
                 </tr>
 
             `;
-
+            let groupeSYN = [];
             listS.map(elt => {
 
                 let annees = [];
@@ -2725,10 +2731,61 @@
 
                 if (!listSexist.includes(elt["Groupe"])) {
                     listSexist.push(elt["Groupe"])
+                    let difSYN = 0
                     let data = listS.filter(e => e["Groupe"] == elt["Groupe"])
 
 
+                    // console.log(data);
                     data.map(groupe => {
+                        let groupeSpr = groupe.Groupe.split("")
+                        let groupeStg = ""
+                        for (let t of groupeSpr) {
+                            if (isNaN(t)) {
+                                groupeStg += t
+                            }
+                            else {
+                                groupeStg += t
+                                break;
+                            }
+                        }
+
+                        let countEx = groupeSYN.filter(m => (m.grp == groupeStg && m.Module == groupe["Code Module"]))
+                        //    console.log(groupe.Groupe);
+                        // console.log(groupe["Code Module"]);
+                        //    console.log(countEx.length)
+                        // console.log(groupeSYN);
+
+
+                        if (!(groupe["Groupe"].includes("TREMOA") && (groupe["Module"].includes("Compétences") ||
+                        groupe["Module"].includes("Français") || groupe["Module"].includes("Anglais")))){
+
+                            if (countEx.length > 0) {
+                                if (type == "S1") {
+                                    difSYN += Number(groupe["MHSYN S1 DRIF"]) || 0
+                                    let dif = Number(groupe["MH Réalisée Sync"]) - Number(groupe['MHSYN S1 DRIF'])
+                                    // console.log(dif);
+    
+                                    if (dif <= 0) {
+                                        difSYN -= Number(groupe['MH Réalisée Sync'])
+                                    }
+    
+                                }
+                                else {
+                                    difSYN += Number(groupe["MHSYN S2 DRIF"]) || 0
+                                    let dif = Number(groupe["MH Réalisée Sync"]) - Number(groupe['MHSYN S1 DRIF'])
+                                    if (dif > 0) {
+                                        difSYN -= Number(dif)
+                                    }
+                                }
+    
+                                let groupeSYNnew = groupeSYN.filter(e => !(e.grp == groupeStg && e.Module == groupe["Code Module"]))
+                               // console.log(groupeSYNnew);
+                                groupeSYN = [...groupeSYNnew]
+                            }
+                            else {
+                                groupeSYN.push({ grp: groupeStg, Module: groupe["Code Module"] })
+                            }
+                        }
                         if (groupe['MH Totale S1 DRIF'] != 0 && groupe['MH Totale S1 DRIF'] >= groupe['MH Totale S2 DRIF']) {
 
                             if (groupe["Groupe"].includes("TREMOA")) {
@@ -2860,11 +2917,14 @@
 
 
                     })
+                    // console.log(groupeSYN);
 
+                    // console.log(difSYN);
+                    // console.log("--------------------");
 
                     if (type == "S1") {
 
-                        let vitesse = ((MHAfectGlobalS1 - MHRealisGlobalS1) / tempsRestant(new Date()))
+                        let vitesse = ((MHAfectGlobalS1 - MHRealisGlobalS1 - difSYN) / tempsRestant(new Date()))
                         let min = (vitesse - Math.floor(vitesse)) * 60
                         vitesse = Number(Math.floor(vitesse))
                         if (min >= 40) {
@@ -2895,10 +2955,10 @@
                     }
                     if (type == "S2") {
 
-                        let vitesse2 = (MHAfectGlobalS2 - MHRealisGlobalS2) / tempsRestant(new Date())
+                        let vitesse2 = (MHAfectGlobalS2 - MHRealisGlobalS2 - difSYN) / tempsRestant(new Date())
 
                         if (new Date() < new Date("2024/01/29")) {
-                            vitesse2 = ((MHAfectGlobalS2 - MHRealisGlobalS2) / tempsRestant(new Date("2024/01/29")))
+                            vitesse2 = ((MHAfectGlobalS2 - MHRealisGlobalS2 - difSYN) / tempsRestant(new Date("2024/01/29")))
                         }
                         let min2 = (vitesse2 - Math.floor(vitesse2)) * 60
                         vitesse2 = Number(Math.floor(vitesse2))
@@ -3014,14 +3074,14 @@
                     let listM = []
                     listSexist.push(elt["Formateur Affecté Présentiel Actif"])
                     let data = listS.filter(e => e["Formateur Affecté Présentiel Actif"] == elt["Formateur Affecté Présentiel Actif"])
-                    console.log(data);
-                    console.log("-------------------");
+                    // console.log(data);
+                    // console.log("-------------------");
                     data.map(groupe => {
-                        if (!listM.includes(groupe["Code Module"])){
-                            console.log(groupe["Code Module"]);
+                        if (!listM.includes(groupe["Code Module"])) {
+                            // console.log(groupe["Code Module"]);
                             listM.push(groupe["Code Module"])
 
-                        
+
                             if (groupe['MH Totale S1 DRIF'] != 0 && groupe['MH Totale S1 DRIF'] >= groupe['MH Totale S2 DRIF']) {
 
                                 if (groupe["Groupe"].includes("TREMOA")) {
@@ -3076,58 +3136,58 @@
                                 }
 
                             }
-                        if (groupe['MH Totale S2 DRIF'] != 0 && groupe['MH Totale S1 DRIF'] < groupe['MH Totale S2 DRIF']) {
+                            if (groupe['MH Totale S2 DRIF'] != 0 && groupe['MH Totale S1 DRIF'] < groupe['MH Totale S2 DRIF']) {
 
-                            if (groupe["Groupe"].includes("TREMOA")) {
+                                if (groupe["Groupe"].includes("TREMOA")) {
 
 
-                                MHRealisGlobalS2 += Number(groupe["MH Réalisée Globale"]) || 0;
-                                MHAfectGlobalS2 += Number((Number(groupe["MH Totale  DRIF"]) - Number(groupe["MHASYN Totale DRIF"]))) || 0;
+                                    MHRealisGlobalS2 += Number(groupe["MH Réalisée Globale"]) || 0;
+                                    MHAfectGlobalS2 += Number((Number(groupe["MH Totale  DRIF"]) - Number(groupe["MHASYN Totale DRIF"]))) || 0;
 
-                                MHRealisGlobalS2P += Number(groupe["MH Réalisée Présentiel"]) || 0;
-                                MHAfectGlobalS2P += Number(groupe["MHP Totale DRIF"]) || 0;
+                                    MHRealisGlobalS2P += Number(groupe["MH Réalisée Présentiel"]) || 0;
+                                    MHAfectGlobalS2P += Number(groupe["MHP Totale DRIF"]) || 0;
 
-                                MHRealisGlobalS2SYN += Number(groupe["MH Réalisée Sync"]) || 0;
-                                MHAfectGlobalS2SYN += Number(groupe["MHSYN Totale DRIF"]) || 0;
-                            } else {
-                                if (groupe['MH Totale S1 DRIF'] != 0) {
-                                    MHAfectGlobalS1 += Number(groupe['MHP S1 DRIF'])
-                                    MHAfectGlobalS1 += Number(groupe['MHSYN S1 DRIF'])
-                                    MHAfectGlobalS1P += Number(groupe["MHP S1 DRIF"]);
-                                    MHAfectGlobalS1SYN += Number(groupe["MHSYH S1 DRIF"]) || 0;
+                                    MHRealisGlobalS2SYN += Number(groupe["MH Réalisée Sync"]) || 0;
+                                    MHAfectGlobalS2SYN += Number(groupe["MHSYN Totale DRIF"]) || 0;
+                                } else {
+                                    if (groupe['MH Totale S1 DRIF'] != 0) {
+                                        MHAfectGlobalS1 += Number(groupe['MHP S1 DRIF'])
+                                        MHAfectGlobalS1 += Number(groupe['MHSYN S1 DRIF'])
+                                        MHAfectGlobalS1P += Number(groupe["MHP S1 DRIF"]);
+                                        MHAfectGlobalS1SYN += Number(groupe["MHSYH S1 DRIF"]) || 0;
 
-                                    let dif = Number(groupe["MH Réalisée Sync"]) - Number(groupe['MHSYN S1 DRIF'])
-                                    if (dif < 0) {
-                                        MHRealisGlobalS1 += Number(groupe['MH Réalisée Sync'])
-                                        MHRealisGlobalS1SYN += Number(groupe['MH Réalisée Sync'])
-                                        MHRealisGlobalS2 -= Number(groupe['MH Réalisée Sync'])
-                                        MHRealisGlobalS2SYN -= Number(groupe['MH Réalisée Sync'])
+                                        let dif = Number(groupe["MH Réalisée Sync"]) - Number(groupe['MHSYN S1 DRIF'])
+                                        if (dif < 0) {
+                                            MHRealisGlobalS1 += Number(groupe['MH Réalisée Sync'])
+                                            MHRealisGlobalS1SYN += Number(groupe['MH Réalisée Sync'])
+                                            MHRealisGlobalS2 -= Number(groupe['MH Réalisée Sync'])
+                                            MHRealisGlobalS2SYN -= Number(groupe['MH Réalisée Sync'])
+
+                                        }
+                                        let dif2 = Number(groupe["MH Réalisée Présentiel"]) - Number(groupe['MHP S1 DRIF'])
+                                        if (dif2 < 0) {
+                                            MHRealisGlobalS1 += Number(groupe['MH Réalisée Présentiel'])
+                                            MHRealisGlobalS1P += Number(groupe['MH Réalisée Présentiel'])
+                                            MHAfectGlobalS2 -= Number(groupe['MH Réalisée Présentiel'])
+                                            MHAfectGlobalS2P -= Number(groupe['MH Réalisée Présentiel'])
+
+                                        }
 
                                     }
-                                    let dif2 = Number(groupe["MH Réalisée Présentiel"]) - Number(groupe['MHP S1 DRIF'])
-                                    if (dif2 < 0) {
-                                        MHRealisGlobalS1 += Number(groupe['MH Réalisée Présentiel'])
-                                        MHRealisGlobalS1P += Number(groupe['MH Réalisée Présentiel'])
-                                        MHAfectGlobalS2 -= Number(groupe['MH Réalisée Présentiel'])
-                                        MHAfectGlobalS2P -= Number(groupe['MH Réalisée Présentiel'])
+                                    MHAfectGlobalS2 += Number(groupe['MHP S2 DRIF'])
+                                    MHRealisGlobalS2 += Number(groupe['MH Réalisée Présentiel']) || 0;
+                                    MHAfectGlobalS2 += Number(groupe['MHSYN S2 DRIF'])
+                                    MHRealisGlobalS2 += Number(groupe['MH Réalisée Sync']) || 0
 
-                                    }
-
+                                    MHAfectGlobalS2P += Number(groupe['MHP S2 DRIF'])
+                                    MHRealisGlobalS2P += Number(groupe['MH Réalisée Présentiel']) || 0;
+                                    MHAfectGlobalS2SYN += Number(groupe['MHSYN S2 DRIF'])
+                                    MHRealisGlobalS2SYN += Number(groupe['MH Réalisée Sync']) || 0
                                 }
-                                MHAfectGlobalS2 += Number(groupe['MHP S2 DRIF'])
-                                MHRealisGlobalS2 += Number(groupe['MH Réalisée Présentiel']) || 0;
-                                MHAfectGlobalS2 += Number(groupe['MHSYN S2 DRIF'])
-                                MHRealisGlobalS2 += Number(groupe['MH Réalisée Sync']) || 0
-
-                                MHAfectGlobalS2P += Number(groupe['MHP S2 DRIF'])
-                                MHRealisGlobalS2P += Number(groupe['MH Réalisée Présentiel']) || 0;
-                                MHAfectGlobalS2SYN += Number(groupe['MHSYN S2 DRIF'])
-                                MHRealisGlobalS2SYN += Number(groupe['MH Réalisée Sync']) || 0
                             }
+
+
                         }
-
-
-                    }
                     })
 
                     if (type == "S1") {
