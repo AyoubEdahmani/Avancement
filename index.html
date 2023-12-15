@@ -294,7 +294,7 @@
                     }
 
                     MHRealisGlobal += Number(objFormateur['MH Réalisée Présentiel']) || 0;
-                    MHAfectGlobal += Number(objFormateur["MHP Totale DRIF"]) || 0;
+                    MHAfectGlobal += Number(objFormateur["MH Affectée Présentiel"] ||objFormateur['MHP Totale DRIF'] || 0);
 
                     if (objFormateur["Groupe"].includes("TREMOA") && (objFormateur["Module"].includes("Compétences") ||
                         objFormateur["Module"].includes("Français") || objFormateur["Module"].includes("Anglais"))) {
@@ -1019,7 +1019,7 @@
 
                     if ((elt["Module"] != "Culture entrepreneuriale") || (elt["Module"] == "Culture entrepreneuriale" && elt["Mle Affecté Présentiel Actif"])) {
 
-                        MHAfectGlobal += Number(elt["MH Totale  DRIF"]) - Number(elt["MHASYN Totale DRIF"]);
+                        MHAfectGlobal += Number(elt["MH Affectée Globale (P & SYN)"])||(Number(elt["MH Totale  DRIF"]) - Number(elt["MHASYN Totale DRIF"]));
 
                     }
                     if (elt["MH Réalisée Globale"]) {
@@ -1111,9 +1111,7 @@
                                 }
 
 
-                                MHAfectGlobalS2 += Number((Number(elt["MH Totale  DRIF"]) - Number(elt["MHASYN Totale DRIF"]))) || 0;
-                                MHAfectGlobalS2P += Number(elt['MHP Totale DRIF']) || 0;
-                                MHAfectGlobalS2SYN += Number(elt['MHSYN Totale DRIF']) || 0;
+                                
 
 
                                 MHRealisGlobalS2 += Number(elt["MH Réalisée Globale"]) || 0;
@@ -4039,14 +4037,12 @@
 
                                     }
 
-                                    MHAfectGlobalS2 += Number((Number(groupe["MH Totale  DRIF"]) - Number(groupe["MHASYN Totale DRIF"]))) || 0;
-                                    MHAfectGlobalS2P += Number(groupe["MHP Totale DRIF"]) || 0;
-                                    MHAfectGlobalS2SYN += Number(groupe["MHSYN Totale DRIF"]) || 0;
+                                 
 
                                     MHRealisGlobalS2P += Number(groupe["MH Réalisée Présentiel"]) || 0;
                                     MHRealisGlobalS2 += Number(groupe["MH Réalisée Globale"]) || 0;
-
                                     MHRealisGlobalS2SYN += Number(groupe["MH Réalisée Sync"]) || 0;
+
                                 } else {
                                     if (groupe['MH Totale S1 DRIF'] != 0) {
                                         MHAfectGlobalS1 += Number(groupe['MHP S1 DRIF'])
