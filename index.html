@@ -7,7 +7,7 @@
     <title>Document</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/css/bootstrap.min.css"
         integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/style.css">
+   
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
@@ -1811,6 +1811,30 @@
 
         function afficheModule5h() {
             let data = module5H()
+
+            data = data.sort(function (a, b) {
+                var numA = (a['Formateur Affecté Présentiel Actif']).toUpperCase();
+                var numB = (b['Formateur Affecté Présentiel Actif']).toUpperCase();
+                if (numA < numB) {
+                    return -1; // a comes before b
+                }
+
+                if (numA > numB) {
+                    return 1; // a comes after b
+                }
+
+                return 0; // names are equal
+            })
+
+            let data1A = data.filter(m => {
+                return m['Année de formation'] == 1
+            })
+            let data2A = data.filter(m => {
+                return m['Année de formation'] == 2
+            })
+            let data3A = data.filter(m => {
+                return m['Année de formation'] == 3
+            })
             let divParent = document.createElement('div')
             divParent.setAttribute('class', 'table-responsive-md');
             divParent.setAttribute('id', 'module5H');
@@ -1830,16 +1854,66 @@
                         <td>Présentiel</td>
                         <td>Sync</td>
                     </tr>
+                    <tr class="bg-light annee" >
+                        <td colspan='5'><b>1A</b></td>
+         
+                    </tr>
                   
                 `;
-            data.forEach(m => {
+            data1A.forEach(m => {
                 let pr = m["MHP Totale DRIF"] - m["MH Réalisée Présentiel"]
                 let ads = m["MHSYN Totale DRIF"] - m["MH Réalisée Sync"]
                 // let Avancement = ((m['MH Réalisée Globale'] || 0) * 100) / m['MH Affectée Globale (P & SYN)']
 
                 if (m['Formateur Affecté Présentiel Actif']) {
                     tableGroupe.innerHTML += `
-                    <tr name="${m['Formateur Affecté Présentiel Actif']}">
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 1A">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+                        <td>${pr}</td>
+                        <td>${ads} </td>
+                    </tr>
+                    `;
+                }
+            })
+            tableGroupe.innerHTML += `
+            <tr class="bg-light annee" >
+                        <td colspan='5'><b>2A</b></td>
+         
+                    </tr>
+                    `
+            data2A.forEach(m => {
+                let pr = m["MHP Totale DRIF"] - m["MH Réalisée Présentiel"]
+                let ads = m["MHSYN Totale DRIF"] - m["MH Réalisée Sync"]
+                // let Avancement = ((m['MH Réalisée Globale'] || 0) * 100) / m['MH Affectée Globale (P & SYN)']
+
+                if (m['Formateur Affecté Présentiel Actif']) {
+                    tableGroupe.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 2A">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+                        <td>${pr}</td>
+                        <td>${ads} </td>
+                    </tr>
+                    `;
+                }
+            })
+            tableGroupe.innerHTML += `
+            <tr class="bg-light annee" >
+                        <td colspan='5'><b>3A</b></td>
+         
+                    </tr>
+                    `
+            data3A.forEach(m => {
+                let pr = m["MHP Totale DRIF"] - m["MH Réalisée Présentiel"]
+                let ads = m["MHSYN Totale DRIF"] - m["MH Réalisée Sync"]
+                // let Avancement = ((m['MH Réalisée Globale'] || 0) * 100) / m['MH Affectée Globale (P & SYN)']
+
+                if (m['Formateur Affecté Présentiel Actif']) {
+                    tableGroupe.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 3A">
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
@@ -2029,7 +2103,7 @@
         }
         function inputModule5H(e) {
             let a = e.target.value;
-            let trs = document.querySelectorAll('#module5H tr:not(tbody:first-of-type tr)');
+            let trs = document.querySelectorAll('#module5H tr:not(tbody .annee):not(tbody:first-of-type tr)');
 
             let regex = new RegExp(`${a}`, 'i')
 
@@ -2056,7 +2130,8 @@
             <span class="btn btn-info d-block  m-2" id="downloadFor"  onclick='ModulesS2Nonentames()'>Modules S2 non entamés</span>
             <span class="btn btn-success d-block  m-2" id="downloadFor" onclick="EFMSRealisesS1()">EFMS réalisés S1</span>
             <span class="btn btn-success d-block  m-2" id="downloadFor" onclick="EFMSRealisesS2()">EFMS réalisés S2</span>
-            <span class="btn btn-warning d-block  m-2" id="downloadFor" onclick="classG()">Conseils de classes</span>
+            <span class="btn  btn-secondary d-block text-white  m-2"  id="downloadFor" onclick="achevesF()"> Modules achevés</span>
+            <span class="btn btn-warning d-block   m-2" id="downloadFor" onclick="classG()">Conseils de classes</span>
             `
             e.addEventListener("click", function () {
 
@@ -2078,6 +2153,39 @@
             legend1.style = 'width:fit-content;padding: 0 10px;'
             fieldset1.appendChild(legend1);
             let data = dataModulesNonentames()
+            let dataAvecFor = data.filter(m => {
+                return m['Formateur Affecté Présentiel Actif']
+            })
+            let dataNonFor = data.filter(m => {
+                return !m['Formateur Affecté Présentiel Actif']
+            })
+            data = dataAvecFor.sort(function (a, b) {
+                var numA = (a['Formateur Affecté Présentiel Actif']).toUpperCase();
+                var numB = (b['Formateur Affecté Présentiel Actif']).toUpperCase();
+                if (numA < numB) {
+                    return -1; // a comes before b
+                }
+
+                if (numA > numB) {
+                    return 1; // a comes after b
+                }
+
+                return 0; // names are equal
+            })
+            dataNonFor = dataNonFor.sort(function (a, b) {
+                var numA = (a['Groupe']).toUpperCase();
+                var numB = (b['Groupe']).toUpperCase();
+                if (numA < numB) {
+                    return -1; // a comes before b
+                }
+
+                if (numA > numB) {
+                    return 1; // a comes after b
+                }
+
+                return 0; // names are equal
+            })
+            data = [...data, ...dataNonFor]
             let dataS1 = data.filter(m => {
                 return m['MH Totale S1 DRIF'] != 0 && m['MH Totale S1 DRIF'] >= m['MH Totale S2 DRIF']
             })
@@ -2096,26 +2204,91 @@
                         <td>Nom</td>
                         <td>Formateur</td>
                         <td>Groupe</td>
+                        <tr class="bg-light annee" >
+                        <td colspan='3' ><b>1A</b></td>
          
+                    </tr>
                     </tr>
                     
                 `;
             dataRegS1.forEach(m => {
-                if (m["Module"] == "Culture entrepreneuriale" && m['Formateur Affecté Présentiel Actif']) {
-                    tableS1loc.innerHTML += `
-                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} ">
+                if (m["Module"] == "Culture entrepreneuriale" && m['Formateur Affecté Présentiel Actif'] && m["Année de formation"] == 1) {
+                    tableS1Reg.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 1A ">
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
-               
+                        
             
                         </tr>
                         `;
                 }
 
-                if (m["Module"] != "Culture entrepreneuriale") {
+                if (m["Module"] != "Culture entrepreneuriale" && m["Année de formation"] == 1) {
                     tableS1Reg.innerHTML += `
-                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']}">
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 1A" >
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+          
+            
+                        </tr>
+                        `;
+                }
+            })
+            tableS1Reg.innerHTML += `
+            <tr class="bg-light annee" >
+                        <td colspan='3'><b>2A</b></td>
+         
+                    </tr>
+                    `
+            dataRegS1.forEach(m => {
+                if (m["Module"] == "Culture entrepreneuriale" && m['Formateur Affecté Présentiel Actif'] && m["Année de formation"] == 2) {
+                    tableS1Reg.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 2A ">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+                        
+            
+                        </tr>
+                        `;
+                }
+
+                if (m["Module"] != "Culture entrepreneuriale" && m["Année de formation"] == 2) {
+                    tableS1Reg.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 2A">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+          
+            
+                        </tr>
+                        `;
+                }
+            })
+            tableS1Reg.innerHTML += `
+            <tr class="bg-light annee" >
+                        <td colspan='3'><b>3A</b></td>
+         
+                    </tr>
+                    `
+            dataRegS1.forEach(m => {
+                if (m["Module"] == "Culture entrepreneuriale" && m['Formateur Affecté Présentiel Actif'] && m["Année de formation"] == 3) {
+                    tableS1Reg.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 3A ">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+                        
+            
+                        </tr>
+                        `;
+                }
+
+                if (m["Module"] != "Culture entrepreneuriale" && m["Année de formation"] == 3) {
+                    tableS1Reg.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 3A">
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
@@ -2140,35 +2313,101 @@
                         <td>Nom</td>
                         <td>Formateur</td>
                         <td>Groupe</td>
+                        <tr class="bg-light annee" >
+                        <td colspan='3' ><b>1A</b></td>
          
                     </tr>
-   
+                    </tr>
+                    
                 `;
             dataLocS1.forEach(m => {
-                if (m["Module"] == "Culture entrepreneuriale" && m['Formateur Affecté Présentiel Actif']) {
+                if (m["Module"] == "Culture entrepreneuriale" && m['Formateur Affecté Présentiel Actif'] && m["Année de formation"] == 1) {
                     tableS1loc.innerHTML += `
-                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} ">
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 1A ">
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
-               
+                        
             
                         </tr>
                         `;
                 }
 
-                if (m["Module"] != "Culture entrepreneuriale") {
+                if (m["Module"] != "Culture entrepreneuriale" && m["Année de formation"] == 1) {
                     tableS1loc.innerHTML += `
-                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} ">
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 1A" >
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
-               
+          
             
                         </tr>
                         `;
                 }
             })
+            tableS1loc.innerHTML += `
+            <tr class="bg-light annee" >
+                        <td colspan='3'><b>2A</b></td>
+         
+                    </tr>
+                    `
+            dataLocS1.forEach(m => {
+                if (m["Module"] == "Culture entrepreneuriale" && m['Formateur Affecté Présentiel Actif'] && m["Année de formation"] == 2) {
+                    tableS1loc.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 2A ">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+                        
+            
+                        </tr>
+                        `;
+                }
+
+                if (m["Module"] != "Culture entrepreneuriale" && m["Année de formation"] == 2) {
+                    tableS1loc.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 2A">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+          
+            
+                        </tr>
+                        `;
+                }
+            })
+            tableS1loc.innerHTML += `
+            <tr class="bg-light annee" >
+                        <td colspan='3'><b>3A</b></td>
+         
+                    </tr>
+                    `
+            dataLocS1.forEach(m => {
+                if (m["Module"] == "Culture entrepreneuriale" && m['Formateur Affecté Présentiel Actif'] && m["Année de formation"] == 3) {
+                    tableS1loc.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 3A ">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+                        
+            
+                        </tr>
+                        `;
+                }
+
+                if (m["Module"] != "Culture entrepreneuriale" && m["Année de formation"] == 3) {
+                    tableS1loc.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 3A">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+          
+            
+                        </tr>
+                        `;
+                }
+            })
+
             fieldset2.append(tableS1loc)
             divParent.append(fieldset2)
             let input = document.createElement("input")
@@ -2199,6 +2438,39 @@
             legend1.style = 'width:fit-content;padding: 0 10px;'
             fieldset1.appendChild(legend1);
             let data = dataModulesNonentames()
+            let dataAvecFor = data.filter(m => {
+                return m['Formateur Affecté Présentiel Actif']
+            })
+            let dataNonFor = data.filter(m => {
+                return !m['Formateur Affecté Présentiel Actif']
+            })
+            data = dataAvecFor.sort(function (a, b) {
+                var numA = (a['Formateur Affecté Présentiel Actif']).toUpperCase();
+                var numB = (b['Formateur Affecté Présentiel Actif']).toUpperCase();
+                if (numA < numB) {
+                    return -1; // a comes before b
+                }
+
+                if (numA > numB) {
+                    return 1; // a comes after b
+                }
+
+                return 0; // names are equal
+            })
+            dataNonFor = dataNonFor.sort(function (a, b) {
+                var numA = (a['Groupe']).toUpperCase();
+                var numB = (b['Groupe']).toUpperCase();
+                if (numA < numB) {
+                    return -1; // a comes before b
+                }
+
+                if (numA > numB) {
+                    return 1; // a comes after b
+                }
+
+                return 0; // names are equal
+            })
+            data = [...data, ...dataNonFor]
             let dataS2 = data.filter(m => {
                 return m['MH Totale S2 DRIF'] != 0 && m['MH Totale S1 DRIF'] < m['MH Totale S2 DRIF']
             })
@@ -2215,29 +2487,95 @@
                         <td>Nom</td>
                         <td>Formateur</td>
                         <td>Groupe</td>
+                        <tr class="bg-light annee" >
+                        <td colspan='3' ><b>1A</b></td>
          
+                    </tr>
                     </tr>
                     
                 `;
             dataRegS2.forEach(m => {
-                if (m["Module"] == "Culture entrepreneuriale" && m['Formateur Affecté Présentiel Actif']) {
-                    tableS2loc.innerHTML += `
-                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} ">
+                if (m["Module"] == "Culture entrepreneuriale" && m['Formateur Affecté Présentiel Actif'] && m["Année de formation"] == 1) {
+                    tableS2Reg.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 1A ">
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
-               
+                        
             
                         </tr>
                         `;
                 }
 
-                if (m["Module"] != "Culture entrepreneuriale") {
+                if (m["Module"] != "Culture entrepreneuriale" && m["Année de formation"] == 1) {
                     tableS2Reg.innerHTML += `
-                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']}">
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 1A" >
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
+          
+            
+                        </tr>
+                        `;
+                }
+            })
+            tableS2Reg.innerHTML += `
+            <tr class="bg-light annee" >
+                        <td colspan='3'><b>2A</b></td>
+         
+                    </tr>
+                    `
+            dataRegS2.forEach(m => {
+                if (m["Module"] == "Culture entrepreneuriale" && m['Formateur Affecté Présentiel Actif'] && m["Année de formation"] == 2) {
+                    tableS2Reg.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 2A ">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+                        
+            
+                        </tr>
+                        `;
+                }
+
+                if (m["Module"] != "Culture entrepreneuriale" && m["Année de formation"] == 2) {
+                    tableS2Reg.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 2A">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+          
+            
+                        </tr>
+                        `;
+                }
+            })
+            tableS2Reg.innerHTML += `
+            <tr class="bg-light annee" >
+                        <td colspan='3'><b>3A</b></td>
+         
+                    </tr>
+                    `
+            dataRegS2.forEach(m => {
+                if (m["Module"] == "Culture entrepreneuriale" && m['Formateur Affecté Présentiel Actif'] && m["Année de formation"] == 3) {
+                    tableS2Reg.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 3A ">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+                        
+            
+                        </tr>
+                        `;
+                }
+
+                if (m["Module"] != "Culture entrepreneuriale" && m["Année de formation"] == 3) {
+                    tableS2Reg.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 3A">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+          
             
                         </tr>
                         `;
@@ -2245,6 +2583,7 @@
             })
             fieldset1.append(tableS2Reg)
             divParent.append(fieldset1)
+
             let fieldset2 = document.createElement('fieldset');
             let legend2 = document.createElement('legend');
             legend2.innerHTML = '<h5>Modules S2 non entamés Locaux</h5>'
@@ -2258,34 +2597,101 @@
                         <td>Nom</td>
                         <td>Formateur</td>
                         <td>Groupe</td>
+                        <tr class="bg-light annee" >
+                        <td colspan='3' ><b>1A</b></td>
          
                     </tr>
-   
+                    </tr>
+                    
                 `;
             dataLocS2.forEach(m => {
-                if (m["Module"] == "Culture entrepreneuriale" && m['Formateur Affecté Présentiel Actif']) {
+                if (m["Module"] == "Culture entrepreneuriale" && m['Formateur Affecté Présentiel Actif'] && m["Année de formation"] == 1) {
                     tableS2loc.innerHTML += `
-                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} ">
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 1A ">
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
-               
+                        
             
                         </tr>
                         `;
                 }
 
-                if (m["Module"] != "Culture entrepreneuriale") {
+                if (m["Module"] != "Culture entrepreneuriale" && m["Année de formation"] == 1) {
                     tableS2loc.innerHTML += `
-                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']}">
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 1A" >
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
+          
             
                         </tr>
                         `;
                 }
             })
+            tableS2loc.innerHTML += `
+            <tr class="bg-light annee" >
+                        <td colspan='3'><b>2A</b></td>
+         
+                    </tr>
+                    `
+            dataLocS2.forEach(m => {
+                if (m["Module"] == "Culture entrepreneuriale" && m['Formateur Affecté Présentiel Actif'] && m["Année de formation"] == 2) {
+                    tableS2loc.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 2A ">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+                        
+            
+                        </tr>
+                        `;
+                }
+
+                if (m["Module"] != "Culture entrepreneuriale" && m["Année de formation"] == 2) {
+                    tableS2loc.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 2A">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+          
+            
+                        </tr>
+                        `;
+                }
+            })
+            tableS2loc.innerHTML += `
+            <tr class="bg-light annee" >
+                        <td colspan='3'><b>3A</b></td>
+         
+                    </tr>
+                    `
+            dataLocS2.forEach(m => {
+                if (m["Module"] == "Culture entrepreneuriale" && m['Formateur Affecté Présentiel Actif'] && m["Année de formation"] == 3) {
+                    tableS2loc.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 3A ">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+                        
+            
+                        </tr>
+                        `;
+                }
+
+                if (m["Module"] != "Culture entrepreneuriale" && m["Année de formation"] == 3) {
+                    tableS2loc.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 3A">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+          
+            
+                        </tr>
+                        `;
+                }
+            })
+
             fieldset2.append(tableS2loc)
             divParent.append(fieldset2)
             let input = document.createElement("input")
@@ -2318,6 +2724,19 @@
             legend1.style = 'width:fit-content;padding: 0 10px;'
             fieldset1.appendChild(legend1);
             let data = dataModulesRealises()
+            data = data.sort(function (a, b) {
+                var numA = (a['Formateur Affecté Présentiel Actif']).toUpperCase();
+                var numB = (b['Formateur Affecté Présentiel Actif']).toUpperCase();
+                if (numA < numB) {
+                    return -1; // a comes before b
+                }
+
+                if (numA > numB) {
+                    return 1; // a comes after b
+                }
+
+                return 0; // names are equal
+            })
             let dataS1 = data.filter(m => {
                 return m['MH Totale S1 DRIF'] != 0 && m['MH Totale S1 DRIF'] >= m['MH Totale S2 DRIF']
             })
@@ -2334,19 +2753,95 @@
                         <td>Nom</td>
                         <td>Formateur</td>
                         <td>Groupe</td>
+                        <tr class="bg-light annee" >
+                        <td colspan='3' ><b>1A</b></td>
          
+                    </tr>
                     </tr>
                     
                 `;
             dataRegS1.forEach(m => {
-
-
-                if (m['Formateur Affecté Présentiel Actif']) {
+                if (m["Module"] == "Culture entrepreneuriale" && m['Formateur Affecté Présentiel Actif'] && m["Année de formation"]==1) {
                     tableS1Reg.innerHTML += `
-                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']}">
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 1A ">
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
+                        
+            
+                        </tr>
+                        `;
+                }
+
+                if (m["Module"] != "Culture entrepreneuriale" && m["Année de formation"]==1) {
+                    tableS1Reg.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 1A" >
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+          
+            
+                        </tr>
+                        `;
+                }
+            })
+            tableS1Reg.innerHTML+=`
+            <tr class="bg-light annee" >
+                        <td colspan='3'><b>2A</b></td>
+         
+                    </tr>
+                    `
+                    dataRegS1.forEach(m => {
+                if (m["Module"] == "Culture entrepreneuriale" && m['Formateur Affecté Présentiel Actif'] && m["Année de formation"]==2) {
+                    tableS1Reg.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 2A ">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+                        
+            
+                        </tr>
+                        `;
+                }
+
+                if (m["Module"] != "Culture entrepreneuriale" && m["Année de formation"]==2) {
+                    tableS1Reg.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 2A">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+          
+            
+                        </tr>
+                        `;
+                }
+            })
+            tableS1Reg.innerHTML+=`
+            <tr class="bg-light annee" >
+                        <td colspan='3'><b>3A</b></td>
+         
+                    </tr>
+                    `
+                    dataRegS1.forEach(m => {
+                if (m["Module"] == "Culture entrepreneuriale" && m['Formateur Affecté Présentiel Actif'] && m["Année de formation"]==3) {
+                    tableS1Reg.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 3A ">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+                        
+            
+                        </tr>
+                        `;
+                }
+
+                if (m["Module"] != "Culture entrepreneuriale" && m["Année de formation"]==3) {
+                    tableS1Reg.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 3A">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+          
             
                         </tr>
                         `;
@@ -2367,24 +2862,101 @@
                         <td>Nom</td>
                         <td>Formateur</td>
                         <td>Groupe</td>
+                        <tr class="bg-light annee" >
+                        <td colspan='3' ><b>1A</b></td>
          
                     </tr>
-   
+                    </tr>
+                    
                 `;
             dataLocS1.forEach(m => {
-
-
-                if (m['Formateur Affecté Présentiel Actif']) {
+                if (m["Module"] == "Culture entrepreneuriale" && m['Formateur Affecté Présentiel Actif'] && m["Année de formation"]==1) {
                     tableS1loc.innerHTML += `
-                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']}">
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 1A ">
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
-                        <td>${m['Groupe']}</td>
+                        <td>${m["Groupe"]}</td>
+                        
+            
+                        </tr>
+                        `;
+                }
+
+                if (m["Module"] != "Culture entrepreneuriale" && m["Année de formation"]==1) {
+                    tableS1loc.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 1A" >
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+          
             
                         </tr>
                         `;
                 }
             })
+            tableS1loc.innerHTML+=`
+            <tr class="bg-light annee" >
+                        <td colspan='3'><b>2A</b></td>
+         
+                    </tr>
+                    `
+                    dataLocS1.forEach(m => {
+                if (m["Module"] == "Culture entrepreneuriale" && m['Formateur Affecté Présentiel Actif'] && m["Année de formation"]==2) {
+                    tableS1loc.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 2A ">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+                        
+            
+                        </tr>
+                        `;
+                }
+
+                if (m["Module"] != "Culture entrepreneuriale" && m["Année de formation"]==2) {
+                    tableS1loc.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 2A">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+          
+            
+                        </tr>
+                        `;
+                }
+            })
+            tableS1loc.innerHTML+=`
+            <tr class="bg-light annee" >
+                        <td colspan='3'><b>3A</b></td>
+         
+                    </tr>
+                    `
+                    dataLocS1.forEach(m => {
+                if (m["Module"] == "Culture entrepreneuriale" && m['Formateur Affecté Présentiel Actif'] && m["Année de formation"]==3) {
+                    tableS1loc.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 3A ">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+                        
+            
+                        </tr>
+                        `;
+                }
+
+                if (m["Module"] != "Culture entrepreneuriale" && m["Année de formation"]==3) {
+                    tableS1loc.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 3A">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+          
+            
+                        </tr>
+                        `;
+                }
+            })
+        
             fieldset2.append(tableS1loc)
             divParent.append(fieldset2)
             let input = document.createElement("input")
@@ -2417,6 +2989,20 @@
             legend1.style = 'width:fit-content;padding: 0 10px;'
             fieldset1.appendChild(legend1);
             let data = dataModulesRealises()
+            data = data.sort(function (a, b) {
+                var numA = (a['Formateur Affecté Présentiel Actif']).toUpperCase();
+                var numB = (b['Formateur Affecté Présentiel Actif']).toUpperCase();
+                if (numA < numB) {
+                    return -1; // a comes before b
+                }
+
+                if (numA > numB) {
+                    return 1; // a comes after b
+                }
+
+                return 0; // names are equal
+            })
+           
             let dataS2 = data.filter(m => {
                 return m['MH Totale S2 DRIF'] != 0 && m['MH Totale S1 DRIF'] < m['MH Totale S2 DRIF']
             })
@@ -2433,19 +3019,95 @@
                         <td>Nom</td>
                         <td>Formateur</td>
                         <td>Groupe</td>
+                        <tr class="bg-light annee" >
+                        <td colspan='3' ><b>1A</b></td>
          
+                    </tr>
                     </tr>
                     
                 `;
             dataRegS2.forEach(m => {
-
-
-                if (m['Formateur Affecté Présentiel Actif']) {
+                if (m["Module"] == "Culture entrepreneuriale" && m['Formateur Affecté Présentiel Actif'] && m["Année de formation"] == 1) {
                     tableS2Reg.innerHTML += `
-                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']}">
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 1A ">
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
+                        
+            
+                        </tr>
+                        `;
+                }
+
+                if (m["Module"] != "Culture entrepreneuriale" && m["Année de formation"] == 1) {
+                    tableS2Reg.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 1A" >
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+          
+            
+                        </tr>
+                        `;
+                }
+            })
+            tableS2Reg.innerHTML += `
+            <tr class="bg-light annee" >
+                        <td colspan='3'><b>2A</b></td>
+         
+                    </tr>
+                    `
+            dataRegS2.forEach(m => {
+                if (m["Module"] == "Culture entrepreneuriale" && m['Formateur Affecté Présentiel Actif'] && m["Année de formation"] == 2) {
+                    tableS2Reg.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 2A ">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+                        
+            
+                        </tr>
+                        `;
+                }
+
+                if (m["Module"] != "Culture entrepreneuriale" && m["Année de formation"] == 2) {
+                    tableS2Reg.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 2A">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+          
+            
+                        </tr>
+                        `;
+                }
+            })
+            tableS2Reg.innerHTML += `
+            <tr class="bg-light annee" >
+                        <td colspan='3'><b>3A</b></td>
+         
+                    </tr>
+                    `
+            dataRegS2.forEach(m => {
+                if (m["Module"] == "Culture entrepreneuriale" && m['Formateur Affecté Présentiel Actif'] && m["Année de formation"] == 3) {
+                    tableS2Reg.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 3A ">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+                        
+            
+                        </tr>
+                        `;
+                }
+
+                if (m["Module"] != "Culture entrepreneuriale" && m["Année de formation"] == 3) {
+                    tableS2Reg.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 3A">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+          
             
                         </tr>
                         `;
@@ -2453,6 +3115,7 @@
             })
             fieldset1.append(tableS2Reg)
             divParent.append(fieldset1)
+
             let fieldset2 = document.createElement('fieldset');
             let legend2 = document.createElement('legend');
             legend2.innerHTML = '<h5>EFMS réalisés S2 Locaux</h5>'
@@ -2466,24 +3129,101 @@
                         <td>Nom</td>
                         <td>Formateur</td>
                         <td>Groupe</td>
+                        <tr class="bg-light annee" >
+                        <td colspan='3' ><b>1A</b></td>
          
                     </tr>
-   
+                    </tr>
+                    
                 `;
             dataLocS2.forEach(m => {
-
-
-                if (m['Formateur Affecté Présentiel Actif']) {
+                if (m["Module"] == "Culture entrepreneuriale" && m['Formateur Affecté Présentiel Actif'] && m["Année de formation"] == 1) {
                     tableS2loc.innerHTML += `
-                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']}">
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 1A ">
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
+                        
+            
+                        </tr>
+                        `;
+                }
+
+                if (m["Module"] != "Culture entrepreneuriale" && m["Année de formation"] == 1) {
+                    tableS2loc.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 1A" >
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+          
             
                         </tr>
                         `;
                 }
             })
+            tableS2loc.innerHTML += `
+            <tr class="bg-light annee" >
+                        <td colspan='3'><b>2A</b></td>
+         
+                    </tr>
+                    `
+            dataLocS2.forEach(m => {
+                if (m["Module"] == "Culture entrepreneuriale" && m['Formateur Affecté Présentiel Actif'] && m["Année de formation"] == 2) {
+                    tableS2loc.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 2A ">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+                        
+            
+                        </tr>
+                        `;
+                }
+
+                if (m["Module"] != "Culture entrepreneuriale" && m["Année de formation"] == 2) {
+                    tableS2loc.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 2A">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+          
+            
+                        </tr>
+                        `;
+                }
+            })
+            tableS2loc.innerHTML += `
+            <tr class="bg-light annee" >
+                        <td colspan='3'><b>3A</b></td>
+         
+                    </tr>
+                    `
+            dataLocS2.forEach(m => {
+                if (m["Module"] == "Culture entrepreneuriale" && m['Formateur Affecté Présentiel Actif'] && m["Année de formation"] == 3) {
+                    tableS2loc.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 3A ">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+                        
+            
+                        </tr>
+                        `;
+                }
+
+                if (m["Module"] != "Culture entrepreneuriale" && m["Année de formation"] == 3) {
+                    tableS2loc.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 3A">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+          
+            
+                        </tr>
+                        `;
+                }
+            })
+
             fieldset2.append(tableS2loc)
             divParent.append(fieldset2)
             let input = document.createElement("input")
@@ -2511,6 +3251,15 @@
             })
 
         }
+        function dataModulesAcheves() {
+            let data = JSON.parse(localStorage.jsonData);
+            return data.filter(e => {
+                let MHRealisGlobal = e["MH Réalisée Globale"]
+                let MHAfectGlobal = Number((Number(e["MH Totale  DRIF"]) - Number(e["MHASYN Totale DRIF"])))
+                let TauxMHRealisGlobal = MHRealisGlobal * 100 / MHAfectGlobal;
+                return (TauxMHRealisGlobal >= 100 && e["Séance EFM"] == "Non")
+            })
+        }
         function dataModulesRealises() {
             let data = JSON.parse(localStorage.jsonData);
             return data.filter(e => {
@@ -2520,7 +3269,28 @@
         }
         function inputModuleS1Entames(e) {
             let a = e.target.value;
-            let trs = document.querySelectorAll('#ModulesS1Nonentames tr:not(tbody:first-of-type tr)');
+            let trs = document.querySelectorAll('#ModulesS1Nonentames tr:not(body .annee):not(tbody:first-of-type tr)');
+
+            let regex = new RegExp(`${a}`, 'i')
+
+            trs.forEach(e => {
+
+                if (regex.test(e.getAttribute('name'))) {
+
+                    e.classList.remove('d-none')
+
+                } else {
+
+                    e.classList.add('d-none')
+
+                }
+
+            })
+
+        }
+        function inputModulesAcheves(e) {
+            let a = e.target.value;
+            let trs = document.querySelectorAll('#achevesF tr:not(body .annee):not(tbody:first-of-type tr)');
 
             let regex = new RegExp(`${a}`, 'i')
 
@@ -2541,7 +3311,7 @@
         }
         function inputModuleS2Entames(e) {
             let a = e.target.value;
-            let trs = document.querySelectorAll('#ModulesS2Nonentames tr:not(tbody:first-of-type tr)');
+            let trs = document.querySelectorAll('#ModulesS2Nonentames tr:not(body .annee):not(tbody:first-of-type tr)');
 
             let regex = new RegExp(`${a}`, 'i')
 
@@ -2562,7 +3332,7 @@
         }
         function inputEFMSRealisesS1(e) {
             let a = e.target.value;
-            let trs = document.querySelectorAll('#EFMSRealisesS1 tr:not(tbody:first-of-type tr)');
+            let trs = document.querySelectorAll('#EFMSRealisesS1 tr:not(body .annee):not(tbody:first-of-type tr)');
 
             let regex = new RegExp(`${a}`, 'i')
 
@@ -2583,7 +3353,7 @@
         }
         function inputEFMSRealisesS2(e) {
             let a = e.target.value;
-            let trs = document.querySelectorAll('#EFMSRealisesS2 tr:not(tbody:first-of-type tr)');
+            let trs = document.querySelectorAll('#EFMSRealisesS2 tr:not(body .annee):not(tbody:first-of-type tr)');
 
             let regex = new RegExp(`${a}`, 'i')
 
@@ -2757,18 +3527,18 @@
 
 
                         if (!(groupe["Groupe"].includes("TREMOA") && (groupe["Module"].includes("Compétences") ||
-                        groupe["Module"].includes("Français") || groupe["Module"].includes("Anglais")))){
+                            groupe["Module"].includes("Français") || groupe["Module"].includes("Anglais")))) {
 
                             if (countEx.length > 0) {
                                 if (type == "S1") {
                                     difSYN += Number(groupe["MHSYN S1 DRIF"]) || 0
                                     let dif = Number(groupe["MH Réalisée Sync"]) - Number(groupe['MHSYN S1 DRIF'])
                                     // console.log(dif);
-    
+
                                     if (dif <= 0) {
                                         difSYN -= Number(groupe['MH Réalisée Sync'])
                                     }
-    
+
                                 }
                                 else {
                                     difSYN += Number(groupe["MHSYN S2 DRIF"]) || 0
@@ -2777,9 +3547,9 @@
                                         difSYN -= Number(dif)
                                     }
                                 }
-    
+
                                 let groupeSYNnew = groupeSYN.filter(e => !(e.grp == groupeStg && e.Module == groupe["Code Module"]))
-                               // console.log(groupeSYNnew);
+                                // console.log(groupeSYNnew);
                                 groupeSYN = [...groupeSYNnew]
                             }
                             else {
@@ -3464,6 +4234,306 @@
 
                 }
 
+            })
+
+        }
+        function achevesF() {
+            let divParent = document.createElement('div')
+            divParent.setAttribute('class', 'table-responsive-md');
+            divParent.setAttribute('id', 'achevesF');
+
+            let fieldset1 = document.createElement('fieldset');
+            let legend1 = document.createElement('legend');
+            legend1.innerHTML = '<h5>Modules S1  Modules achevés</h5>'
+            fieldset1.style = 'border:solid;padding-bottom: 20px;'
+            legend1.style = 'width:fit-content;padding: 0 10px;'
+            fieldset1.appendChild(legend1);
+            let data = dataModulesAcheves()
+
+            data = data.sort(function (a, b) {
+                var numA = (a['Formateur Affecté Présentiel Actif']).toUpperCase();
+                var numB = (b['Formateur Affecté Présentiel Actif']).toUpperCase();
+                if (numA < numB) {
+                    return -1; // a comes before b
+                }
+
+                if (numA > numB) {
+                    return 1; // a comes after b
+                }
+
+                return 0; // names are equal
+            })
+            let dataS1 = data.filter(m => {
+                return m['MH Totale S1 DRIF'] != 0 && m['MH Totale S1 DRIF'] >= m['MH Totale S2 DRIF']
+            })
+            let data1AS1 = dataS1.filter(m => {
+                return m['Année de formation'] == 1
+            })
+            let data2AS1 = dataS1.filter(m => {
+                return m['Année de formation'] == 2
+            })
+            let data3AS1 = dataS1.filter(m => {
+                return m['Année de formation'] == 3
+            })
+
+
+            let tableS1 = document.createElement('table');
+            tableS1.setAttribute('class', 'table table-bordered table-hover text-center table-responsive-md');
+            tableS1.innerHTML = `
+                    <tr class="bg-secondary text-light">
+                        <td>Nom</td>
+                        <td>Formateur</td>
+                        <td>Groupe</td>
+         
+                    </tr>
+                    
+                    <tr class="bg-light annee">
+                        <td colspan='3'><b>1A</b></td>
+         
+                    </tr>
+                    
+                    
+                `;
+            data1AS1.forEach(m => {
+                if (m["Module"] == "Culture entrepreneuriale" && m['Formateur Affecté Présentiel Actif']) {
+                    tableS1.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 1A">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+               
+            
+                        </tr>
+                        `;
+                }
+
+                if (m["Module"] != "Culture entrepreneuriale") {
+                    tableS1.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 1A">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+          
+            
+                        </tr>
+                        `;
+                }
+            })
+            tableS1.innerHTML += `
+            <tr class="bg-light annee" >
+                        <td colspan='3'><b>2A</b></td>
+         
+                    </tr>
+                    `
+            data2AS1.forEach(m => {
+                if (m["Module"] == "Culture entrepreneuriale" && m['Formateur Affecté Présentiel Actif']) {
+                    tableS1.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 2A">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+               
+            
+                        </tr>
+                        `;
+                }
+
+                if (m["Module"] != "Culture entrepreneuriale") {
+                    tableS1.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 2A">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+          
+            
+                        </tr>
+                        `;
+                }
+            })
+            tableS1.innerHTML += `
+            <tr class="bg-light annee" >
+                        <td colspan='3'><b>3A</b></td>
+         
+                    </tr>
+                    `
+            data3AS1.forEach(m => {
+                if (m["Module"] == "Culture entrepreneuriale" && m['Formateur Affecté Présentiel Actif']) {
+                    tableS1.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 3A ">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+               
+            
+                        </tr>
+                        `;
+                }
+
+                if (m["Module"] != "Culture entrepreneuriale") {
+                    tableS1.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 3A">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+          
+            
+                        </tr>
+                        `;
+                }
+            })
+            fieldset1.append(tableS1)
+            divParent.append(fieldset1)
+
+
+
+
+
+
+
+
+
+            let fieldset2 = document.createElement('fieldset');
+            let legend2 = document.createElement('legend');
+            legend2.innerHTML = '<h5>Modules S2  Modules achevés</h5>'
+            fieldset2.style = 'border:solid;padding-bottom: 20px;'
+            legend2.style = 'width:fit-content;padding: 0 10px;'
+            fieldset2.appendChild(legend2);
+
+            let dataS2 = data.filter(m => {
+                return m['MH Totale S1 DRIF'] != 0 && m['MH Totale S1 DRIF'] < m['MH Totale S2 DRIF']
+            })
+            let data1AS2 = dataS2.filter(m => {
+                return m['Année de formation'] == 1
+            })
+            let data2AS2 = dataS2.filter(m => {
+                return m['Année de formation'] == 2
+            })
+            let data3AS2 = dataS2.filter(m => {
+                return m['Année de formation'] == 3
+            })
+
+
+            let tableS2 = document.createElement('table');
+            tableS2.setAttribute('class', 'table table-bordered table-hover text-center table-responsive-md');
+            tableS2.innerHTML = `
+                    <tr class="bg-secondary text-light">
+                        <td>Nom</td>
+                        <td>Formateur</td>
+                        <td>Groupe</td>
+         
+                    </tr>
+                    
+                    <tr class="bg-light annee" >
+                        <td colspan='3' ><b>1A</b></td>
+         
+                    </tr>
+                    
+                    
+                `;
+            data1AS2.forEach(m => {
+                if (m["Module"] == "Culture entrepreneuriale" && m['Formateur Affecté Présentiel Actif']) {
+                    tableS2.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 1A ">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+               
+            
+                        </tr>
+                        `;
+                }
+
+                if (m["Module"] != "Culture entrepreneuriale") {
+                    tableS2.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 1A">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+          
+            
+                        </tr>
+                        `;
+                }
+            })
+            tableS2.innerHTML += `
+            <tr class="bg-light annee" >
+                        <td colspan='3'><b>2A</b></td>
+         
+                    </tr>
+                    `
+            data2AS2.forEach(m => {
+                if (m["Module"] == "Culture entrepreneuriale" && m['Formateur Affecté Présentiel Actif']) {
+                    tableS2.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 2A">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+               
+            
+                        </tr>
+                        `;
+                }
+
+                if (m["Module"] != "Culture entrepreneuriale") {
+                    tableS2.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 2A">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+          
+            
+                        </tr>
+                        `;
+                }
+            })
+            tableS2.innerHTML += `
+            <tr class="bg-light annee" >
+                        <td colspan='3'><b>3A</b></td>
+         
+                    </tr>
+                    `
+            data3AS2.forEach(m => {
+                if (m["Module"] == "Culture entrepreneuriale" && m['Formateur Affecté Présentiel Actif']) {
+                    tableS2.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 3A">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+               
+            
+                        </tr>
+                        `;
+                }
+
+                if (m["Module"] != "Culture entrepreneuriale") {
+                    tableS2.innerHTML += `
+                    <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 3A">
+                        <td>${m['Code Module']}-${m['Module']}</td>
+                        <td>${m['Formateur Affecté Présentiel Actif']}</td>
+                        <td>${m["Groupe"]}</td>
+          
+            
+                        </tr>
+                        `;
+                }
+            })
+            fieldset2.append(tableS2)
+            divParent.append(fieldset2)
+
+            let input = document.createElement("input")
+            input.type = 'search'
+            input.placeholder = 'Rechercher ...'
+            input.className = 'rechercher form-control mx-auto my-5 w-75'
+            input.addEventListener("input", (e) => {
+                inputModulesAcheves(e)
+
+            })
+
+
+            divParent.appendChild(input);
+            swal({
+
+                content: divParent
             })
 
         }
