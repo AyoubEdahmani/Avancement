@@ -265,7 +265,7 @@
                 tableFormateur.forEach(objFormateur => {
 
                     let p = ((objFormateur['MH Réalisée Globale'] || 0) * 100) / (objFormateur["MH Affectée Globale (P & SYN)"] || (Number(objFormateur["MH Totale  DRIF"]) - Number(objFormateur["MHASYN Totale DRIF"])));
-                   
+
                     objModule = {
                         p: p.toFixed(2),
                         nom: `${objFormateur['Code Module']}-${objFormateur['Module']}`,
@@ -274,8 +274,8 @@
                         s1: objFormateur['MH Totale S1 DRIF'],
                         s2: objFormateur['MH Totale S2 DRIF'],
                         MHAG: (objFormateur["MH Affectée Globale (P & SYN)"] || (Number(objFormateur["MH Totale  DRIF"]) - Number(objFormateur["MHASYN Totale DRIF"]))),
-                        MHAP: objFormateur["MH Affectée Présentiel"] ||objFormateur['MHP Totale DRIF'] || 0,
-                        MHAS: objFormateur["MH Affectée Sync"]||objFormateur['MHSYN Totale DRIF'] || 0,
+                        MHAP: objFormateur["MH Affectée Présentiel"] || objFormateur['MHP Totale DRIF'] || 0,
+                        MHAS: objFormateur["MH Affectée Sync"] || objFormateur['MHSYN Totale DRIF'] || 0,
                         MHRP: objFormateur['MH Réalisée Présentiel'] || 0,
                         MHRS: objFormateur['MH Réalisée Sync'] || 0,
                         MHRG: objFormateur['MH Réalisée Globale'] || 0,
@@ -294,7 +294,7 @@
                     }
 
                     MHRealisGlobal += Number(objFormateur['MH Réalisée Présentiel']) || 0;
-                    MHAfectGlobal += Number(objFormateur["MH Affectée Présentiel"] ||objFormateur['MHP Totale DRIF'] || 0);
+                    MHAfectGlobal += Number(objFormateur["MH Affectée Présentiel"] || objFormateur['MHP Totale DRIF'] || 0);
 
                     if (objFormateur["Groupe"].includes("TREMOA") && (objFormateur["Module"].includes("Compétences") ||
                         objFormateur["Module"].includes("Français") || objFormateur["Module"].includes("Anglais"))) {
@@ -388,9 +388,9 @@
                                 objFormateur["Module"].includes("Français") || objFormateur["Module"].includes("Anglais")) {
 
                                 MHRealisGlobalS2 += Number(objFormateur["MH Réalisée Sync"]) || 0;
-                                MHAfectGlobalS2 += Number(objFormateur["MHSYN Totale DRIF"]) || 0;
+                                MHAfectGlobalS2 += Number(objFormateur["MH Affectée Sync"])|| Number(objFormateur["MHSYN Totale DRIF"]) || 0;
                                 MHRealisGlobalS2SYN += Number(objFormateur["MH Réalisée Sync"]) || 0;
-                                MHAfectGlobalS2SYN += Number(objFormateur["MHSYN Totale DRIF"]) || 0;
+                                MHAfectGlobalS2SYN += Number(objFormateur["MH Affectée Sync"])|| Number(objFormateur["MHSYN Totale DRIF"]) || 0;
 
 
                             }
@@ -480,7 +480,7 @@
 
                                         if (dt['Groupe'] == gr && condTr && dt["Année de formation"] == annee && dt['Code Filière'] == e && dt['Code Module'] == eM) {
                                             // console.log(condTr);
-                                            MHAfectGlobal += Number(dt["MHSYN Totale DRIF"]) || 0;
+                                            MHAfectGlobal += Number(dt["MH Affectée Sync"])|| Number(dt["MHSYN Totale DRIF"]) || 0;
                                             MHRealisGlobal += Number(dt['MH Réalisée Sync']) || 0;
                                             if (dt['MH Totale S1 DRIF'] != 0 && dt['MH Totale S1 DRIF'] >= dt['MH Totale S2 DRIF']) {
                                                 if (dt["Groupe"].includes("TREMOA")) {
@@ -1019,7 +1019,7 @@
 
                     if ((elt["Module"] != "Culture entrepreneuriale") || (elt["Module"] == "Culture entrepreneuriale" && elt["Mle Affecté Présentiel Actif"])) {
 
-                        MHAfectGlobal += Number(elt["MH Affectée Globale (P & SYN)"])||(Number(elt["MH Totale  DRIF"]) - Number(elt["MHASYN Totale DRIF"]));
+                        MHAfectGlobal += Number(elt["MH Affectée Globale (P & SYN)"]) || (Number(elt["MH Totale  DRIF"]) - Number(elt["MHASYN Totale DRIF"]));
 
                     }
                     if (elt["MH Réalisée Globale"]) {
@@ -1111,7 +1111,7 @@
                                 }
 
 
-                                
+
 
 
                                 MHRealisGlobalS2 += Number(elt["MH Réalisée Globale"]) || 0;
@@ -1868,8 +1868,8 @@
         function module5H() {
             let data = JSON.parse(localStorage.jsonData);
             let dataF = data.filter(e => {
-                let pr = e["MHP Totale DRIF"] - e["MH Réalisée Présentiel"]
-                let ads = e["MHSYN Totale DRIF"] - e["MH Réalisée Sync"]
+                let pr = e["MH Affectée Présentiel"] - e["MH Réalisée Présentiel"]
+                let ads = e["MH Affectée Sync"] - e["MH Réalisée Sync"]
                 return ((pr <= 5 && pr > 0) || (ads == 5 && ads > 0)) && (e['Séance EFM'] == "Non")
             })
             return dataF
@@ -1927,8 +1927,8 @@
                   
                 `;
             data1A.forEach(m => {
-                let pr = (m["MH Affectée Présentiel"] ||m['MHP Totale DRIF'] || 0) - m["MH Réalisée Présentiel"]
-                let ads = (m["MH Affectée Sync"]||m['MHSYN Totale DRIF'] || 0) - m["MH Réalisée Sync"]
+                let pr = (m["MH Affectée Présentiel"] || m['MHP Totale DRIF'] || 0) - m["MH Réalisée Présentiel"]
+                let ads = (m["MH Affectée Sync"] || m['MHSYN Totale DRIF'] || 0) - m["MH Réalisée Sync"]
                 // let Avancement = ((m['MH Réalisée Globale'] || 0) * 100) / m['MH Affectée Globale (P & SYN)']
 
                 if (m['Formateur Affecté Présentiel Actif']) {
@@ -1950,8 +1950,8 @@
                     </tr>
                     `
             data2A.forEach(m => {
-                let pr = (m["MH Affectée Présentiel"] ||m['MHP Totale DRIF'] || 0) - m["MH Réalisée Présentiel"]
-                let ads = (m["MH Affectée Sync"]||m['MHSYN Totale DRIF'] || 0) - m["MH Réalisée Sync"]
+                let pr = (m["MH Affectée Présentiel"] || m['MHP Totale DRIF'] || 0) - m["MH Réalisée Présentiel"]
+                let ads = (m["MH Affectée Sync"] || m['MHSYN Totale DRIF'] || 0) - m["MH Réalisée Sync"]
                 // let Avancement = ((m['MH Réalisée Globale'] || 0) * 100) / m['MH Affectée Globale (P & SYN)']
 
                 if (m['Formateur Affecté Présentiel Actif']) {
@@ -1973,8 +1973,8 @@
                     </tr>
                     `
             data3A.forEach(m => {
-                let pr = (m["MH Affectée Présentiel"] ||m['MHP Totale DRIF'] || 0) - m["MH Réalisée Présentiel"]
-                let ads = (m["MH Affectée Sync"]||m['MHSYN Totale DRIF'] || 0) - m["MH Réalisée Sync"]
+                let pr = (m["MH Affectée Présentiel"] || m['MHP Totale DRIF'] || 0) - m["MH Réalisée Présentiel"]
+                let ads = (m["MH Affectée Sync"] || m['MHSYN Totale DRIF'] || 0) - m["MH Réalisée Sync"]
                 // let Avancement = ((m['MH Réalisée Globale'] || 0) * 100) / m['MH Affectée Globale (P & SYN)']
 
                 if (m['Formateur Affecté Présentiel Actif']) {
@@ -2196,6 +2196,8 @@
             <span class="btn btn-info d-block  m-2" id="downloadFor"  onclick='ModulesS2Nonentames()'>Modules S2 non entamés</span>
             <span class="btn btn-success d-block  m-2" id="downloadFor" onclick="EFMSRealisesS1()">EFMS réalisés S1</span>
             <span class="btn btn-success d-block  m-2" id="downloadFor" onclick="EFMSRealisesS2()">EFMS réalisés S2</span>
+            <span class="btn btn-primary d-block   m-2" id="downloadFor" onclick="SynthensePr()">Synthèse permanent</span>
+            <span class="btn btn-primary d-block   m-2" id="downloadFor" onclick="SynthenseVct()">Synthèse vacataire</span>
             <span class="btn  btn-secondary d-block text-white  m-2"  id="downloadFor" onclick="achevesF()"> Modules achevés</span>
             <span class="btn btn-warning d-block   m-2" id="downloadFor" onclick="classG()">Conseils de classes</span>
             `
@@ -3951,7 +3953,7 @@
                     let listM = []
                     listSexist.push(elt["Formateur Affecté Présentiel Actif"])
                     let data = listS.filter(e => e["Formateur Affecté Présentiel Actif"] == elt["Formateur Affecté Présentiel Actif"])
-                  
+
                     data.map(groupe => {
                         if (!listM.includes(groupe["Code Module"])) {
                             listM.push(groupe["Code Module"])
@@ -4037,7 +4039,7 @@
 
                                     }
 
-                                 
+
 
                                     MHRealisGlobalS2P += Number(groupe["MH Réalisée Présentiel"]) || 0;
                                     MHRealisGlobalS2 += Number(groupe["MH Réalisée Globale"]) || 0;
@@ -4083,7 +4085,7 @@
 
                         }
                     })
-                    
+
 
                     if (type == "S1") {
 
@@ -4661,6 +4663,724 @@
                 content: divParent
             })
 
+        }
+        function dataformateurPr() {
+            let data = JSON.parse(localStorage.jsonData);
+            let formateurs = []
+            data.forEach((e) => {
+                if (e['Formateur Affecté Présentiel Actif']) {
+
+                    if (!formateurs.includes(e['Formateur Affecté Présentiel Actif']) && !isNaN(e["Mle Affecté Présentiel Actif"])) {
+                        let nomForm = e['Formateur Affecté Présentiel Actif'];
+                        formateurs.push(nomForm);
+                    }
+                }
+            });
+            formateurs.sort();
+
+            return formateurs
+        }
+        function SynthensePr() {
+            let data = dataformateurPr()
+            let jsonData = JSON.parse(localStorage.jsonData);
+            let divParent = document.createElement('div')
+            divParent.setAttribute('class', 'table-responsive-md');
+            divParent.setAttribute('id', 'SynthensePr');
+            let tableModule = document.createElement('table');
+            tableModule.setAttribute('class', 'table table-bordered table-hover text-center table-responsive-md MHCol');
+            tableModule.innerHTML = `
+                    <tr >
+                            <td colspan='3'></td>
+                       
+                    
+                            <td colspan='3' class="bg-light"><b>S1</b></td>
+                       
+                
+                            <td colspan='3' class="bg-light"><b>S2</b></td>
+                       
+                    
+                            <td colspan='3' class="bg-light"><b>Total</b></td>
+                        </tr>
+                        <tr class="bg-secondary text-light">
+                            <td>N°</td>
+                            <td>Mle</td>
+                            <td>Formateur</td>
+                            <td>MH Affectée Présentiel</td>
+                            <td>MH Affectée Sync</td>
+                            <td>MH Affectée Globale (P & SYN)</td>
+                            <td>MH Affectée Présentiel</td>
+                            <td>MH Affectée Sync</td>
+                            <td>MH Affectée Globale (P & SYN)</td>
+                            <td>MH Affectée Présentiel</td>
+                            <td>MH Affectée Sync</td>
+                            <td>MH Affectée Globale (P & SYN)</td>
+                           
+                        </tr>
+                        `
+            data.forEach((formateur, i) => {
+                let objModule;
+                let tableFormateur;
+
+                tableFormateur = jsonData.filter(e => e['Formateur Affecté Présentiel Actif'] == formateur)
+                let MHAfectGlobal = 0;
+                let MHAfectGlobalP = 0;
+                let MHAfectGlobalSYN = 0;
+
+                let MHAfectGlobalS1 = 0;
+                let MHAfectGlobalS1P = 0;
+                let MHAfectGlobalS1SYN = 0;
+
+                let MHAfectGlobalS2 = 0;
+                let MHAfectGlobalS2P = 0;
+                let MHAfectGlobalS2SYN = 0;
+
+                let listS1 = []
+                let listS2 = [];
+
+                let annees = [];
+                tableFormateur.forEach(objFormateur => {
+
+
+                    objModule = {
+                       
+                        s1: objFormateur['MH Totale S1 DRIF'],
+                        s2: objFormateur['MH Totale S2 DRIF'],
+                        MHAG: (objFormateur["MH Affectée Globale (P & SYN)"] || (Number(objFormateur["MH Totale  DRIF"]) - Number(objFormateur["MHASYN Totale DRIF"]))),
+                        MHAP: objFormateur["MH Affectée Présentiel"] || objFormateur['MHP Totale DRIF'] || 0,
+                        MHAS: objFormateur["MH Affectée Sync"] || objFormateur['MHSYN Totale DRIF'] || 0,
+                  
+                       
+                    }
+                  
+
+                    if (!annees.includes(objFormateur["Année de formation"])) {
+
+                        annees.push(objFormateur["Année de formation"]);
+
+                    }
+
+                    MHAfectGlobal +=Number(objFormateur["MH Affectée Présentiel"])|| Number(objFormateur["MHP Totale DRIF"]) || 0;
+                    MHAfectGlobalP +=Number(objFormateur["MH Affectée Présentiel"])|| Number(objFormateur["MHP Totale DRIF"]) || 0;
+
+                    if (objFormateur["Groupe"].includes("TREMOA") && (objFormateur["Module"].includes("Compétences") ||
+                        objFormateur["Module"].includes("Français") || objFormateur["Module"].includes("Anglais"))) {
+
+                        MHAfectGlobal +=Number(objFormateur["MH Affectée Sync"])|| Number(objFormateur["MHSYN Totale DRIF"]) || 0;
+                        MHAfectGlobalSYN +=Number(objFormateur["MH Affectée Sync"])|| Number(objFormateur["MHSYN Totale DRIF"]) || 0;
+
+
+                    }
+                    if (objFormateur['MH Totale S1 DRIF'] != 0 && objFormateur['MH Totale S1 DRIF'] >= objFormateur['MH Totale S2 DRIF']) {
+                        listS1.push(objFormateur)
+                        if (objFormateur["Groupe"].includes("TREMOA")) {
+
+                            MHAfectGlobalS1 += Number(objFormateur["MH Affectée Présentiel"])||Number(objFormateur["MHP Totale DRIF"]) || 0;
+
+                            MHAfectGlobalS1P += Number(objFormateur["MH Affectée Présentiel"])||Number(objFormateur["MHP Totale DRIF"]) || 0;
+                            if (objFormateur["Module"].includes("Compétences") ||
+                                objFormateur["Module"].includes("Français") || objFormateur["Module"].includes("Anglais")) {
+
+                                MHAfectGlobalS1 +=Number(objFormateur["MH Affectée Sync"])|| Number(objFormateur["MHSYN Totale DRIF"]) || 0;
+                                MHAfectGlobalS1SYN +=Number(objFormateur["MH Affectée Sync"])|| Number(objFormateur["MHSYN Totale DRIF"]) || 0;
+
+
+                            }
+                        } else {
+                            if (objFormateur['MH Totale S2 DRIF'] != 0) {
+                                MHAfectGlobalS2 += Number(objFormateur['MHP S2 DRIF'])
+                                MHAfectGlobalS2P += Number(objFormateur['MHP S2 DRIF'])
+                                listS2.push(objFormateur)
+                               
+
+
+                            }
+                            MHAfectGlobalS1 += Number(objFormateur['MHP S1 DRIF'])
+                            MHAfectGlobalS1P += Number(objFormateur['MHP S1 DRIF'])
+                        }
+                    }
+                    if (objFormateur['MH Totale S2 DRIF'] != 0 && objFormateur['MH Totale S1 DRIF'] < objFormateur['MH Totale S2 DRIF']) {
+                        listS2.push(objFormateur)
+                        if (objFormateur["Groupe"].includes("TREMOA")) {
+
+                            MHAfectGlobalS2 +=Number(objFormateur["MH Affectée Présentiel"])|| Number(objFormateur["MHP Totale DRIF"]) || 0;
+
+                            MHAfectGlobalS2P +=Number(objFormateur["MH Affectée Présentiel"])|| Number(objFormateur["MHP Totale DRIF"]) || 0;
+                            if (objFormateur["Module"].includes("Compétences") ||
+                                objFormateur["Module"].includes("Français") || objFormateur["Module"].includes("Anglais")) {
+
+                                MHAfectGlobalS2 +=Number(objFormateur["MH Affectée Sync"])|| Number(objFormateur["MHSYN Totale DRIF"]) || 0;
+                                MHAfectGlobalS2SYN +=Number(objFormateur["MH Affectée Sync"])|| Number(objFormateur["MHSYN Totale DRIF"]) || 0;
+
+
+                            }
+
+                        } else {
+                            MHAfectGlobalS2 += Number(objFormateur['MHP S2 DRIF'])
+                            MHAfectGlobalS2P += Number(objFormateur['MHP S2 DRIF'])
+                            if (objFormateur['MH Totale S1 DRIF'] != 0) {
+                                MHAfectGlobalS1 += Number(objFormateur['MHP S1 DRIF'])
+                                MHAfectGlobalS1P += Number(objFormateur['MHP S1 DRIF'])
+                                listS1.push(objFormateur)
+                               
+                            }
+
+                        }
+                    }
+
+                })
+                let modules;
+                let filieres;
+                let Groupes;
+
+                annees.forEach(annee => {
+
+                    filieres = [];
+
+                    tableFormateur.forEach(objFormateur => {
+
+                        if (!filieres.includes(objFormateur['Code Filière']) && objFormateur["Année de formation"] == annee) {
+
+                            filieres.push(objFormateur['Code Filière']);
+
+                        }
+
+                    })
+
+                    filieres.forEach(e => {
+
+                        modules = [];
+                        tableFormateur.forEach(m => {
+
+                            if (!modules.includes(m['Code Module']) && m["Année de formation"] == annee && m['Code Filière'] == e) {
+
+                                modules.push(m['Code Module']);
+
+                            }
+
+                        })
+
+                        Groupes = [];
+                        modules.forEach(eM => {
+                            tableFormateur.forEach(eD => {
+
+                                if (!Groupes.includes(eD['Groupe']) && eD["Année de formation"] == annee && eD['Code Filière'] == e && eD['Code Module'] == eM) {
+
+                                    Groupes.push(eD['Groupe'])
+
+                                }
+
+                            })
+                            Groupes.sort();
+                            // console.log(annee);
+                            // console.log(e);
+                            // console.log(eM);
+                            // console.log(Groupes);
+                            Groupes.forEach((gr, index) => {
+
+                                if (index % 2 == 0) {
+
+                                    // console.log(gr);
+
+                                    tableFormateur.forEach(dt => {
+
+                                        let condTr = !(dt["Groupe"].includes("TREMOA") && (dt["Module"].includes("Compétences") ||
+                                            dt["Module"].includes("Français") || dt["Module"].includes("Anglais")))
+
+                                        if (dt['Groupe'] == gr && condTr && dt["Année de formation"] == annee && dt['Code Filière'] == e && dt['Code Module'] == eM) {
+                                            // console.log(condTr);
+                                            MHAfectGlobal +=Number(dt["MH Affectée Sync"])|| Number(dt["MHSYN Totale DRIF"]) || 0;
+                                            MHAfectGlobalSYN +=Number(dt["MH Affectée Sync"])|| Number(dt["MHSYN Totale DRIF"]) || 0;
+                                            if (dt['MH Totale S1 DRIF'] != 0 && dt['MH Totale S1 DRIF'] >= dt['MH Totale S2 DRIF']) {
+                                                if (dt["Groupe"].includes("TREMOA")) {
+                                                    if (dt["MH Affectée Sync"]) {
+                                                        MHAfectGlobalS1 += Number(dt["MH Affectée Sync"]);
+                                                        MHAfectGlobalS1SYN += Number(dt["MH Affectée Sync"]) || 0;
+
+                                                    }
+                                                    else {
+                                                        MHAfectGlobalS1 +=Number(dt["MH Affectée Sync"])|| Number(dt["MHSYN Totale DRIF"]) || 0;
+                                                        MHAfectGlobalS1SYN += Number(dt["MH Affectée Sync"])||Number(dt["MHSYN Totale DRIF"]) || 0;
+
+                                                    }
+
+                                                   
+                                                } else {
+
+                                                    MHAfectGlobalS1 += Number(dt['MHSYN S1 DRIF'])
+                                                    MHAfectGlobalS1SYN += Number(dt['MHSYN S1 DRIF'])
+                                                    if (dt['MH Totale S2 DRIF'] != 0) {
+                                                        MHAfectGlobalS2 += Number(dt['MHSYN S2 DRIF'])
+                                                        MHAfectGlobalS2SYN += Number(dt['MHSYN S2 DRIF'])
+                                                        
+
+                                                    }
+                                                }
+                                            }
+                                            if (dt['MH Totale S2 DRIF'] != 0 && dt['MH Totale S1 DRIF'] < dt['MH Totale S2 DRIF']) {
+                                                if (dt["Groupe"].includes("TREMOA")) {
+                                                    if (dt["MH Affectée Sync"]) {
+                                                        MHAfectGlobalS2 += Number(dt["MH Affectée Sync"]);
+                                                        MHAfectGlobalS2SYN += Number(dt["MH Affectée Sync"]) || 0;
+
+                                                    }
+                                                    else {
+                                                        MHAfectGlobalS2 += Number(dt["MHSYN Totale DRIF"]) || 0;
+                                                        MHAfectGlobalS2SYN += Number(dt["MHSYN Totale DRIF"]) || 0;
+                                                    }
+
+                                                   
+                                                } else {
+                                                    if (dt['MH Totale S1 DRIF'] != 0) {
+                                                        MHAfectGlobalS1 += Number(dt['MHSYN S1 DRIF'])
+                                                        MHAfectGlobalS1SYN += Number(dt['MHSYN S1 DRIF'])
+                                                       
+                                                    }
+                                                    MHAfectGlobalS2 += Number(dt['MHSYN S2 DRIF'])
+                                                    MHAfectGlobalS2SYN += Number(dt['MHSYN S2 DRIF'])
+
+                                                }
+                                            }
+
+                                        }
+
+                                    })
+
+                                }
+
+                            })
+
+                        })
+
+                    })
+
+                })
+
+
+                tableModule.innerHTML += `
+                                <tr name="${tableFormateur[0]['Mle Affecté Présentiel Actif']} ${formateur}">
+                                    <td>${i + 1}</td>
+                                    <td>${tableFormateur[0]["Mle Affecté Présentiel Actif"]}</td>
+                                    <td onclick="detailsSynt('${formateur}')" style="cursor:pointer">${formateur}</td>
+                                    <td>${Number(MHAfectGlobalS1P).toFixed(2)}</td>
+                                    <td>${Number(MHAfectGlobalS1SYN).toFixed(2)}</td>
+                                    <td><b>${Number(MHAfectGlobalS1).toFixed(2)}</b></td>
+                                    <td>${Number(MHAfectGlobalS2P).toFixed(2)}</td>
+                                    <td>${Number(MHAfectGlobalS2SYN).toFixed(2)}</td>
+                                    <td><b>${Number(MHAfectGlobalS2).toFixed(2)}</b></td>
+                                    <td>${Number(MHAfectGlobalP).toFixed(2)}</td>
+                                    <td>${Number(MHAfectGlobalSYN).toFixed(2)}</td>
+                                    <td><b>${Number(MHAfectGlobal).toFixed(2)}</b></td>
+                                    
+                                </tr>
+                                `;
+            })
+            divParent.append(tableModule)
+            let input = document.createElement("input")
+            input.type = 'search'
+            input.placeholder = 'Rechercher ...'
+            input.className = 'rechercher form-control mx-auto my-5 w-75'
+            input.addEventListener("input", (e) => {
+                inputSynthensePr(e)
+
+            })
+
+
+            divParent.appendChild(input);
+
+            swal({
+                title: "Sythènse permanent",
+                content: divParent,
+                buttons: [
+                    'Ok',
+                    'Imprimer'
+                ],
+            })
+
+        }
+        function inputSynthensePr(e) {
+            let a = e.target.value;
+            let trs = document.querySelectorAll('#SynthensePr tr:not(tbody:first-of-type tr)');
+
+            let regex = new RegExp(`${a}`, 'i')
+
+            trs.forEach(e => {
+
+                if (regex.test(e.getAttribute('name'))) {
+
+                    e.classList.remove('d-none')
+
+                } else {
+
+                    e.classList.add('d-none')
+
+                }
+
+            })
+
+        }
+        function dataformateurVct() {
+            let data = JSON.parse(localStorage.jsonData);
+            let formateurs = []
+            data.forEach((e) => {
+                if (e['Formateur Affecté Présentiel Actif']) {
+
+                    if (!formateurs.includes(e['Formateur Affecté Présentiel Actif']) && isNaN(e["Mle Affecté Présentiel Actif"])) {
+                        let nomForm = e['Formateur Affecté Présentiel Actif'];
+                        formateurs.push(nomForm);
+                    }
+                }
+            });
+            formateurs.sort();
+
+            return formateurs
+        }
+        function SynthenseVct() {
+            let data = dataformateurVct()
+            let jsonData = JSON.parse(localStorage.jsonData);
+            let divParent = document.createElement('div')
+            divParent.setAttribute('class', 'table-responsive-md');
+            divParent.setAttribute('id', 'SynthenseVct');
+            let tableModule = document.createElement('table');
+            tableModule.setAttribute('class', 'table table-bordered table-hover text-center table-responsive-md MHCol');
+            tableModule.innerHTML = `
+                    <tr >
+                            <td colspan='3'></td>
+                       
+                    
+                            <td colspan='3' class="bg-light"><b>S1</b></td>
+                       
+                
+                            <td colspan='3' class="bg-light"><b>S2</b></td>
+                       
+                    
+                            <td colspan='3' class="bg-light"><b>Total</b></td>
+                        </tr>
+                        <tr class="bg-secondary text-light">
+                            <td>N°</td>
+                            <td>Mle</td>
+                            <td>Formateur</td>
+                            <td>MH Affectée Présentiel</td>
+                            <td>MH Affectée Sync</td>
+                            <td>MH Affectée Globale (P & SYN)</td>
+                            <td>MH Affectée Présentiel</td>
+                            <td>MH Affectée Sync</td>
+                            <td>MH Affectée Globale (P & SYN)</td>
+                            <td>MH Affectée Présentiel</td>
+                            <td>MH Affectée Sync</td>
+                            <td>MH Affectée Globale (P & SYN)</td>
+                           
+                        </tr>
+                        `
+            data.forEach((formateur, i) => {
+                let objModule;
+                let tableFormateur;
+
+                tableFormateur = jsonData.filter(e => e['Formateur Affecté Présentiel Actif'] == formateur)
+                let MHAfectGlobal = 0;
+                let MHAfectGlobalP = 0;
+                let MHAfectGlobalSYN = 0;
+
+                let MHAfectGlobalS1 = 0;
+                let MHAfectGlobalS1P = 0;
+                let MHAfectGlobalS1SYN = 0;
+
+                let MHAfectGlobalS2 = 0;
+                let MHAfectGlobalS2P = 0;
+                let MHAfectGlobalS2SYN = 0;
+
+                let listS1 = []
+                let listS2 = [];
+
+                let annees = [];
+                tableFormateur.forEach(objFormateur => {
+
+
+                    objModule = {
+                       
+                        s1: objFormateur['MH Totale S1 DRIF'],
+                        s2: objFormateur['MH Totale S2 DRIF'],
+                        MHAG: (objFormateur["MH Affectée Globale (P & SYN)"] || (Number(objFormateur["MH Totale  DRIF"]) - Number(objFormateur["MHASYN Totale DRIF"]))),
+                        MHAP: objFormateur["MH Affectée Présentiel"] || objFormateur['MHP Totale DRIF'] || 0,
+                        MHAS: objFormateur["MH Affectée Sync"] || objFormateur['MHSYN Totale DRIF'] || 0,
+                  
+                       
+                    }
+                  
+
+                    if (!annees.includes(objFormateur["Année de formation"])) {
+
+                        annees.push(objFormateur["Année de formation"]);
+
+                    }
+
+                    MHAfectGlobal +=Number(objFormateur["MH Affectée Présentiel"])|| Number(objFormateur["MHP Totale DRIF"]) || 0;
+                    MHAfectGlobalP +=Number(objFormateur["MH Affectée Présentiel"])|| Number(objFormateur["MHP Totale DRIF"]) || 0;
+
+                    if (objFormateur["Groupe"].includes("TREMOA") && (objFormateur["Module"].includes("Compétences") ||
+                        objFormateur["Module"].includes("Français") || objFormateur["Module"].includes("Anglais"))) {
+
+                        MHAfectGlobal +=Number(objFormateur["MH Affectée Sync"])|| Number(objFormateur["MHSYN Totale DRIF"]) || 0;
+                        MHAfectGlobalSYN +=Number(objFormateur["MH Affectée Sync"])|| Number(objFormateur["MHSYN Totale DRIF"]) || 0;
+
+
+                    }
+                    if (objFormateur['MH Totale S1 DRIF'] != 0 && objFormateur['MH Totale S1 DRIF'] >= objFormateur['MH Totale S2 DRIF']) {
+                        listS1.push(objFormateur)
+                        if (objFormateur["Groupe"].includes("TREMOA")) {
+
+                            MHAfectGlobalS1 += Number(objFormateur["MH Affectée Présentiel"])||Number(objFormateur["MHP Totale DRIF"]) || 0;
+
+                            MHAfectGlobalS1P += Number(objFormateur["MH Affectée Présentiel"])||Number(objFormateur["MHP Totale DRIF"]) || 0;
+                            if (objFormateur["Module"].includes("Compétences") ||
+                                objFormateur["Module"].includes("Français") || objFormateur["Module"].includes("Anglais")) {
+
+                                MHAfectGlobalS1 +=Number(objFormateur["MH Affectée Sync"])|| Number(objFormateur["MHSYN Totale DRIF"]) || 0;
+                                MHAfectGlobalS1SYN +=Number(objFormateur["MH Affectée Sync"])|| Number(objFormateur["MHSYN Totale DRIF"]) || 0;
+
+
+                            }
+                        } else {
+                            if (objFormateur['MH Totale S2 DRIF'] != 0) {
+                                MHAfectGlobalS2 += Number(objFormateur['MHP S2 DRIF'])
+                                MHAfectGlobalS2P += Number(objFormateur['MHP S2 DRIF'])
+                                listS2.push(objFormateur)
+                               
+
+
+                            }
+                            MHAfectGlobalS1 += Number(objFormateur['MHP S1 DRIF'])
+                            MHAfectGlobalS1P += Number(objFormateur['MHP S1 DRIF'])
+                        }
+                    }
+                    if (objFormateur['MH Totale S2 DRIF'] != 0 && objFormateur['MH Totale S1 DRIF'] < objFormateur['MH Totale S2 DRIF']) {
+                        listS2.push(objFormateur)
+                        if (objFormateur["Groupe"].includes("TREMOA")) {
+
+                            MHAfectGlobalS2 +=Number(objFormateur["MH Affectée Présentiel"])|| Number(objFormateur["MHP Totale DRIF"]) || 0;
+
+                            MHAfectGlobalS2P +=Number(objFormateur["MH Affectée Présentiel"])|| Number(objFormateur["MHP Totale DRIF"]) || 0;
+                            if (objFormateur["Module"].includes("Compétences") ||
+                                objFormateur["Module"].includes("Français") || objFormateur["Module"].includes("Anglais")) {
+
+                                MHAfectGlobalS2 +=Number(objFormateur["MH Affectée Sync"])|| Number(objFormateur["MHSYN Totale DRIF"]) || 0;
+                                MHAfectGlobalS2SYN +=Number(objFormateur["MH Affectée Sync"])|| Number(objFormateur["MHSYN Totale DRIF"]) || 0;
+
+
+                            }
+
+                        } else {
+                            MHAfectGlobalS2 += Number(objFormateur['MHP S2 DRIF'])
+                            MHAfectGlobalS2P += Number(objFormateur['MHP S2 DRIF'])
+                            if (objFormateur['MH Totale S1 DRIF'] != 0) {
+                                MHAfectGlobalS1 += Number(objFormateur['MHP S1 DRIF'])
+                                MHAfectGlobalS1P += Number(objFormateur['MHP S1 DRIF'])
+                                listS1.push(objFormateur)
+                               
+                            }
+
+                        }
+                    }
+
+                })
+                let modules;
+                let filieres;
+                let Groupes;
+
+                annees.forEach(annee => {
+
+                    filieres = [];
+
+                    tableFormateur.forEach(objFormateur => {
+
+                        if (!filieres.includes(objFormateur['Code Filière']) && objFormateur["Année de formation"] == annee) {
+
+                            filieres.push(objFormateur['Code Filière']);
+
+                        }
+
+                    })
+
+                    filieres.forEach(e => {
+
+                        modules = [];
+                        tableFormateur.forEach(m => {
+
+                            if (!modules.includes(m['Code Module']) && m["Année de formation"] == annee && m['Code Filière'] == e) {
+
+                                modules.push(m['Code Module']);
+
+                            }
+
+                        })
+
+                        Groupes = [];
+                        modules.forEach(eM => {
+                            tableFormateur.forEach(eD => {
+
+                                if (!Groupes.includes(eD['Groupe']) && eD["Année de formation"] == annee && eD['Code Filière'] == e && eD['Code Module'] == eM) {
+
+                                    Groupes.push(eD['Groupe'])
+
+                                }
+
+                            })
+                            Groupes.sort();
+                            // console.log(annee);
+                            // console.log(e);
+                            // console.log(eM);
+                            // console.log(Groupes);
+                            Groupes.forEach((gr, index) => {
+
+                                if (index % 2 == 0) {
+
+                                    // console.log(gr);
+
+                                    tableFormateur.forEach(dt => {
+
+                                        let condTr = !(dt["Groupe"].includes("TREMOA") && (dt["Module"].includes("Compétences") ||
+                                            dt["Module"].includes("Français") || dt["Module"].includes("Anglais")))
+
+                                        if (dt['Groupe'] == gr && condTr && dt["Année de formation"] == annee && dt['Code Filière'] == e && dt['Code Module'] == eM) {
+                                            // console.log(condTr);
+                                            MHAfectGlobal +=Number(dt["MH Affectée Sync"])|| Number(dt["MHSYN Totale DRIF"]) || 0;
+                                            MHAfectGlobalSYN +=Number(dt["MH Affectée Sync"])|| Number(dt["MHSYN Totale DRIF"]) || 0;
+                                            if (dt['MH Totale S1 DRIF'] != 0 && dt['MH Totale S1 DRIF'] >= dt['MH Totale S2 DRIF']) {
+                                                if (dt["Groupe"].includes("TREMOA")) {
+                                                    if (dt["MH Affectée Sync"]) {
+                                                        MHAfectGlobalS1 += Number(dt["MH Affectée Sync"]);
+                                                        MHAfectGlobalS1SYN += Number(dt["MH Affectée Sync"]) || 0;
+
+                                                    }
+                                                    else {
+                                                        MHAfectGlobalS1 +=Number(dt["MH Affectée Sync"])|| Number(dt["MHSYN Totale DRIF"]) || 0;
+                                                        MHAfectGlobalS1SYN += Number(dt["MH Affectée Sync"])||Number(dt["MHSYN Totale DRIF"]) || 0;
+
+                                                    }
+
+                                                   
+                                                } else {
+
+                                                    MHAfectGlobalS1 += Number(dt['MHSYN S1 DRIF'])
+                                                    MHAfectGlobalS1SYN += Number(dt['MHSYN S1 DRIF'])
+                                                    if (dt['MH Totale S2 DRIF'] != 0) {
+                                                        MHAfectGlobalS2 += Number(dt['MHSYN S2 DRIF'])
+                                                        MHAfectGlobalS2SYN += Number(dt['MHSYN S2 DRIF'])
+                                                        
+
+                                                    }
+                                                }
+                                            }
+                                            if (dt['MH Totale S2 DRIF'] != 0 && dt['MH Totale S1 DRIF'] < dt['MH Totale S2 DRIF']) {
+                                                if (dt["Groupe"].includes("TREMOA")) {
+                                                    if (dt["MH Affectée Sync"]) {
+                                                        MHAfectGlobalS2 += Number(dt["MH Affectée Sync"]);
+                                                        MHAfectGlobalS2SYN += Number(dt["MH Affectée Sync"]) || 0;
+
+                                                    }
+                                                    else {
+                                                        MHAfectGlobalS2 += Number(dt["MHSYN Totale DRIF"]) || 0;
+                                                        MHAfectGlobalS2SYN += Number(dt["MHSYN Totale DRIF"]) || 0;
+                                                    }
+
+                                                   
+                                                } else {
+                                                    if (dt['MH Totale S1 DRIF'] != 0) {
+                                                        MHAfectGlobalS1 += Number(dt['MHSYN S1 DRIF'])
+                                                        MHAfectGlobalS1SYN += Number(dt['MHSYN S1 DRIF'])
+                                                       
+                                                    }
+                                                    MHAfectGlobalS2 += Number(dt['MHSYN S2 DRIF'])
+                                                    MHAfectGlobalS2SYN += Number(dt['MHSYN S2 DRIF'])
+
+                                                }
+                                            }
+
+                                        }
+
+                                    })
+
+                                }
+
+                            })
+
+                        })
+
+                    })
+
+                })
+
+
+                tableModule.innerHTML += `
+                                <tr name="${tableFormateur[0]['Mle Affecté Présentiel Actif']} ${formateur}">
+                                    <td>${i + 1}</td>
+                                    <td>${tableFormateur[0]["Mle Affecté Présentiel Actif"]}</td>
+                                    <td onclick="detailsSynt('${formateur}')" style="cursor:pointer">${formateur}</td>
+                                    <td>${Number(MHAfectGlobalS1P).toFixed(2)}</td>
+                                    <td>${Number(MHAfectGlobalS1SYN).toFixed(2)}</td>
+                                    <td><b>${Number(MHAfectGlobalS1).toFixed(2)}</b></td>
+                                    <td>${Number(MHAfectGlobalS2P).toFixed(2)}</td>
+                                    <td>${Number(MHAfectGlobalS2SYN).toFixed(2)}</td>
+                                    <td><b>${Number(MHAfectGlobalS2).toFixed(2)}</b></td>
+                                    <td>${Number(MHAfectGlobalP).toFixed(2)}</td>
+                                    <td>${Number(MHAfectGlobalSYN).toFixed(2)}</td>
+                                    <td><b>${Number(MHAfectGlobal).toFixed(2)}</b></td>
+                                    
+                                </tr>
+                                `;
+            })
+            divParent.append(tableModule)
+            let input = document.createElement("input")
+            input.type = 'search'
+            input.placeholder = 'Rechercher ...'
+            input.className = 'rechercher form-control mx-auto my-5 w-75'
+            input.addEventListener("input", (e) => {
+                inputSynthenseVct(e)
+
+            })
+
+
+            divParent.appendChild(input);
+
+            swal({
+                title: "Sythènse vacataire",
+                content: divParent,
+                buttons: [
+                    'Ok',
+                    'Imprimer'
+                ],
+            })
+
+        }
+        function inputSynthenseVct(e) {
+            let a = e.target.value;
+            let trs = document.querySelectorAll('#SynthenseVct tr:not(tbody:first-of-type tr)');
+
+            let regex = new RegExp(`${a}`, 'i')
+
+            trs.forEach(e => {
+
+                if (regex.test(e.getAttribute('name'))) {
+
+                    e.classList.remove('d-none')
+
+                } else {
+
+                    e.classList.add('d-none')
+
+                }
+
+            })
+
+        }
+        function detailsSynt(formateur){
+            swal({
+                title: "details "+formateur,
+                content: formateur,
+                buttons: [
+                    'Ok',
+                    'Imprimer'
+                ],
+            })
         }
     </script>
 </body>
