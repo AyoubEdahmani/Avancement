@@ -2194,14 +2194,14 @@
         autreBtn.forEach(e => {
             let divParent = document.createElement("div")
             divParent.innerHTML = `
-            <span class="btn btn-info d-block  m-2" id="downloadFor" onclick='ModulesS1Nonentames()' >Modules S1 non entamés</span>
-            <span class="btn btn-info d-block  m-2" id="downloadFor"  onclick='ModulesS2Nonentames()'>Modules S2 non entamés</span>
-            <span class="btn btn-success d-block  m-2" id="downloadFor" onclick="EFMSRealisesS1()">EFMS réalisés S1</span>
-            <span class="btn btn-success d-block  m-2" id="downloadFor" onclick="EFMSRealisesS2()">EFMS réalisés S2</span>
-            <span class="btn btn-primary d-block   m-2" id="downloadFor" onclick="SynthensePr()">Synthèse Permanent</span>
-            <span class="btn btn-primary d-block   m-2" id="downloadFor" onclick="SynthenseVct()">Synthèse Vacataire</span>
-            <span class="btn  btn-secondary d-block text-white  m-2"  id="downloadFor" onclick="achevesF()"> Modules achevés</span>
-            <span class="btn btn-warning d-block   m-2" id="downloadFor" onclick="classG()">Conseils de classes</span>
+            <span class="btn btn-info d-block  m-2"  onclick='ModulesS1Nonentames()' >Modules S1 non entamés</span>
+            <span class="btn btn-info d-block  m-2"   onclick='ModulesS2Nonentames()'>Modules S2 non entamés</span>
+            <span class="btn btn-success d-block  m-2"  onclick="EFMSRealisesS1()">EFMS réalisés S1</span>
+            <span class="btn btn-success d-block  m-2"  onclick="EFMSRealisesS2()">EFMS réalisés S2</span>
+            <span class="btn btn-primary d-block   m-2"  onclick="SynthensePr()">Synthèse Permanent</span>
+            <span class="btn btn-primary d-block   m-2"  onclick="SynthenseVct()">Synthèse Vacataire</span>
+            <span class="btn btn-warning d-block   m-2"  onclick="classG()">Conseils de classes</span>
+            <span class="btn  btn-secondary d-block text-white  m-2"   onclick="achevesF()"> Modules achevés</span>
             `
             e.addEventListener("click", function () {
 
@@ -4990,20 +4990,20 @@
                                     
                                 </tr>
                                 `;
-                                tableBody = [...tableBody, [
+                tableBody = [...tableBody, [
                     i + 1,
                     tableFormateur[0]["Mle Affecté Présentiel Actif"],
                     { content: formateur, styles: { fontStyle: 'bold' } },
-                    
+
                     Number(MHAfectGlobalS1P).toFixed(2),
                     Number(MHAfectGlobalS1SYN).toFixed(2),
-                    { content:Number(MHAfectGlobalS1).toFixed(2), styles: { fontStyle: 'bold' } },
+                    { content: Number(MHAfectGlobalS1).toFixed(2), styles: { fontStyle: 'bold' } },
                     Number(MHAfectGlobalS2P).toFixed(2),
                     Number(MHAfectGlobalS2SYN).toFixed(2),
-                    { content:Number(MHAfectGlobalS2).toFixed(2), styles: { fontStyle: 'bold' } },
+                    { content: Number(MHAfectGlobalS2).toFixed(2), styles: { fontStyle: 'bold' } },
                     Number(MHAfectGlobalP).toFixed(2),
                     Number(MHAfectGlobalSYN).toFixed(2),
-                    { content:Number(MHAfectGlobal).toFixed(2), styles: { fontStyle: 'bold' } },
+                    { content: Number(MHAfectGlobal).toFixed(2), styles: { fontStyle: 'bold' } },
 
                 ]]
             })
@@ -5396,16 +5396,16 @@
                     i + 1,
                     tableFormateur[0]["Mle Affecté Présentiel Actif"],
                     { content: formateur, styles: { fontStyle: 'bold' } },
-                    
+
                     Number(MHAfectGlobalS1P).toFixed(2),
                     Number(MHAfectGlobalS1SYN).toFixed(2),
-                    { content:Number(MHAfectGlobalS1).toFixed(2), styles: { fontStyle: 'bold' } },
+                    { content: Number(MHAfectGlobalS1).toFixed(2), styles: { fontStyle: 'bold' } },
                     Number(MHAfectGlobalS2P).toFixed(2),
                     Number(MHAfectGlobalS2SYN).toFixed(2),
-                    { content:Number(MHAfectGlobalS2).toFixed(2), styles: { fontStyle: 'bold' } },
+                    { content: Number(MHAfectGlobalS2).toFixed(2), styles: { fontStyle: 'bold' } },
                     Number(MHAfectGlobalP).toFixed(2),
                     Number(MHAfectGlobalSYN).toFixed(2),
-                    { content:Number(MHAfectGlobal).toFixed(2), styles: { fontStyle: 'bold' } },
+                    { content: Number(MHAfectGlobal).toFixed(2), styles: { fontStyle: 'bold' } },
 
                 ]]
             })
@@ -5481,14 +5481,15 @@
 
                     const img = new Image();
                     img.src = logo;
+                    const currentDate = new Date().toLocaleDateString();
                     img.onload = function () {
-                        pdf.addImage(this, 'PNG', 10, 0, 30, 30);
+                        pdf.addImage(this, 'PNG', 10, 5, 25, 25);
 
                         pdf.setFontSize(10);
-                        pdf.text('Institut Spécialisé de Technologie Appliquée - Berkane', 195, 14);
-
+                        pdf.text('Institut Spécialisé de Technologie Appliquée - Berkane', 195, 20);
+                        pdf.text(currentDate, 270, 5);
                         pdf.setFontSize(17);
-                        pdf.text('Sythènse ' + type, 115, 33);
+                        pdf.text('Sythènse ' + type, 120, 35);
 
                         pdf.setFontSize(10);
                         pdf.text('Direction: DR Oriental', 15, 45);
@@ -5500,11 +5501,11 @@
                             head: tableHead,
                             body: tableBody,
                             startY: 57,
-                            headStyles: {  align: 'center' },
+                            headStyles: { align: 'center' },
                             bodyStyles: { align: 'center' },
                         });
 
-                        pdf.save("Sythènse_" + type + (new Date().toLocaleDateString()) + '.pdf');
+                        pdf.save("Sythènse_" + type +"_"+ (new Date().toLocaleDateString()) + '.pdf');
                     };
                 };
 
@@ -5825,7 +5826,7 @@
                     { content: Number(MHAfectGlobalS1Module).toFixed(2), styles: { fontStyle: 'bold' } },
                     Number(MHAfectGlobalS2PModule).toFixed(2),
                     Number(MHAfectGlobalS2SYNModule).toFixed(2),
-                    { content: Number(MHAfectGlobalS2Module).toFixed(2), styles: { fontStyle: 'bold' } } ,
+                    { content: Number(MHAfectGlobalS2Module).toFixed(2), styles: { fontStyle: 'bold' } },
                     Number(MHAfectGlobalPModule).toFixed(2),
                     Number(MHAfectGlobalSYNModule).toFixed(2),
                     { content: Number(MHAfectGlobalModule).toFixed(2), styles: { fontStyle: 'bold' } }
@@ -5947,6 +5948,8 @@
                 let logo = "https://upload.wikimedia.org/wikipedia/commons/0/05/Logo_ofppt.png";
 
                 const generatePDF = () => {
+                    const currentDate = new Date().toLocaleDateString();
+
                     const pdf = new window.jspdf.jsPDF({
                         format: 'a4',
                         orientation: 'landscape',
@@ -5955,13 +5958,15 @@
                     const img = new Image();
                     img.src = logo;
                     img.onload = function () {
-                        pdf.addImage(this, 'PNG', 10, 0, 30, 30);
+                        pdf.addImage(this, 'PNG', 10, 5, 25, 25);
 
                         pdf.setFontSize(10);
-                        pdf.text('Institut Spécialisé de Technologie Appliquée - Berkane', 195, 14);
+                        pdf.text(currentDate, 270, 5);
+
+                        pdf.text('Institut Spécialisé de Technologie Appliquée - Berkane', 195, 20);
 
                         pdf.setFontSize(14);
-                        pdf.text('Tableau de service : ' + formateur, 115, 33);
+                        pdf.text('Tableau de service ', 120, 33);
 
                         pdf.setFontSize(10);
                         pdf.text('Direction: DR Oriental', 15, 45);
@@ -5975,7 +5980,7 @@
                             head: tableHead,
                             body: tableBody,
                             startY: 57,
-                            headStyles: {  align: 'center' },
+                            headStyles: { align: 'center' },
                             bodyStyles: { align: 'center' },
                         });
                         pdf.autoTable({
@@ -5983,11 +5988,11 @@
                             body: tableBody2,
                             headStyles: { fillColor: [0, 128, 0], align: 'center' },
                             bodyStyles: { align: 'center' },
-                            
+
 
                         });
 
-                        pdf.save("Sythènse_" + formateur + (new Date().toLocaleDateString()) + '.pdf');
+                        pdf.save("Tableau_de_service_" + formateur +"_"+ (new Date().toLocaleDateString()) + '.pdf');
                     };
                 };
 
