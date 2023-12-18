@@ -270,6 +270,7 @@
 
                     objModule = {
                         p: p.toFixed(2),
+                        codeM: objFormateur['Code Module'],
                         nom: `${objFormateur['Code Module']}-${objFormateur['Module']}`,
                         group: objFormateur['Groupe'],
                         regional: objFormateur['Régional'],
@@ -278,9 +279,9 @@
                         MHAG: (objFormateur["MH Affectée Globale (P & SYN)"] || (Number(objFormateur["MH Totale  DRIF"]) - Number(objFormateur["MHASYN Totale DRIF"]))),
                         MHAP: objFormateur["MH Affectée Présentiel"] || objFormateur['MHP Totale DRIF'] || 0,
                         MHAS: objFormateur["MH Affectée Sync"] || objFormateur['MHSYN Totale DRIF'] || 0,
-                        MHRP: objFormateur['MH Réalisée Présentiel'] || 0,
-                        MHRS: objFormateur['MH Réalisée Sync'] || 0,
-                        MHRG: objFormateur['MH Réalisée Globale'] || 0,
+                        MHRP: objFormateur['MH Réalisée Présentiel'] || Number(0).toFixed(2),
+                        MHRS: objFormateur['MH Réalisée Sync'] || Number(0).toFixed(2),
+                        MHRG: objFormateur['MH Réalisée Globale'] || Number(0).toFixed(2),
                         valider: objFormateur['Séance EFM']
                     }
                     if (objModule.regional == 'O') {
@@ -616,11 +617,34 @@
                             <td colspan='11'><b>S1</b></td>
                         </tr>
                     `;
+              
                     listModulesRegionalS1.sort(function (a, b) {
-                        var numA = parseInt(a.MHRG);
-                        var numB = parseInt(b.MHRG);
-                        return numB - numA;
+                        var numA = (a.group);
+                        var numB = (b.group);
+                        if (numA < numB) {
+                            return -1; // a comes before b
+                        }
+
+                        if (numA > numB) {
+                            return 1; // a comes after b
+                        }
+
+                        return 0; // names are equal
                     });
+                    listModulesRegionalS1.sort(function (a, b) {
+                        var numA = (a.codeM);
+                        var numB = (b.codeM);
+                        if (numA < numB) {
+                            return -1; // a comes before b
+                        }
+
+                        if (numA > numB) {
+                            return 1; // a comes after b
+                        }
+
+                        return 0; // names are equal
+                    });
+
 
                     listModulesRegionalS1.forEach((m, i) => {
 
@@ -646,11 +670,34 @@
                         </tr>
                        
                     `;
+
                     listModulesRegionalS2.sort(function (a, b) {
-                        var numA = parseInt(a.MHRG);
-                        var numB = parseInt(b.MHRG);
-                        return numB - numA;
+                        var numA = (a.group);
+                        var numB = (b.group);
+                        if (numA < numB) {
+                            return -1; // a comes before b
+                        }
+
+                        if (numA > numB) {
+                            return 1; // a comes after b
+                        }
+
+                        return 0; // names are equal
                     });
+                    listModulesRegionalS2.sort(function (a, b) {
+                        var numA = (a.codeM);
+                        var numB = (b.codeM);
+                        if (numA < numB) {
+                            return -1; // a comes before b
+                        }
+
+                        if (numA > numB) {
+                            return 1; // a comes after b
+                        }
+
+                        return 0; // names are equal
+                    });
+
                     listModulesRegionalS2.forEach((m, i) => {
 
                         tableModule.innerHTML += `
@@ -707,11 +754,35 @@
                             <td colspan='11'><b>S1</b></td>
                         </tr>
                     `;
+   
                     listModulesLocauxValiderS1.sort(function (a, b) {
-                        var numA = parseInt(a.MHRG);
-                        var numB = parseInt(b.MHRG);
-                        return numB - numA;
+                        var numA = (a.group);
+                        var numB = (b.group);
+                        if (numA < numB) {
+                            return -1; // a comes before b
+                        }
+
+                        if (numA > numB) {
+                            return 1; // a comes after b
+                        }
+
+                        return 0; // names are equal
                     });
+                    listModulesLocauxValiderS1.sort(function (a, b) {
+                        var numA = (a.codeM);
+                        var numB = (b.codeM);
+                        if (numA < numB) {
+                            return -1; // a comes before b
+                        }
+
+                        if (numA > numB) {
+                            return 1; // a comes after b
+                        }
+
+                        return 0; // names are equal
+                    });
+
+
                     listModulesLocauxValiderS1.forEach((m, i) => {
 
                         tableModule2.innerHTML += `
@@ -736,11 +807,34 @@
                         </tr>
                        
                     `;
+
                     listModulesLocauxValiderS2.sort(function (a, b) {
-                        var numA = parseInt(a.MHRG);
-                        var numB = parseInt(b.MHRG);
-                        return numB - numA;
+                        var numA = (a.group);
+                        var numB = (b.group);
+                        if (numA < numB) {
+                            return -1; // a comes before b
+                        }
+
+                        if (numA > numB) {
+                            return 1; // a comes after b
+                        }
+
+                        return 0; // names are equal
                     });
+                    listModulesLocauxValiderS2.sort(function (a, b) {
+                        var numA = (a.codeM);
+                        var numB = (b.codeM);
+                        if (numA < numB) {
+                            return -1; // a comes before b
+                        }
+
+                        if (numA > numB) {
+                            return 1; // a comes after b
+                        }
+
+                        return 0; // names are equal
+                    });
+
                     listModulesLocauxValiderS2.forEach((m, i) => {
 
                         tableModule2.innerHTML += `
@@ -1214,10 +1308,33 @@
                     </tr>
                 `;
                 listModulesRegionalGroupeS1.sort(function (a, b) {
-                    var numA = parseInt(a['MH Réalisée Globale']);
-                    var numB = parseInt(b['MH Réalisée Globale']);
-                    return numB - numA;
-                })
+                        var numA = (a["Code Module"]);
+                        var numB = (b["Code Module"]);
+                        if (numA < numB) {
+                            return -1; // a comes before b
+                        }
+
+                        if (numA > numB) {
+                            return 1; // a comes after b
+                        }
+
+                        return 0; // names are equal
+                    });
+                listModulesRegionalGroupeS1.sort(function (a, b) {
+                        var numA = (a["Formateur Affecté Présentiel Actif"]);
+                        var numB = (b["Formateur Affecté Présentiel Actif"]);
+                        if (numA < numB) {
+                            return -1; // a comes before b
+                        }
+
+                        if (numA > numB) {
+                            return 1; // a comes after b
+                        }
+
+                        return 0; // names are equal
+                    });
+
+
                 listModulesRegionalGroupeS1.forEach((m, i) => {
 
                     let Avancement = ((m['MH Réalisée Globale'] || 0) * 100) / (m["MH Affectée Globale (P & SYN)"] || (Number(m["MH Totale  DRIF"]) - Number(m["MHASYN Totale DRIF"])))
@@ -1231,9 +1348,9 @@
                             <td>${m["MH Affectée Présentiel"] || m['MHP Totale DRIF'] || 0}</td>
                             <td>${m["MH Affectée Sync"] || m["MHSYN Totale DRIF"] || 0}</td>
                             <td><b>${m["MH Affectée Globale (P & SYN)"] || (Number(m["MH Totale  DRIF"]) - Number(m["MHASYN Totale DRIF"])) || 0}</b></td>
-                            <td>${m["MH Réalisée Présentiel"] || 0}</td>
-                            <td>${m["MH Réalisée Sync"] || 0}</td>
-                            <td><b>${m["MH Réalisée Globale"] || 0}</b></td>
+                            <td>${m["MH Réalisée Présentiel"] || Number(0).toFixed(2)}</td>
+                            <td>${m["MH Réalisée Sync"] || Number(0).toFixed(2)}</td>
+                            <td><b>${m["MH Réalisée Globale"] || Number(0).toFixed(2)}</b></td>
                             <td>${Avancement.toFixed(2)}%</td>
                             <td>${m['Séance EFM']}</td>
                         </tr>
@@ -1247,10 +1364,33 @@
                     </tr>
                 `;
                 listModulesRegionalGroupeS2.sort(function (a, b) {
-                    var numA = parseInt(a['MH Réalisée Globale']);
-                    var numB = parseInt(b['MH Réalisée Globale']);
-                    return numB - numA;
-                })
+                        var numA = (a["Code Module"]);
+                        var numB = (b["Code Module"]);
+                        if (numA < numB) {
+                            return -1; // a comes before b
+                        }
+
+                        if (numA > numB) {
+                            return 1; // a comes after b
+                        }
+
+                        return 0; // names are equal
+                    });
+                listModulesRegionalGroupeS2.sort(function (a, b) {
+                        var numA = (a['Formateur Affecté Présentiel Actif']);
+                        var numB = (b['Formateur Affecté Présentiel Actif']);
+                        if (numA < numB) {
+                            return -1; // a comes before b
+                        }
+
+                        if (numA > numB) {
+                            return 1; // a comes after b
+                        }
+
+                        return 0; // names are equal
+                    });
+               
+
                 listModulesRegionalGroupeS2.forEach((m, i) => {
 
                     let Avancement = ((m['MH Réalisée Globale'] || 0) * 100) / (m["MH Affectée Globale (P & SYN)"] || (Number(m["MH Totale  DRIF"]) - Number(m["MHASYN Totale DRIF"])))
@@ -1263,9 +1403,9 @@
                             <td>${m["MH Affectée Présentiel"] || m['MHP Totale DRIF'] || 0}</td>
                             <td>${m["MH Affectée Sync"] || m["MHSYN Totale DRIF"] || 0}</td>
                             <td><b>${m["MH Affectée Globale (P & SYN)"] || (Number(m["MH Totale  DRIF"]) - Number(m["MHASYN Totale DRIF"])) || 0}</b></td>        
-                            <td>${m["MH Réalisée Présentiel"] || 0}</td>
-                            <td>${m["MH Réalisée Sync"] || 0}</td>
-                            <td><b>${m["MH Réalisée Globale"] || 0}</b></td>
+                            <td>${m["MH Réalisée Présentiel"] || Number(0).toFixed(2)}</td>
+                            <td>${m["MH Réalisée Sync"] || Number(0).toFixed(2)}</td>
+                            <td><b>${m["MH Réalisée Globale"] || Number(0).toFixed(2)}</b></td>
                             <td>${Avancement.toFixed(2)}%</td>
                             <td>${m['Séance EFM']}</td>
                         </tr>
@@ -1312,10 +1452,33 @@
                     </tr>
                 `;
                 listModulesLocauxGroupeS1.sort(function (a, b) {
-                    var numA = parseInt(a['MH Réalisée Globale']);
-                    var numB = parseInt(b['MH Réalisée Globale']);
-                    return numB - numA;
-                })
+                        var numA = (a["Code Module"]);
+                        var numB = (b["Code Module"]);
+                        if (numA < numB) {
+                            return -1; // a comes before b
+                        }
+
+                        if (numA > numB) {
+                            return 1; // a comes after b
+                        }
+
+                        return 0; // names are equal
+                    });
+                listModulesLocauxGroupeS1.sort(function (a, b) {
+                        var numA = (a['Formateur Affecté Présentiel Actif']);
+                        var numB = (b['Formateur Affecté Présentiel Actif']);
+                        if (numA < numB) {
+                            return -1; // a comes before b
+                        }
+
+                        if (numA > numB) {
+                            return 1; // a comes after b
+                        }
+
+                        return 0; // names are equal
+                    });
+
+                
                 listModulesLocauxGroupeS1.forEach((m, i) => {
 
                     let Avancement = ((m['MH Réalisée Globale'] || 0) * 100) / (m["MH Affectée Globale (P & SYN)"] || (Number(m["MH Totale  DRIF"]) - Number(m["MHASYN Totale DRIF"])))
@@ -1329,9 +1492,9 @@
                             <td>${m["MH Affectée Présentiel"] || m['MHP Totale DRIF'] || 0}</td>
                             <td>${m["MH Affectée Sync"] || m["MHSYN Totale DRIF"] || 0}</td>
                             <td><b>${m["MH Affectée Globale (P & SYN)"] || (Number(m["MH Totale  DRIF"]) - Number(m["MHASYN Totale DRIF"])) || 0}</b></td>
-                            <td>${m["MH Réalisée Présentiel"] || 0}</td>
-                            <td>${m["MH Réalisée Sync"] || 0}</td>
-                            <td><b>${m["MH Réalisée Globale"] || 0}</b></td>
+                            <td>${m["MH Réalisée Présentiel"] || Number(0).toFixed(2)}</td>
+                            <td>${m["MH Réalisée Sync"] || Number(0).toFixed(2)}</td>
+                            <td><b>${m["MH Réalisée Globale"] || Number(0).toFixed(2)}</b></td>
                             <td>${Avancement.toFixed(2)}%</td>
                             <td>${m['Séance EFM']}</td>
                         </tr>
@@ -1344,11 +1507,33 @@
                         <td colspan='11'><b>S2</b></td>
                     </tr>
                 `;
+             
                 listModulesLocauxGroupeS2.sort(function (a, b) {
-                    var numA = parseInt(a['MH Réalisée Globale']);
-                    var numB = parseInt(b['MH Réalisée Globale']);
-                    return numB - numA;
-                })
+                        var numA = (a["Code Module"]);
+                        var numB = (b["Code Module"]);
+                        if (numA < numB) {
+                            return -1; // a comes before b
+                        }
+
+                        if (numA > numB) {
+                            return 1; // a comes after b
+                        }
+
+                        return 0; // names are equal
+                    });
+                    listModulesLocauxGroupeS2.sort(function (a, b) {
+                        var numA = (a['Formateur Affecté Présentiel Actif']);
+                        var numB = (b['Formateur Affecté Présentiel Actif']);
+                        if (numA < numB) {
+                            return -1; // a comes before b
+                        }
+
+                        if (numA > numB) {
+                            return 1; // a comes after b
+                        }
+
+                        return 0; // names are equal
+                    });
                 listModulesLocauxGroupeS2.forEach((m, i) => {
 
                     let Avancement = ((m['MH Réalisée Globale'] || 0) * 100) / (m["MH Affectée Globale (P & SYN)"] || (Number(m["MH Totale  DRIF"]) - Number(m["MHASYN Totale DRIF"])))
@@ -1361,9 +1546,9 @@
                             <td>${m["MH Affectée Présentiel"] || m['MHP Totale DRIF'] || 0}</td>
                             <td>${m["MH Affectée Sync"] || m["MHSYN Totale DRIF"] || 0}</td>
                             <td><b>${m["MH Affectée Globale (P & SYN)"] || (Number(m["MH Totale  DRIF"]) - Number(m["MHASYN Totale DRIF"])) || 0}</b></td>
-                            <td>${m["MH Réalisée Présentiel"] || 0}</td>
-                            <td>${m["MH Réalisée Sync"] || 0}</td>
-                            <td><b>${m["MH Réalisée Globale"] || 0}</b></td>
+                            <td>${m["MH Réalisée Présentiel"] || Number(0).toFixed(2)}</td>
+                            <td>${m["MH Réalisée Sync"] || Number(0).toFixed(2)}</td>
+                            <td><b>${m["MH Réalisée Globale"] || Number(0).toFixed(2)}</b></td>
                             <td>${Avancement.toFixed(2)}%</td>
                             <td>${m['Séance EFM']}</td>
                         </tr>
@@ -2041,7 +2226,7 @@
             let fieldset1 = document.createElement('fieldset');
             let legend1 = document.createElement('legend');
             fieldset1.style = 'border:solid;margin-top:10px;padding-bottom: 20px;'
-            legend1.innerHTML = '<h5>Formateurs ayant des EFMR</h5>'
+            legend1.innerHTML = '<h5>Formateurs ayant des EFMR</h5>'
             legend1.style = 'width:fit-content;padding: 0 10px;'
             fieldset1.appendChild(legend1);
             //  fieldset1.appendChild(tableGroupe);
@@ -2052,22 +2237,42 @@
                 }
             });
             formateurs.sort()
-            let s1Formateur = []
-            let s2Formateur = []
+            let s1Formateur1A = []
+            let s2Formateur1A = []
+            let s1Formateur2A = []
+            let s2Formateur2A = []
+            let s1Formateur3A = []
+            let s2Formateur3A = []
             formateurs.map((form) => {
                 data.map(ele => {
 
                     if (ele['Formateur Affecté Présentiel Actif'] === form && ele['Formateur Affecté Présentiel Actif']) {
                         if (ele['MH Totale S1 DRIF'] != 0 && ele['MH Totale S1 DRIF'] >= ele['MH Totale S2 DRIF']) {
-                            if (!s1Formateur.includes(ele['Formateur Affecté Présentiel Actif'])) {
+                            if (!s1Formateur1A.includes(ele['Formateur Affecté Présentiel Actif']) && ele["Année de formation"] == 1) {
                                 let nomForm = ele['Formateur Affecté Présentiel Actif'];
-                                s1Formateur.push(nomForm);
+                                s1Formateur1A.push(nomForm);
+                            }
+                            if (!s1Formateur2A.includes(ele['Formateur Affecté Présentiel Actif']) && ele["Année de formation"] == 2) {
+                                let nomForm = ele['Formateur Affecté Présentiel Actif'];
+                                s1Formateur2A.push(nomForm);
+                            }
+                            if (!s1Formateur3A.includes(ele['Formateur Affecté Présentiel Actif']) && ele["Année de formation"] == 3) {
+                                let nomForm = ele['Formateur Affecté Présentiel Actif'];
+                                s1Formateur3A.push(nomForm);
                             }
                         }
                         else if (ele['MH Totale S2 DRIF'] != 0 && ele['MH Totale S1 DRIF'] < ele['MH Totale S2 DRIF']) {
-                            if (!s2Formateur.includes(ele['Formateur Affecté Présentiel Actif'])) {
+                            if (!s2Formateur1A.includes(ele['Formateur Affecté Présentiel Actif']) && ele["Année de formation"] == 1) {
                                 let nomForm = ele['Formateur Affecté Présentiel Actif'];
-                                s2Formateur.push(nomForm);
+                                s2Formateur1A.push(nomForm);
+                            }
+                            if (!s2Formateur2A.includes(ele['Formateur Affecté Présentiel Actif']) && ele["Année de formation"] == 2) {
+                                let nomForm = ele['Formateur Affecté Présentiel Actif'];
+                                s2Formateur2A.push(nomForm);
+                            }
+                            if (!s2Formateur3A.includes(ele['Formateur Affecté Présentiel Actif']) && ele["Année de formation"] == 3) {
+                                let nomForm = ele['Formateur Affecté Présentiel Actif'];
+                                s2Formateur3A.push(nomForm);
                             }
                         }
 
@@ -2081,10 +2286,29 @@
             })
             let ul = document.createElement("ul")
             ul.style = "list-style-type:none;margin:0"
-            ul.innerHTML = '<h3 class="bg-secondary text-white w-75 mx-auto" >S1</h3>'
+            ul.innerHTML = '<h3 class="bg-info text-white w-75 mx-auto" >S1</h3>'
+            ul.innerHTML += '<h5 class="bg-secondary text-white w-75 mx-auto" >1A</h5>'
 
-            s1Formateur.map((e, i) => {
-                ul.innerHTML += `<li name="${e}"  style="background:#ffff;margin:7px auto; display:flex;justify-content:center ">
+            s1Formateur1A.map((e, i) => {
+                ul.innerHTML += `<li name="${e} 1A"  style="background:#ffff;margin:7px auto; display:flex;justify-content:center ">
+                        <span style=" cursor: pointer;"  onclick='formDetails("${e}")'>${i + 1} - ${e}</span> </li>`
+
+
+            }
+            )
+            ul.innerHTML += '<h5 class="bg-secondary text-white w-75 mx-auto" >2A</h5>'
+
+            s1Formateur2A.map((e, i) => {
+                ul.innerHTML += `<li name="${e} 2A"  style="background:#ffff;margin:7px auto; display:flex;justify-content:center ">
+                        <span style=" cursor: pointer;"  onclick='formDetails("${e}")'>${i + 1} - ${e}</span> </li>`
+
+
+            }
+            )
+            ul.innerHTML += '<h5 class="bg-secondary text-white w-75 mx-auto" >3A</h5>'
+
+            s1Formateur3A.map((e, i) => {
+                ul.innerHTML += `<li name="${e} 3A"  style="background:#ffff;margin:7px auto; display:flex;justify-content:center ">
                         <span style=" cursor: pointer;"  onclick='formDetails("${e}")'>${i + 1} - ${e}</span> </li>`
 
 
@@ -2094,10 +2318,25 @@
             fieldset1.append(ul)
             let ul2 = document.createElement("ul")
             ul2.style = "list-style-type:none;margin:0"
-            ul2.innerHTML = '<h3 class="bg-secondary text-white w-75 mx-auto" >S2</h3>'
+            ul2.innerHTML = '<h3 class="bg-info text-white w-75 mx-auto" >S2</h3>'
+            ul2.innerHTML += '<h5 class="bg-secondary text-white w-75 mx-auto" >1A</h5>'
 
-            s2Formateur.map((e, i) => {
-                ul2.innerHTML += `<li name="${e}" style="background:#ffff;margin:7px auto; display:flex;justify-content:center ">
+            s2Formateur1A.map((e, i) => {
+                ul2.innerHTML += `<li name="${e} 1A" style="background:#ffff;margin:7px auto; display:flex;justify-content:center ">
+                        <span style=" cursor: pointer;"   onclick='formDetails("${e}")'>${i + 1} - ${e}</span></li>`
+
+            }
+            )
+            ul2.innerHTML += '<h5 class="bg-secondary text-white w-75 mx-auto" >2A</h5>'
+            s2Formateur2A.map((e, i) => {
+                ul2.innerHTML += `<li name="${e} 2A" style="background:#ffff;margin:7px auto; display:flex;justify-content:center ">
+                        <span style=" cursor: pointer;"   onclick='formDetails("${e}")'>${i + 1} - ${e}</span></li>`
+
+            }
+            )
+            ul2.innerHTML += '<h5 class="bg-secondary text-white w-75 mx-auto" >3A</h5>'
+            s2Formateur3A.map((e, i) => {
+                ul2.innerHTML += `<li name="${e} 3A" style="background:#ffff;margin:7px auto; display:flex;justify-content:center ">
                         <span style=" cursor: pointer;"   onclick='formDetails("${e}")'>${i + 1} - ${e}</span></li>`
 
             }
@@ -2130,7 +2369,7 @@
                     imprimeD.style.textAlign = "center"
                     // imprimeD.innerHTML = `<h3 style="margin-bottom:20px">Formateurs ayant des EFMR</h3>`
                     imprimeD.append(divParent)
-                    imprime(imprimeD, "Formateurs ayant des EFMR")
+                    imprime(imprimeD, "Formateurs ayant des EFMR")
                     swal({
                         title: 'Imprimer!',
                         text: `Formateurs ayant des EFMR imprimé avec succes!`,
@@ -5505,7 +5744,7 @@
                             bodyStyles: { align: 'center' },
                         });
 
-                        pdf.save("Sythènse_" + type +"_"+ (new Date().toLocaleDateString()) + '.pdf');
+                        pdf.save("Sythènse_" + type + "_" + (new Date().toLocaleDateString()) + '.pdf');
                     };
                 };
 
@@ -5516,19 +5755,6 @@
         function dataDetailsSynt(formateur) {
             let jsonData = JSON.parse(localStorage.jsonData);
             let data = jsonData.filter(e => e['Formateur Affecté Présentiel Actif'] == formateur)
-            data = data.sort(function (a, b) {
-                var numA = (a['Code Module']).toUpperCase();
-                var numB = (b['Code Module']).toUpperCase();
-                if (numA < numB) {
-                    return -1; // a comes before b
-                }
-
-                if (numA > numB) {
-                    return 1; // a comes after b
-                }
-
-                return 0; // names are equal
-            })
             data = data.sort(function (a, b) {
                 var numA = (a['Groupe']).toUpperCase();
                 var numB = (b['Groupe']).toUpperCase();
@@ -5542,6 +5768,20 @@
 
                 return 0; // names are equal
             })
+            data = data.sort(function (a, b) {
+                var numA = (a['Code Module']).toUpperCase();
+                var numB = (b['Code Module']).toUpperCase();
+                if (numA < numB) {
+                    return -1; // a comes before b
+                }
+
+                if (numA > numB) {
+                    return 1; // a comes after b
+                }
+
+                return 0; // names are equal
+            })
+
             return data
         }
         function detailsSynt(formateur) {
@@ -5992,7 +6232,7 @@
 
                         });
 
-                        pdf.save("Tableau_de_service_" + formateur +"_"+ (new Date().toLocaleDateString()) + '.pdf');
+                        pdf.save("Tableau_de_service_" + formateur + "_" + (new Date().toLocaleDateString()) + '.pdf');
                     };
                 };
 
