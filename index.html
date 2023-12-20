@@ -617,7 +617,7 @@
                             <td colspan='11'><b>S1</b></td>
                         </tr>
                     `;
-              
+
                     listModulesRegionalS1.sort(function (a, b) {
                         var numA = (a.group);
                         var numB = (b.group);
@@ -754,7 +754,7 @@
                             <td colspan='11'><b>S1</b></td>
                         </tr>
                     `;
-   
+
                     listModulesLocauxValiderS1.sort(function (a, b) {
                         var numA = (a.group);
                         var numB = (b.group);
@@ -1308,31 +1308,31 @@
                     </tr>
                 `;
                 listModulesRegionalGroupeS1.sort(function (a, b) {
-                        var numA = (a["Code Module"]);
-                        var numB = (b["Code Module"]);
-                        if (numA < numB) {
-                            return -1; // a comes before b
-                        }
+                    var numA = (a["Code Module"]);
+                    var numB = (b["Code Module"]);
+                    if (numA < numB) {
+                        return -1; // a comes before b
+                    }
 
-                        if (numA > numB) {
-                            return 1; // a comes after b
-                        }
+                    if (numA > numB) {
+                        return 1; // a comes after b
+                    }
 
-                        return 0; // names are equal
-                    });
+                    return 0; // names are equal
+                });
                 listModulesRegionalGroupeS1.sort(function (a, b) {
-                        var numA = (a["Formateur Affecté Présentiel Actif"]);
-                        var numB = (b["Formateur Affecté Présentiel Actif"]);
-                        if (numA < numB) {
-                            return -1; // a comes before b
-                        }
+                    var numA = (a["Formateur Affecté Présentiel Actif"]);
+                    var numB = (b["Formateur Affecté Présentiel Actif"]);
+                    if (numA < numB) {
+                        return -1; // a comes before b
+                    }
 
-                        if (numA > numB) {
-                            return 1; // a comes after b
-                        }
+                    if (numA > numB) {
+                        return 1; // a comes after b
+                    }
 
-                        return 0; // names are equal
-                    });
+                    return 0; // names are equal
+                });
 
 
                 listModulesRegionalGroupeS1.forEach((m, i) => {
@@ -1364,32 +1364,32 @@
                     </tr>
                 `;
                 listModulesRegionalGroupeS2.sort(function (a, b) {
-                        var numA = (a["Code Module"]);
-                        var numB = (b["Code Module"]);
-                        if (numA < numB) {
-                            return -1; // a comes before b
-                        }
+                    var numA = (a["Code Module"]);
+                    var numB = (b["Code Module"]);
+                    if (numA < numB) {
+                        return -1; // a comes before b
+                    }
 
-                        if (numA > numB) {
-                            return 1; // a comes after b
-                        }
+                    if (numA > numB) {
+                        return 1; // a comes after b
+                    }
 
-                        return 0; // names are equal
-                    });
+                    return 0; // names are equal
+                });
                 listModulesRegionalGroupeS2.sort(function (a, b) {
-                        var numA = (a['Formateur Affecté Présentiel Actif']);
-                        var numB = (b['Formateur Affecté Présentiel Actif']);
-                        if (numA < numB) {
-                            return -1; // a comes before b
-                        }
+                    var numA = (a['Formateur Affecté Présentiel Actif']);
+                    var numB = (b['Formateur Affecté Présentiel Actif']);
+                    if (numA < numB) {
+                        return -1; // a comes before b
+                    }
 
-                        if (numA > numB) {
-                            return 1; // a comes after b
-                        }
+                    if (numA > numB) {
+                        return 1; // a comes after b
+                    }
 
-                        return 0; // names are equal
-                    });
-               
+                    return 0; // names are equal
+                });
+
 
                 listModulesRegionalGroupeS2.forEach((m, i) => {
 
@@ -1452,33 +1452,33 @@
                     </tr>
                 `;
                 listModulesLocauxGroupeS1.sort(function (a, b) {
-                        var numA = (a["Code Module"]);
-                        var numB = (b["Code Module"]);
-                        if (numA < numB) {
-                            return -1; // a comes before b
-                        }
+                    var numA = (a["Code Module"]);
+                    var numB = (b["Code Module"]);
+                    if (numA < numB) {
+                        return -1; // a comes before b
+                    }
 
-                        if (numA > numB) {
-                            return 1; // a comes after b
-                        }
+                    if (numA > numB) {
+                        return 1; // a comes after b
+                    }
 
-                        return 0; // names are equal
-                    });
+                    return 0; // names are equal
+                });
                 listModulesLocauxGroupeS1.sort(function (a, b) {
-                        var numA = (a['Formateur Affecté Présentiel Actif']);
-                        var numB = (b['Formateur Affecté Présentiel Actif']);
-                        if (numA < numB) {
-                            return -1; // a comes before b
-                        }
+                    var numA = (a['Formateur Affecté Présentiel Actif']);
+                    var numB = (b['Formateur Affecté Présentiel Actif']);
+                    if (numA < numB) {
+                        return -1; // a comes before b
+                    }
 
-                        if (numA > numB) {
-                            return 1; // a comes after b
-                        }
+                    if (numA > numB) {
+                        return 1; // a comes after b
+                    }
 
-                        return 0; // names are equal
-                    });
+                    return 0; // names are equal
+                });
 
-                
+
                 listModulesLocauxGroupeS1.forEach((m, i) => {
 
                     let Avancement = ((m['MH Réalisée Globale'] || 0) * 100) / (m["MH Affectée Globale (P & SYN)"] || (Number(m["MH Totale  DRIF"]) - Number(m["MHASYN Totale DRIF"])))
@@ -1507,33 +1507,33 @@
                         <td colspan='11'><b>S2</b></td>
                     </tr>
                 `;
-             
+
                 listModulesLocauxGroupeS2.sort(function (a, b) {
-                        var numA = (a["Code Module"]);
-                        var numB = (b["Code Module"]);
-                        if (numA < numB) {
-                            return -1; // a comes before b
-                        }
+                    var numA = (a["Code Module"]);
+                    var numB = (b["Code Module"]);
+                    if (numA < numB) {
+                        return -1; // a comes before b
+                    }
 
-                        if (numA > numB) {
-                            return 1; // a comes after b
-                        }
+                    if (numA > numB) {
+                        return 1; // a comes after b
+                    }
 
-                        return 0; // names are equal
-                    });
-                    listModulesLocauxGroupeS2.sort(function (a, b) {
-                        var numA = (a['Formateur Affecté Présentiel Actif']);
-                        var numB = (b['Formateur Affecté Présentiel Actif']);
-                        if (numA < numB) {
-                            return -1; // a comes before b
-                        }
+                    return 0; // names are equal
+                });
+                listModulesLocauxGroupeS2.sort(function (a, b) {
+                    var numA = (a['Formateur Affecté Présentiel Actif']);
+                    var numB = (b['Formateur Affecté Présentiel Actif']);
+                    if (numA < numB) {
+                        return -1; // a comes before b
+                    }
 
-                        if (numA > numB) {
-                            return 1; // a comes after b
-                        }
+                    if (numA > numB) {
+                        return 1; // a comes after b
+                    }
 
-                        return 0; // names are equal
-                    });
+                    return 0; // names are equal
+                });
                 listModulesLocauxGroupeS2.forEach((m, i) => {
 
                     let Avancement = ((m['MH Réalisée Globale'] || 0) * 100) / (m["MH Affectée Globale (P & SYN)"] || (Number(m["MH Totale  DRIF"]) - Number(m["MHASYN Totale DRIF"])))
@@ -4942,6 +4942,11 @@
             let divParent = document.createElement('div')
             divParent.setAttribute('class', 'table-responsive-md');
             divParent.setAttribute('id', 'SynthensePr');
+            divParent.innerHTML = `
+            <div class="d-flex justify-content-end w-100">
+                <span class="btn btn-success d-block w-25 my-2 "  onclick='imprimeToutTableSrv("Pr")'>imprime les tables de service Permanents </span>
+                </div>           
+`
             let tableModule = document.createElement('table');
             tableModule.setAttribute('class', 'table table-bordered table-hover text-center table-responsive-md MHCol');
             tableModule.innerHTML = `
@@ -5343,6 +5348,11 @@
             let divParent = document.createElement('div')
             divParent.setAttribute('class', 'table-responsive-md');
             divParent.setAttribute('id', 'SynthenseVct');
+            divParent.innerHTML = `
+            <div class="d-flex justify-content-end w-100">
+                <span class="btn btn-success d-block w-25 my-2 "  onclick='imprimeToutTableSrv("Vct")'>imprime les tables de service de Vacataires </span>
+                </div>           
+`
             let tableModule = document.createElement('table');
             tableModule.setAttribute('class', 'table table-bordered table-hover text-center table-responsive-md MHCol');
             tableModule.innerHTML = `
@@ -6167,7 +6177,7 @@
                 ],
             })
                 .then(function (isConfirm) {
-
+                    console.log(isConfirm);
 
                     if (isConfirm) {
 
@@ -6179,7 +6189,8 @@
                             text: `Tableau de service (${formateur}) imprimé avec succes!`,
                             icon: 'success'
                         })
-                    };
+                    }
+
                 });
         }
         function imprimeSrv(tableHead, tableBody, tableHead2, tableBody2, formateur, Mle) {
@@ -6260,6 +6271,366 @@
             })
 
         }
+        function detailsSyntData(formateur) {
+            let tableBody = []
+            let tableHead = [[
+                "N°",
+                "Groupe",
+                "Module",
+                "MHP  S1",
+                "MHSYN  S1",
+                "MH Globale  S1",
+                "MHP  S2",
+                "MHSYN  S2",
+                "MH Globale  S2",
+                "MHP ",
+                "MHSYN ",
+                "MH Globale "
+            ]]
+            let tableBody2 = []
+            let tableHead2 = [[
+                "",
+                "MH Affectée Présentiel ",
+                "MH Affectée Sync ",
+                "MH Affectée Globale (P & SYN)"
+            ]]
+            let data = dataDetailsSynt(formateur)
+
+
+            let MHAfectGlobal = 0;
+            let MHAfectGlobalP = 0;
+            let MHAfectGlobalSYN = 0;
+
+            let MHAfectGlobalS1 = 0;
+            let MHAfectGlobalS1P = 0;
+            let MHAfectGlobalS1SYN = 0;
+
+            let MHAfectGlobalS2 = 0;
+            let MHAfectGlobalS2P = 0;
+            let MHAfectGlobalS2SYN = 0;
+
+            let groupeSYN = [];
+
+            data.map((module, i) => {
+                let MHAfectGlobalModule = 0;
+                let MHAfectGlobalPModule = 0;
+                let MHAfectGlobalSYNModule = 0;
+
+                let MHAfectGlobalS1Module = 0;
+                let MHAfectGlobalS1PModule = 0;
+                let MHAfectGlobalS1SYNModule = 0;
+
+                let MHAfectGlobalS2Module = 0;
+                let MHAfectGlobalS2PModule = 0;
+                let MHAfectGlobalS2SYNModule = 0;
+                let difSYN = 0
+                let groupe = ""
+                let groupeSpr = module.Groupe.split("")
+                for (let t of groupeSpr) {
+                    if (isNaN(t)) {
+
+                        groupe += t
+
+                    }
+                    else {
+                        groupe += t
+                        break;
+                    }
+
+                }
+                let countEx = groupeSYN.filter(m => (m.grp == groupe && m.Module == module["Code Module"]))
+
+                if (!(module["Groupe"].includes("TREMOA") && (module["Module"].includes("Compétences") ||
+                    module["Module"].includes("Français") || module["Module"].includes("Anglais")))) {
+
+                    if (countEx.length > 0) {
+                        if (!(module["Groupe"].includes("TREMOA"))) {
+
+                            MHAfectGlobalModule = Number(module["MHP Totale DRIF"]);
+                            MHAfectGlobalPModule = Number(module["MHP Totale DRIF"]);
+
+
+                            MHAfectGlobalS1Module = Number(module["MHP S1 DRIF"]);
+                            MHAfectGlobalS1PModule = Number(module["MHP S1 DRIF"]);
+
+                            MHAfectGlobalS2Module = Number(module["MHP S2 DRIF"])
+                            MHAfectGlobalS2PModule = Number(module["MHP S2 DRIF"]);
+
+                            MHAfectGlobal += Number(module["MHP Totale DRIF"]);
+                            MHAfectGlobalP += Number(module["MHP Totale DRIF"]);
+
+
+                            MHAfectGlobalS1 += Number(module["MHP S1 DRIF"]);
+                            MHAfectGlobalS1P += Number(module["MHP S1 DRIF"]);
+
+
+                            MHAfectGlobalS2 += Number(module["MHP S2 DRIF"])
+                            MHAfectGlobalS2P += Number(module["MHP S2 DRIF"]);
+
+                        }
+                        else {
+                            if (module['MH Totale S1 DRIF'] != 0 && module['MH Totale S1 DRIF'] >= module['MH Totale S2 DRIF']) {
+                                MHAfectGlobalModule += Number(module["MH Affectée Présentiel"]) || Number(module["MHP Totale DRIF"]);
+                                MHAfectGlobalPModule += Number(module["MH Affectée Présentiel"]) || Number(module["MHP Totale DRIF"]);
+
+                                MHAfectGlobalS1Module += Number(module["MH Affectée Présentiel"]) || Number(module["MHP Totale DRIF"]);
+                                MHAfectGlobalS1PModule += Number(module["MH Affectée Présentiel"]) || Number(module["MHP Totale DRIF"]);
+
+                                MHAfectGlobal += Number(module["MH Affectée Présentiel"]) || Number(module["MHP Totale DRIF"]);
+                                MHAfectGlobalP += Number(module["MH Affectée Présentiel"]) || Number(module["MHP Totale DRIF"]);
+
+                                MHAfectGlobalS1 += Number(module["MH Affectée Présentiel"]) || Number(module["MHP Totale DRIF"]);
+                                MHAfectGlobalS1P += Number(module["MH Affectée Présentiel"]) || Number(module["MHP Totale DRIF"]);
+                            }
+                            if (module['MH Totale S2 DRIF'] != 0 && module['MH Totale S1 DRIF'] < module['MH Totale S2 DRIF']) {
+                                MHAfectGlobalModule += Number(module["MH Affectée Présentiel"]) || Number(module["MHP Totale DRIF"]);
+                                MHAfectGlobalPModule += Number(module["MH Affectée Présentiel"]) || Number(module["MHP Totale DRIF"]);
+
+                                MHAfectGlobalS2Module += Number(module["MH Affectée Présentiel"]) || Number(module["MHP Totale DRIF"]);
+                                MHAfectGlobalS2PModule += Number(module["MH Affectée Présentiel"]) || Number(module["MHP Totale DRIF"]);
+
+                                MHAfectGlobal += Number(module["MH Affectée Présentiel"]) || Number(module["MHP Totale DRIF"]);
+                                MHAfectGlobalP += Number(module["MH Affectée Présentiel"]) || Number(module["MHP Totale DRIF"]);
+
+                                MHAfectGlobalS2 += Number(module["MH Affectée Présentiel"]) || Number(module["MHP Totale DRIF"]);
+                                MHAfectGlobalS2P += Number(module["MH Affectée Présentiel"]) || Number(module["MHP Totale DRIF"]);
+                            }
+                        }
+
+
+                        let groupeSYNnew = groupeSYN.filter(e => !(e.grp == groupe && e.Module == module["Code Module"]))
+
+                        groupeSYN = [...groupeSYNnew]
+                    }
+                    else {
+                        groupeSYN.push({ grp: groupe, Module: module["Code Module"] })
+                        if (!(module["Groupe"].includes("TREMOA"))) {
+
+                            MHAfectGlobalModule = Number(module["MH Totale  DRIF"] - module["MHASYN Totale DRIF"]);
+                            MHAfectGlobalPModule = Number(module["MHP Totale DRIF"]);
+                            MHAfectGlobalSYNModule = Number(module["MHSYN Totale DRIF"]);
+
+                            MHAfectGlobalS1Module = Number(module["MH Totale S1 DRIF"] - module["MHASYN S1 DRIF"]);
+                            MHAfectGlobalS1PModule = Number(module["MHP S1 DRIF"]);
+                            MHAfectGlobalS1SYNModule = Number(module["MHSYN S1 DRIF"]);
+
+                            MHAfectGlobalS2Module = Number(module["MH Totale S2 DRIF"] - module["MHASYN S2 DRIF"])
+                            MHAfectGlobalS2PModule = Number(module["MHP S2 DRIF"]);
+                            MHAfectGlobalS2SYNModule = Number(module["MHSYN S2 DRIF"]);
+
+                            MHAfectGlobal += Number(module["MH Totale  DRIF"] - module["MHASYN Totale DRIF"]);
+                            MHAfectGlobalP += Number(module["MHP Totale DRIF"]);
+                            MHAfectGlobalSYN += Number(module["MHSYN Totale DRIF"]);
+
+                            MHAfectGlobalS1 += Number(module["MH Totale S1 DRIF"] - module["MHASYN S1 DRIF"]);
+                            MHAfectGlobalS1P += Number(module["MHP S1 DRIF"]);
+                            MHAfectGlobalS1SYN += Number(module["MHSYN S1 DRIF"]);
+
+                            MHAfectGlobalS2 += Number(module["MH Totale S2 DRIF"] - module["MHASYN S2 DRIF"])
+                            MHAfectGlobalS2P += Number(module["MHP S2 DRIF"]);
+                            MHAfectGlobalS2SYN += Number(module["MHSYN S2 DRIF"]);
+                        }
+                        else {
+                            if (module['MH Totale S1 DRIF'] != 0 && module['MH Totale S1 DRIF'] >= module['MH Totale S2 DRIF']) {
+                                MHAfectGlobalModule += Number(module["MH Affectée Globale (P & SYN)"]) || Number(module["MH Totale  DRIF"] - module["MHASYN Totale DRIF"]);
+                                MHAfectGlobalPModule += Number(module["MH Affectée Présentiel"]) || Number(module["MHP Totale DRIF"]);
+                                MHAfectGlobalSYNModule += Number(module["MH Affectée Sync"]) || Number(module["MHSYN Totale DRIF"]);
+
+                                MHAfectGlobalS1Module += Number(module["MH Affectée Globale (P & SYN)"]) || Number(module["MH Totale  DRIF"] - module["MHASYN Totale DRIF"]);
+                                MHAfectGlobalS1PModule += Number(module["MH Affectée Présentiel"]) || Number(module["MHP Totale DRIF"]);
+                                MHAfectGlobalS1SYNModule += Number(module["MH Affectée Sync"]) || Number(module["MHSYN Totale DRIF"]);
+
+                                MHAfectGlobal += Number(module["MH Affectée Globale (P & SYN)"]) || Number(module["MH Totale  DRIF"] - module["MHASYN Totale DRIF"]);
+                                MHAfectGlobalP += Number(module["MH Affectée Présentiel"]) || Number(module["MHP Totale DRIF"]);
+                                MHAfectGlobalSYN += Number(module["MH Affectée Sync"]) || Number(module["MHSYN Totale DRIF"]);
+
+                                MHAfectGlobalS1 += Number(module["MH Affectée Globale (P & SYN)"]) || Number(module["MH Totale  DRIF"] - module["MHASYN Totale DRIF"]);
+                                MHAfectGlobalS1P += Number(module["MH Affectée Présentiel"]) || Number(module["MHP Totale DRIF"]);
+                                MHAfectGlobalS1SYN += Number(module["MH Affectée Sync"]) || Number(module["MHSYN Totale DRIF"]);
+                            }
+                            if (module['MH Totale S2 DRIF'] != 0 && module['MH Totale S1 DRIF'] < module['MH Totale S2 DRIF']) {
+                                MHAfectGlobalModule += Number(module["MH Affectée Globale (P & SYN)"]) || Number(module["MH Totale  DRIF"] - module["MHASYN Totale DRIF"]);
+                                MHAfectGlobalPModule += Number(module["MH Affectée Présentiel"]) || Number(module["MHP Totale DRIF"]);
+                                MHAfectGlobalSYNModule += Number(module["MH Affectée Sync"]) || Number(module["MHSYN Totale DRIF"]);
+
+                                MHAfectGlobalS2Module += Number(module["MH Affectée Globale (P & SYN)"]) || Number(module["MH Totale  DRIF"] - module["MHASYN Totale DRIF"]);
+                                MHAfectGlobalS2PModule += Number(module["MH Affectée Présentiel"]) || Number(module["MHP Totale DRIF"]);
+                                MHAfectGlobalS2SYNModule += Number(module["MH Affectée Sync"]) || Number(module["MHSYN Totale DRIF"]);
+
+                                MHAfectGlobal += Number(module["MH Affectée Globale (P & SYN)"]) || Number(module["MH Totale  DRIF"] - module["MHASYN Totale DRIF"]);
+                                MHAfectGlobalP += Number(module["MH Affectée Présentiel"]) || Number(module["MHP Totale DRIF"]);
+                                MHAfectGlobalSYN += Number(module["MH Affectée Sync"]) || Number(module["MHSYN Totale DRIF"]);
+
+                                MHAfectGlobalS2 += Number(module["MH Affectée Globale (P & SYN)"]) || Number(module["MH Totale  DRIF"] - module["MHASYN Totale DRIF"]);
+                                MHAfectGlobalS2P += Number(module["MH Affectée Présentiel"]) || Number(module["MHP Totale DRIF"]);
+                                MHAfectGlobalS2SYN += Number(module["MH Affectée Sync"]) || Number(module["MHSYN Totale DRIF"]);
+                            }
+                        }
+                    }
+                }
+                else {
+                    MHAfectGlobalModule = Number(module["MH Totale  DRIF"] - module["MHASYN Totale DRIF"]);
+                    MHAfectGlobalPModule = Number(module["MHP Totale DRIF"]);
+                    MHAfectGlobalSYNModule = Number(module["MHSYN Totale DRIF"]);
+
+                    MHAfectGlobalS1Module = Number(module["MH Totale S1 DRIF"] - module["MHASYN S1 DRIF"]);
+                    MHAfectGlobalS1PModule = Number(module["MHP S1 DRIF"]);
+                    MHAfectGlobalS1SYNModule = Number(module["MHSYN S1 DRIF"]);
+
+                    MHAfectGlobalS2Module = Number(module["MH Totale S2 DRIF"] - module["MHASYN S2 DRIF"])
+                    MHAfectGlobalS2PModule = Number(module["MHP S2 DRIF"]);
+                    MHAfectGlobalS2SYNModule = Number(module["MHSYN S2 DRIF"]);
+                    MHAfectGlobal += Number(module["MH Totale  DRIF"] - module["MHASYN Totale DRIF"]);
+                    MHAfectGlobalP += Number(module["MHP Totale DRIF"]);
+                    MHAfectGlobalSYN += Number(module["MHSYN Totale DRIF"]);
+
+                    MHAfectGlobalS1 += Number(module["MH Totale S1 DRIF"] - module["MHASYN S1 DRIF"]);
+                    MHAfectGlobalS1P += Number(module["MHP S1 DRIF"]);
+                    MHAfectGlobalS1SYN += Number(module["MHSYN S1 DRIF"]);
+
+                    MHAfectGlobalS2 += Number(module["MH Totale S2 DRIF"] - module["MHASYN S2 DRIF"])
+                    MHAfectGlobalS2P += Number(module["MHP S2 DRIF"]);
+                    MHAfectGlobalS2SYN += Number(module["MHSYN S2 DRIF"]);
+                }
+
+
+                tableBody = [...tableBody, [
+                    i + 1,
+                    module["Groupe"],
+                    `${module['Code Module']}-${module['Module']}`,
+                    Number(MHAfectGlobalS1PModule).toFixed(2),
+                    Number(MHAfectGlobalS1SYNModule).toFixed(2),
+                    { content: Number(MHAfectGlobalS1Module).toFixed(2), styles: { fontStyle: 'bold' } },
+                    Number(MHAfectGlobalS2PModule).toFixed(2),
+                    Number(MHAfectGlobalS2SYNModule).toFixed(2),
+                    { content: Number(MHAfectGlobalS2Module).toFixed(2), styles: { fontStyle: 'bold' } },
+                    Number(MHAfectGlobalPModule).toFixed(2),
+                    Number(MHAfectGlobalSYNModule).toFixed(2),
+                    { content: Number(MHAfectGlobalModule).toFixed(2), styles: { fontStyle: 'bold' } }
+                ]]
+            })
+
+
+
+
+
+            tableBody2 = [
+                [
+                    { content: " total S1", styles: { fontStyle: 'bold' } },
+                    Number(MHAfectGlobalS1P).toFixed(2),
+                    Number(MHAfectGlobalS1SYN).toFixed(2),
+
+                    { content: Number(MHAfectGlobalS1).toFixed(2), styles: { fontStyle: 'bold' } },
+
+                ],
+                [
+                    { content: " total S2", styles: { fontStyle: 'bold' } },
+                    Number(MHAfectGlobalS2P).toFixed(2),
+                    Number(MHAfectGlobalS2SYN).toFixed(2),
+
+                    { content: Number(MHAfectGlobalS2).toFixed(2), styles: { fontStyle: 'bold' } },
+                ],
+                [
+                    { content: " total d'annee", styles: { fontStyle: 'bold' } },
+                    Number(MHAfectGlobalP).toFixed(2),
+                    Number(MHAfectGlobalSYN).toFixed(2),
+
+                    { content: Number(MHAfectGlobal).toFixed(2), styles: { fontStyle: 'bold' } },
+
+                ]
+            ];
+
+
+
+
+
+            // divParent.appendChild(input);
+            return {
+                formateur: formateur,
+                mle: data[0]["Mle Affecté Présentiel Actif"],
+                tableBody: tableBody,
+                tableBody2: tableBody2,
+                tableHead: tableHead,
+                tableHead2: tableHead2
+            }
+
+        }
+
+        function imprimeToutTableSrv(type){
+            let data;
+            if(type=="Pr"){
+                data=dataformateurPr()
+                type="Permanents"
+            }
+            console.log(type);
+            if(type=="Vct"){
+                data=dataformateurVct()
+                type="Vacataires"
+            }
+            setTimeout(() => {
+                const jsPDF = new window.jspdf.jsPDF();
+                let logo = "https://upload.wikimedia.org/wikipedia/commons/0/05/Logo_ofppt.png";
+
+                const generatePDF = () => {
+                    const currentDate = new Date().toLocaleDateString();
+
+                    const pdf = new window.jspdf.jsPDF({
+                        format: 'a4',
+                        orientation: 'landscape',
+                    });
+                   
+                    const img = new Image();
+                    img.src = logo;
+                    img.onload = function () {
+                        data.map((formateur,i)=>{
+                        let dataformateur=detailsSyntData(formateur)
+                        
+                        pdf.addImage(this, 'PNG', 10, 5, 25, 25);
+
+                        pdf.setFontSize(10);
+                        pdf.text(currentDate, 270, 5);
+
+                        pdf.text('Institut Spécialisé de Technologie Appliquée - Berkane', 195, 20);
+
+                        pdf.setFontSize(14);
+                        pdf.text('Tableau de service ', 120, 33);
+
+                        pdf.setFontSize(10);
+                        pdf.text('Direction: DR Oriental', 15, 45);
+                        pdf.text('Complexe: CF Berkane', 15, 50);
+                        pdf.text('Formateur: ' + dataformateur.formateur, 120, 45);
+                        pdf.text('Matricule: ' + dataformateur.mle, 120, 50);
+                        pdf.text('Année de formation: 2023-2024', 230, 50);
+
+                        // بداية الجدول
+                        pdf.autoTable({
+                            head: dataformateur.tableHead,
+                            body: dataformateur.tableBody,
+                            startY: 57,
+                            headStyles: { align: 'center' },
+                            bodyStyles: { align: 'center' },
+                        });
+                        pdf.autoTable({
+                            head:  dataformateur.tableHead2,
+                            body:  dataformateur.tableBody2,
+                            headStyles: { fillColor: [0, 128, 0], align: 'center' },
+                            bodyStyles: { align: 'center' },
+
+
+                        });
+                        if(i!=data.length-1)
+                        pdf.addPage();
+
+                    })
+
+                        pdf.save("lse_Tableaux_de_service_" +'des_'+type+ "_" + (new Date().toLocaleDateString()) + '.pdf');
+                    };
+                };
+
+                generatePDF();
+            }, 500);
+        }
+
     </script>
 </body>
 
