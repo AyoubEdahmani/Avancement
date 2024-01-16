@@ -890,6 +890,8 @@
                     if (min < 40 && min >= 20) {
                         vitesse += 0.5
                     }
+                    vitesse = (vitesse >= 0 && vitesse) || "-"
+                    vitesse = (new Date() < new Date("2024/01/29") && vitesse) || "-"
                     tableModule3.innerHTML += `
                         <tr>
                             <td>${MHAfectGlobalS1P}</td>
@@ -898,7 +900,7 @@
                             <td>${MHRealisGlobalS1P}</td>
                             <td>${MHRealisGlobalS1SYN}</td>
                             <td><b>${MHRealisGlobalS1}</b></td>
-                            <td>${(vitesse >= 0 && vitesse) || 0}  </td>
+                            <td>${vitesse}  </td>
                          
                         </tr>
                         `;
@@ -972,7 +974,7 @@
                             <td>${MHRealisGlobalS2P}</td>
                             <td>${MHRealisGlobalS2SYN}</td>
                             <td><b>${MHRealisGlobalS2}</b></td>
-                                <td>${(vitesse2 >= 0 && vitesse2) || 0}   ${diffS1 > 0 && "+(" + diffS1 + " heure de S1)"}</td>
+                                <td>${(vitesse2 >= 0 && vitesse2) || 0}   ${diffS1 >= 0 && "+(" + diffS1 + " heure de S1)"}</td>
                              
                             </tr>
                             `;
@@ -1594,6 +1596,8 @@
                 if (min < 40 && min >= 20) {
                     vitesse += 0.5
                 }
+                vitesse = (vitesse >= 0 && vitesse) || "-"
+                vitesse = (new Date() < new Date("2024/01/29") && vitesse) || "-"
                 tableModule3.innerHTML += `
                 <tr>
                             <td>${MHAfectGlobalS1P}</td>
@@ -1602,7 +1606,7 @@
                             <td>${MHRealisGlobalS1P}</td>
                             <td>${MHRealisGlobalS1SYN}</td>
                             <td><b>${MHRealisGlobalS1}</b></td>
-                                <td>${(vitesse >= 0 && vitesse) || 0}   </td>
+                                <td>${(vitesse ) }   </td>
                              
                             </tr>
                         `;
@@ -1676,7 +1680,7 @@
                             <td>${MHRealisGlobalS2P}</td>
                             <td>${MHRealisGlobalS2SYN}</td>
                             <td><b>${MHRealisGlobalS2}</b></td>
-                                <td>${(vitesse2 >= 0 && vitesse2) || 0}   ${diffS1 > 0 && "+(" + diffS1 + " heure de S1)"}</td>
+                                <td>${(vitesse2 >= 0 && vitesse2) || 0}   ${diffS1 >= 0 && "+(" + diffS1 + " heure de S1)"}</td>
                              
                             </tr>
                             `;
@@ -3693,7 +3697,7 @@
             var dateFinS1 = new Date("2024/01/29")
 
 
-            var dateFinS2 = new Date("2024/06/09")
+            var dateFinS2 = new Date("2024/06/16")
             let diffS = 0
 
             numbrDeSem = 0;
@@ -3718,6 +3722,7 @@
             ]
             if (dateDebut < new Date("2024/01/29")) {
                 diffS = (dateFinS1 - dateDebut)
+
                 vac.map(e => {
 
                     let difD = (dateDebut - e.dateDebut) / (1000 * 60 * 60 * 24)
@@ -3740,12 +3745,17 @@
                     }
                 })
             }
-            let difRest = Math.floor(Math.floor(diffS / (1000 * 60 * 60 * 24)) / 7)
 
-            diffS = Math.floor((Math.floor(diffS / (1000 * 60 * 60 * 24)) - difRest) / 6)
+            let difRest = Math.ceil(Math.ceil(diffS / (1000 * 60 * 60 * 24)) / 7)
+
+
+            diffS = Math.ceil((Math.ceil(diffS / (1000 * 60 * 60 * 24)) - difRest) / 6)
+            console.log(numbrDeSem);
 
             return diffS - numbrDeSem
         }
+        console.log(tempsRestant(Date()));
+        console.log((Date()));
 
 
 
@@ -4053,6 +4063,8 @@
                         if (min < 40 && min >= 20) {
                             vitesse += 0.5
                         }
+                        vitesse=(vitesse >= 0  && vitesse) || "-"
+                    vitesse=(new Date() <new Date("2024/01/29")  && vitesse) || "-"
                         tableModule3.innerHTML += `
                     <tr>
                         
@@ -4068,7 +4080,7 @@
                         <td>${MHRealisGlobalS1SYN} </td>
                         <td><b>${MHRealisGlobalS1}</b> </td>
         
-                        <td>${vitesse >= 0 && vitesse || 0}  </td>
+                        <td>${vitesse }  </td>
                        </tr>
     
                     `;
@@ -4342,6 +4354,8 @@
 
                             vitesse += 0.5
                         }
+                        vitesse=(vitesse >= 0  && vitesse) || "-"
+                    vitesse=(new Date() <new Date("2024/01/29")  && vitesse) || "-"
 
                         tableModule3.innerHTML += `
                                 <tr>
@@ -4358,7 +4372,7 @@
                                     <td>${MHRealisGlobalS1SYN} </td>
                                     <td><b>${MHRealisGlobalS1}</b> </td>
                     
-                                    <td>${vitesse >= 0 && vitesse || 0}  </td>
+                                    <td>${vitesse}  </td>
                                 </tr>
     
                         `;
@@ -6556,16 +6570,16 @@
 
         }
 
-        function imprimeToutTableSrv(type){
+        function imprimeToutTableSrv(type) {
             let data;
-            if(type=="Pr"){
-                data=dataformateurPr()
-                type="Permanents"
+            if (type == "Pr") {
+                data = dataformateurPr()
+                type = "Permanents"
             }
             console.log(type);
-            if(type=="Vct"){
-                data=dataformateurVct()
-                type="Vacataires"
+            if (type == "Vct") {
+                data = dataformateurVct()
+                type = "Vacataires"
             }
             setTimeout(() => {
                 const jsPDF = new window.jspdf.jsPDF();
@@ -6578,52 +6592,52 @@
                         format: 'a4',
                         orientation: 'landscape',
                     });
-                   
+
                     const img = new Image();
                     img.src = logo;
                     img.onload = function () {
-                        data.map((formateur,i)=>{
-                        let dataformateur=detailsSyntData(formateur)
-                        
-                        pdf.addImage(this, 'PNG', 10, 5, 25, 25);
+                        data.map((formateur, i) => {
+                            let dataformateur = detailsSyntData(formateur)
 
-                        pdf.setFontSize(10);
-                        pdf.text(currentDate, 270, 5);
+                            pdf.addImage(this, 'PNG', 10, 5, 25, 25);
 
-                        pdf.text('Institut Spécialisé de Technologie Appliquée - Berkane', 195, 20);
+                            pdf.setFontSize(10);
+                            pdf.text(currentDate, 270, 5);
 
-                        pdf.setFontSize(14);
-                        pdf.text('Tableau de service ', 120, 33);
+                            pdf.text('Institut Spécialisé de Technologie Appliquée - Berkane', 195, 20);
 
-                        pdf.setFontSize(10);
-                        pdf.text('Direction: DR Oriental', 15, 45);
-                        pdf.text('Complexe: CF Berkane', 15, 50);
-                        pdf.text('Formateur: ' + dataformateur.formateur, 120, 45);
-                        pdf.text('Matricule: ' + dataformateur.mle, 120, 50);
-                        pdf.text('Année de formation: 2023-2024', 230, 50);
+                            pdf.setFontSize(14);
+                            pdf.text('Tableau de service ', 120, 33);
 
-                        // بداية الجدول
-                        pdf.autoTable({
-                            head: dataformateur.tableHead,
-                            body: dataformateur.tableBody,
-                            startY: 57,
-                            headStyles: { align: 'center' },
-                            bodyStyles: { align: 'center' },
-                        });
-                        pdf.autoTable({
-                            head:  dataformateur.tableHead2,
-                            body:  dataformateur.tableBody2,
-                            headStyles: { fillColor: [0, 128, 0], align: 'center' },
-                            bodyStyles: { align: 'center' },
+                            pdf.setFontSize(10);
+                            pdf.text('Direction: DR Oriental', 15, 45);
+                            pdf.text('Complexe: CF Berkane', 15, 50);
+                            pdf.text('Formateur: ' + dataformateur.formateur, 120, 45);
+                            pdf.text('Matricule: ' + dataformateur.mle, 120, 50);
+                            pdf.text('Année de formation: 2023-2024', 230, 50);
+
+                            // بداية الجدول
+                            pdf.autoTable({
+                                head: dataformateur.tableHead,
+                                body: dataformateur.tableBody,
+                                startY: 57,
+                                headStyles: { align: 'center' },
+                                bodyStyles: { align: 'center' },
+                            });
+                            pdf.autoTable({
+                                head: dataformateur.tableHead2,
+                                body: dataformateur.tableBody2,
+                                headStyles: { fillColor: [0, 128, 0], align: 'center' },
+                                bodyStyles: { align: 'center' },
 
 
-                        });
-                        if(i!=data.length-1)
-                        pdf.addPage();
+                            });
+                            if (i != data.length - 1)
+                                pdf.addPage();
 
-                    })
+                        })
 
-                        pdf.save("lse_Tableaux_de_service_" +'des_'+type+ "_" + (new Date().toLocaleDateString()) + '.pdf');
+                        pdf.save("lse_Tableaux_de_service_" + 'des_' + type + "_" + (new Date().toLocaleDateString()) + '.pdf');
                     };
                 };
 
