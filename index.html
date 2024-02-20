@@ -964,7 +964,7 @@
                     if (min2 < 40 && min2 >= 20) {
                         vitesse2 += 0.5
                     }
-                    if (new Date() > new Date("2024/01/29") && new Date() < new Date("2024/06/10")) {
+                    if (new Date() > new Date("2024/01/29") && new Date() < new Date("2024/06/16")) {
 
                         tableModule4.innerHTML += `
                             <tr>
@@ -1670,7 +1670,7 @@
                     vitesse2 += 0.5
                 }
 
-                if (new Date() > new Date("2024/01/29") && new Date() < new Date("2024/06/10")) {
+                if (new Date() > new Date("2024/01/29") && new Date() < new Date("2024/06/16")) {
 
                     tableModule4.innerHTML += `
                             <tr>
@@ -3066,8 +3066,10 @@
                         <td>Nom</td>
                         <td>Formateur</td>
                         <td>Groupe</td>
+                        <td>Avancement</td>
+                        
                         <tr class="bg-light annee" >
-                        <td colspan='3' ><b>1A</b></td>
+                        <td colspan='4' ><b>1A</b></td>
          
                     </tr>
                     </tr>
@@ -3080,6 +3082,8 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
+                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
+
                         
             
                         </tr>
@@ -3092,15 +3096,14 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
-          
-            
+                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
                         </tr>
                         `;
                 }
             })
             tableS1Reg.innerHTML += `
             <tr class="bg-light annee" >
-                        <td colspan='3'><b>2A</b></td>
+                        <td colspan='4'><b>2A</b></td>
          
                     </tr>
                     `
@@ -3111,6 +3114,7 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
+                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
                         
             
                         </tr>
@@ -3123,7 +3127,7 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
-          
+                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
             
                         </tr>
                         `;
@@ -3131,7 +3135,7 @@
             })
             tableS1Reg.innerHTML += `
             <tr class="bg-light annee" >
-                        <td colspan='3'><b>3A</b></td>
+                        <td colspan='4'><b>3A</b></td>
          
                     </tr>
                     `
@@ -3142,8 +3146,7 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
-                        
-            
+                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
                         </tr>
                         `;
                 }
@@ -3154,6 +3157,7 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
+                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
           
             
                         </tr>
@@ -3175,8 +3179,9 @@
                         <td>Nom</td>
                         <td>Formateur</td>
                         <td>Groupe</td>
+                        <td>Avancement</td>
                         <tr class="bg-light annee" >
-                        <td colspan='3' ><b>1A</b></td>
+                        <td colspan='4' ><b>1A</b></td>
          
                     </tr>
                     </tr>
@@ -3189,6 +3194,7 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
+                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
                         
             
                         </tr>
@@ -3201,6 +3207,7 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
+                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
           
             
                         </tr>
@@ -3209,7 +3216,7 @@
             })
             tableS1loc.innerHTML += `
             <tr class="bg-light annee" >
-                        <td colspan='3'><b>2A</b></td>
+                        <td colspan='4'><b>2A</b></td>
          
                     </tr>
                     `
@@ -3220,6 +3227,7 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
+                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
                         
             
                         </tr>
@@ -3232,6 +3240,7 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
+                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
           
             
                         </tr>
@@ -3240,7 +3249,7 @@
             })
             tableS1loc.innerHTML += `
             <tr class="bg-light annee" >
-                        <td colspan='3'><b>3A</b></td>
+                        <td colspan='4'><b>3A</b></td>
          
                     </tr>
                     `
@@ -3251,6 +3260,8 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
+                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
+
                         
             
                         </tr>
@@ -3263,6 +3274,8 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
+                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
+
           
             
                         </tr>
@@ -3332,8 +3345,9 @@
                         <td>Nom</td>
                         <td>Formateur</td>
                         <td>Groupe</td>
+                        <td>Avancement</td>
                         <tr class="bg-light annee" >
-                        <td colspan='3' ><b>1A</b></td>
+                        <td colspan='4' ><b>1A</b></td>
          
                     </tr>
                     </tr>
@@ -3346,6 +3360,7 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
+                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
                         
             
                         </tr>
@@ -3358,6 +3373,8 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
+                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
+
           
             
                         </tr>
@@ -3366,7 +3383,7 @@
             })
             tableS2Reg.innerHTML += `
             <tr class="bg-light annee" >
-                        <td colspan='3'><b>2A</b></td>
+                        <td colspan='4'><b>2A</b></td>
          
                     </tr>
                     `
@@ -3377,6 +3394,7 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
+                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
                         
             
                         </tr>
@@ -3389,6 +3407,7 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
+                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
           
             
                         </tr>
@@ -3397,7 +3416,7 @@
             })
             tableS2Reg.innerHTML += `
             <tr class="bg-light annee" >
-                        <td colspan='3'><b>3A</b></td>
+                        <td colspan='4'><b>3A</b></td>
          
                     </tr>
                     `
@@ -3408,6 +3427,7 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
+                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
                         
             
                         </tr>
@@ -3420,6 +3440,7 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
+                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
           
             
                         </tr>
@@ -3442,8 +3463,9 @@
                         <td>Nom</td>
                         <td>Formateur</td>
                         <td>Groupe</td>
+                        <td>Avancement</td>
                         <tr class="bg-light annee" >
-                        <td colspan='3' ><b>1A</b></td>
+                        <td colspan='4' ><b>1A</b></td>
          
                     </tr>
                     </tr>
@@ -3456,6 +3478,7 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
+                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
                         
             
                         </tr>
@@ -3468,6 +3491,7 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
+                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
           
             
                         </tr>
@@ -3476,7 +3500,7 @@
             })
             tableS2loc.innerHTML += `
             <tr class="bg-light annee" >
-                        <td colspan='3'><b>2A</b></td>
+                        <td colspan='4'><b>2A</b></td>
          
                     </tr>
                     `
@@ -3487,6 +3511,7 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
+                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
                         
             
                         </tr>
@@ -3499,6 +3524,8 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
+                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
+                    
           
             
                         </tr>
@@ -3507,7 +3534,7 @@
             })
             tableS2loc.innerHTML += `
             <tr class="bg-light annee" >
-                        <td colspan='3'><b>3A</b></td>
+                        <td colspan='4'><b>3A</b></td>
          
                     </tr>
                     `
@@ -3518,6 +3545,7 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
+                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
                         
             
                         </tr>
@@ -3530,6 +3558,8 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
+                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
+
           
             
                         </tr>
@@ -4100,7 +4130,7 @@
                         if (min2 < 40 && min2 >= 20) {
                             vitesse2 += 0.5
                         }
-                        if (new Date() > new Date("2024/01/29") && new Date() < new Date("2024/06/10")) {
+                        if (new Date() > new Date("2024/01/29") && new Date() < new Date("2024/06/16")) {
 
                             tableModule3.innerHTML += `
                             <tr>
@@ -4392,7 +4422,7 @@
                         if (min2 < 40 && min2 >= 20) {
                             vitesse2 += 0.5
                         }
-                        if (new Date() > new Date("2024/01/29") && new Date() < new Date("2024/06/10")) {
+                        if (new Date() > new Date("2024/01/29") && new Date() < new Date("2024/06/16")) {
 
                             tableModule3.innerHTML += `
                             <tr>
