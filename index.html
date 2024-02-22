@@ -3066,10 +3066,13 @@
                         <td>Nom</td>
                         <td>Formateur</td>
                         <td>Groupe</td>
+                        <td>MH Reste Présentiel</td>
+                        <td>MH Reste Sync</td>
+                        <td>MH Reste total</td>
                         <td>Avancement</td>
                         
                         <tr class="bg-light annee" >
-                        <td colspan='4' ><b>1A</b></td>
+                        <td colspan='7' ><b>1A</b></td>
          
                     </tr>
                     </tr>
@@ -3077,12 +3080,16 @@
                 `;
             dataRegS1.forEach(m => {
                 if (m["Module"] == "Culture entrepreneuriale" && m['Formateur Affecté Présentiel Actif'] && m["Année de formation"] == 1) {
+                    
                     tableS1Reg.innerHTML += `
                     <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 1A ">
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
-                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
+                        <td>${(Number(m["MH Affectée Présentiel"])-Number(m["MH Réalisée Présentiel"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Sync"])-Number(m["MH Réalisée Sync"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Globale (P & SYN)"])-Number(m["MH Réalisée Globale"])).toFixed(2)}</td>
+                        <th>${m["Taux Réalisation (P & SYN )"]}%</th>
 
                         
             
@@ -3091,19 +3098,23 @@
                 }
 
                 if (m["Module"] != "Culture entrepreneuriale" && m["Année de formation"] == 1) {
+                    console.log(Number(m["MH Affectée Présentiel"])-Number(m["MH Réalisée Présentiel"]));
                     tableS1Reg.innerHTML += `
                     <tr name="${m['Formateur Affecté Présentiel Actif']} ${m['Groupe']} 1A" >
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
-                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
+                        <td>${(Number(m["MH Affectée Présentiel"])-Number(m["MH Réalisée Présentiel"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Sync"])-Number(m["MH Réalisée Sync"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Globale (P & SYN)"])-Number(m["MH Réalisée Globale"])).toFixed(2)}</td>
+                        <th>${m["Taux Réalisation (P & SYN )"]}%</th>
                         </tr>
                         `;
                 }
             })
             tableS1Reg.innerHTML += `
             <tr class="bg-light annee" >
-                        <td colspan='4'><b>2A</b></td>
+                        <td colspan='7'><b>2A</b></td>
          
                     </tr>
                     `
@@ -3114,7 +3125,10 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
-                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
+                        <td>${(Number(m["MH Affectée Présentiel"])-Number(m["MH Réalisée Présentiel"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Sync"])-Number(m["MH Réalisée Sync"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Globale (P & SYN)"])-Number(m["MH Réalisée Globale"])).toFixed(2)}</td>
+                        <th>${m["Taux Réalisation (P & SYN )"]}%</th>
                         
             
                         </tr>
@@ -3127,7 +3141,10 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
-                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
+                        <td>${(Number(m["MH Affectée Présentiel"])-Number(m["MH Réalisée Présentiel"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Sync"])-Number(m["MH Réalisée Sync"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Globale (P & SYN)"])-Number(m["MH Réalisée Globale"])).toFixed(2)}</td>
+                        <th>${m["Taux Réalisation (P & SYN )"]}%</th>
             
                         </tr>
                         `;
@@ -3135,7 +3152,7 @@
             })
             tableS1Reg.innerHTML += `
             <tr class="bg-light annee" >
-                        <td colspan='4'><b>3A</b></td>
+                        <td colspan='7'><b>3A</b></td>
          
                     </tr>
                     `
@@ -3146,7 +3163,10 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
-                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
+                        <td>${(Number(m["MH Affectée Présentiel"])-Number(m["MH Réalisée Présentiel"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Sync"])-Number(m["MH Réalisée Sync"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Globale (P & SYN)"])-Number(m["MH Réalisée Globale"])).toFixed(2)}</td>
+                        <th>${m["Taux Réalisation (P & SYN )"]}%</th>
                         </tr>
                         `;
                 }
@@ -3157,7 +3177,10 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
-                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
+                        <td>${(Number(m["MH Affectée Présentiel"])-Number(m["MH Réalisée Présentiel"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Sync"])-Number(m["MH Réalisée Sync"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Globale (P & SYN)"])-Number(m["MH Réalisée Globale"])).toFixed(2)}</td>
+                        <th>${m["Taux Réalisation (P & SYN )"]}%</th>
           
             
                         </tr>
@@ -3179,9 +3202,12 @@
                         <td>Nom</td>
                         <td>Formateur</td>
                         <td>Groupe</td>
+                        <td>MH Reste Présentiel</td>
+                        <td>MH Reste Sync</td>
+                        <td>MH Reste total</td>
                         <td>Avancement</td>
                         <tr class="bg-light annee" >
-                        <td colspan='4' ><b>1A</b></td>
+                        <td colspan='7' ><b>1A</b></td>
          
                     </tr>
                     </tr>
@@ -3194,7 +3220,10 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
-                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
+                         <td>${(Number(m["MH Affectée Présentiel"])-Number(m["MH Réalisée Présentiel"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Sync"])-Number(m["MH Réalisée Sync"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Globale (P & SYN)"])-Number(m["MH Réalisée Globale"])).toFixed(2)}</td>
+                        <th>${m["Taux Réalisation (P & SYN )"]}%</th>
                         
             
                         </tr>
@@ -3207,8 +3236,10 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
-                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
-          
+                         <td>${(Number(m["MH Affectée Présentiel"])-Number(m["MH Réalisée Présentiel"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Sync"])-Number(m["MH Réalisée Sync"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Globale (P & SYN)"])-Number(m["MH Réalisée Globale"])).toFixed(2)}</td>
+                        <th>${m["Taux Réalisation (P & SYN )"]}%</th>          
             
                         </tr>
                         `;
@@ -3216,7 +3247,7 @@
             })
             tableS1loc.innerHTML += `
             <tr class="bg-light annee" >
-                        <td colspan='4'><b>2A</b></td>
+                        <td colspan='7'><b>2A</b></td>
          
                     </tr>
                     `
@@ -3227,8 +3258,10 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
-                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
-                        
+                         <td>${(Number(m["MH Affectée Présentiel"])-Number(m["MH Réalisée Présentiel"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Sync"])-Number(m["MH Réalisée Sync"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Globale (P & SYN)"])-Number(m["MH Réalisée Globale"])).toFixed(2)}</td>
+                        <th>${m["Taux Réalisation (P & SYN )"]}%</th>                        
             
                         </tr>
                         `;
@@ -3240,8 +3273,10 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
-                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
-          
+                         <td>${(Number(m["MH Affectée Présentiel"])-Number(m["MH Réalisée Présentiel"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Sync"])-Number(m["MH Réalisée Sync"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Globale (P & SYN)"])-Number(m["MH Réalisée Globale"])).toFixed(2)}</td>
+                        <th>${m["Taux Réalisation (P & SYN )"]}%</th>          
             
                         </tr>
                         `;
@@ -3249,7 +3284,7 @@
             })
             tableS1loc.innerHTML += `
             <tr class="bg-light annee" >
-                        <td colspan='4'><b>3A</b></td>
+                        <td colspan='7'><b>3A</b></td>
          
                     </tr>
                     `
@@ -3260,8 +3295,10 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
-                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
-
+                         <td>${(Number(m["MH Affectée Présentiel"])-Number(m["MH Réalisée Présentiel"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Sync"])-Number(m["MH Réalisée Sync"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Globale (P & SYN)"])-Number(m["MH Réalisée Globale"])).toFixed(2)}</td>
+                        <th>${m["Taux Réalisation (P & SYN )"]}%</th>
                         
             
                         </tr>
@@ -3274,8 +3311,10 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
-                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
-
+                         <td>${(Number(m["MH Affectée Présentiel"])-Number(m["MH Réalisée Présentiel"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Sync"])-Number(m["MH Réalisée Sync"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Globale (P & SYN)"])-Number(m["MH Réalisée Globale"])).toFixed(2)}</td>
+                        <th>${m["Taux Réalisation (P & SYN )"]}%</th>
           
             
                         </tr>
@@ -3345,9 +3384,12 @@
                         <td>Nom</td>
                         <td>Formateur</td>
                         <td>Groupe</td>
+                        <td>MH Reste Présentiel</td>
+                        <td>MH Reste Sync</td>
+                        <td>MH Reste total</td>
                         <td>Avancement</td>
                         <tr class="bg-light annee" >
-                        <td colspan='4' ><b>1A</b></td>
+                        <td colspan='7' ><b>1A</b></td>
          
                     </tr>
                     </tr>
@@ -3360,7 +3402,10 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
-                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
+                        <td>${(Number(m["MH Affectée Présentiel"])-Number(m["MH Réalisée Présentiel"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Sync"])-Number(m["MH Réalisée Sync"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Globale (P & SYN)"])-Number(m["MH Réalisée Globale"])).toFixed(2)}</td>
+                        <th>${m["Taux Réalisation (P & SYN )"]}%</th>
                         
             
                         </tr>
@@ -3373,8 +3418,10 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
-                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
-
+                        <td>${(Number(m["MH Affectée Présentiel"])-Number(m["MH Réalisée Présentiel"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Sync"])-Number(m["MH Réalisée Sync"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Globale (P & SYN)"])-Number(m["MH Réalisée Globale"])).toFixed(2)}</td>
+                        <th>${m["Taux Réalisation (P & SYN )"]}%</th>
           
             
                         </tr>
@@ -3383,7 +3430,7 @@
             })
             tableS2Reg.innerHTML += `
             <tr class="bg-light annee" >
-                        <td colspan='4'><b>2A</b></td>
+                        <td colspan='7'><b>2A</b></td>
          
                     </tr>
                     `
@@ -3394,8 +3441,10 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
-                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
-                        
+                        <td>${(Number(m["MH Affectée Présentiel"])-Number(m["MH Réalisée Présentiel"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Sync"])-Number(m["MH Réalisée Sync"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Globale (P & SYN)"])-Number(m["MH Réalisée Globale"])).toFixed(2)}</td>
+                        <th>${m["Taux Réalisation (P & SYN )"]}%</th>                        
             
                         </tr>
                         `;
@@ -3407,8 +3456,10 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
-                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
-          
+                        <td>${(Number(m["MH Affectée Présentiel"])-Number(m["MH Réalisée Présentiel"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Sync"])-Number(m["MH Réalisée Sync"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Globale (P & SYN)"])-Number(m["MH Réalisée Globale"])).toFixed(2)}</td>
+                        <th>${m["Taux Réalisation (P & SYN )"]}%</th>          
             
                         </tr>
                         `;
@@ -3416,7 +3467,7 @@
             })
             tableS2Reg.innerHTML += `
             <tr class="bg-light annee" >
-                        <td colspan='4'><b>3A</b></td>
+                        <td colspan='7'><b>3A</b></td>
          
                     </tr>
                     `
@@ -3427,8 +3478,10 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
-                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
-                        
+                        <td>${(Number(m["MH Affectée Présentiel"])-Number(m["MH Réalisée Présentiel"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Sync"])-Number(m["MH Réalisée Sync"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Globale (P & SYN)"])-Number(m["MH Réalisée Globale"])).toFixed(2)}</td>
+                        <th>${m["Taux Réalisation (P & SYN )"]}%</th>                        
             
                         </tr>
                         `;
@@ -3440,8 +3493,10 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
-                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
-          
+                        <td>${(Number(m["MH Affectée Présentiel"])-Number(m["MH Réalisée Présentiel"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Sync"])-Number(m["MH Réalisée Sync"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Globale (P & SYN)"])-Number(m["MH Réalisée Globale"])).toFixed(2)}</td>
+                        <th>${m["Taux Réalisation (P & SYN )"]}%</th>          
             
                         </tr>
                         `;
@@ -3463,9 +3518,12 @@
                         <td>Nom</td>
                         <td>Formateur</td>
                         <td>Groupe</td>
+                        <td>MH Reste Présentiel</td>
+                        <td>MH Reste Sync</td>
+                        <td>MH Reste total</td>
                         <td>Avancement</td>
                         <tr class="bg-light annee" >
-                        <td colspan='4' ><b>1A</b></td>
+                        <td colspan='7' ><b>1A</b></td>
          
                     </tr>
                     </tr>
@@ -3478,8 +3536,10 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
-                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
-                        
+                        <td>${(Number(m["MH Affectée Présentiel"])-Number(m["MH Réalisée Présentiel"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Sync"])-Number(m["MH Réalisée Sync"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Globale (P & SYN)"])-Number(m["MH Réalisée Globale"])).toFixed(2)}</td>
+                        <th>${m["Taux Réalisation (P & SYN )"]}%</th>                        
             
                         </tr>
                         `;
@@ -3491,8 +3551,10 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
-                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
-          
+                        <td>${(Number(m["MH Affectée Présentiel"])-Number(m["MH Réalisée Présentiel"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Sync"])-Number(m["MH Réalisée Sync"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Globale (P & SYN)"])-Number(m["MH Réalisée Globale"])).toFixed(2)}</td>
+                        <th>${m["Taux Réalisation (P & SYN )"]}%</th>          
             
                         </tr>
                         `;
@@ -3500,7 +3562,7 @@
             })
             tableS2loc.innerHTML += `
             <tr class="bg-light annee" >
-                        <td colspan='4'><b>2A</b></td>
+                        <td colspan='7'><b>2A</b></td>
          
                     </tr>
                     `
@@ -3511,8 +3573,10 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
-                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
-                        
+                        <td>${(Number(m["MH Affectée Présentiel"])-Number(m["MH Réalisée Présentiel"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Sync"])-Number(m["MH Réalisée Sync"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Globale (P & SYN)"])-Number(m["MH Réalisée Globale"])).toFixed(2)}</td>
+                        <th>${m["Taux Réalisation (P & SYN )"]}%</th>                        
             
                         </tr>
                         `;
@@ -3524,8 +3588,10 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
-                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
-                    
+                        <td>${(Number(m["MH Affectée Présentiel"])-Number(m["MH Réalisée Présentiel"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Sync"])-Number(m["MH Réalisée Sync"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Globale (P & SYN)"])-Number(m["MH Réalisée Globale"])).toFixed(2)}</td>
+                        <th>${m["Taux Réalisation (P & SYN )"]}%</th>                    
           
             
                         </tr>
@@ -3534,7 +3600,7 @@
             })
             tableS2loc.innerHTML += `
             <tr class="bg-light annee" >
-                        <td colspan='4'><b>3A</b></td>
+                        <td colspan='7'><b>3A</b></td>
          
                     </tr>
                     `
@@ -3545,8 +3611,10 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
-                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
-                        
+                        <td>${(Number(m["MH Affectée Présentiel"])-Number(m["MH Réalisée Présentiel"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Sync"])-Number(m["MH Réalisée Sync"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Globale (P & SYN)"])-Number(m["MH Réalisée Globale"])).toFixed(2)}</td>
+                        <th>${m["Taux Réalisation (P & SYN )"]}%</th>                        
             
                         </tr>
                         `;
@@ -3558,8 +3626,10 @@
                         <td>${m['Code Module']}-${m['Module']}</td>
                         <td>${m['Formateur Affecté Présentiel Actif']}</td>
                         <td>${m["Groupe"]}</td>
-                        <td>${m["Taux Réalisation (P & SYN )"]}%</td>
-
+                        <td>${(Number(m["MH Affectée Présentiel"])-Number(m["MH Réalisée Présentiel"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Sync"])-Number(m["MH Réalisée Sync"])).toFixed(2)}</td>
+                        <td>${(Number(m["MH Affectée Globale (P & SYN)"])-Number(m["MH Réalisée Globale"])).toFixed(2)}</td>
+                        <th>${m["Taux Réalisation (P & SYN )"]}%</th>
           
             
                         </tr>
